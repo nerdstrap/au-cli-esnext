@@ -1,0 +1,61 @@
+﻿<template>
+    <div class="row">
+        <div class="small-12 medium-8 columns end">
+            <h3>
+                <i t="[class]phone-infos_icon"></i>
+                <span t="enroll-phone-infos_header"></span>
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-8 columns end" t="[html]enroll-phone-infos_message">
+        </div>
+    </div>
+    <div repeat.for="smsInfo of vm.user.smsInfos" class="row">
+        <div class="small-12 medium-8 columns end">
+            <span>${smsInfo.phoneNumber | phoneFormatter}</span>
+            <i t="[class]complete_icon"></i>
+            <button type="button" class="button hollow alert" click.trigger="removePhoneInfo($event, phoneInfo)">
+                <span t="delete_button"></span>
+            </button>
+        </div>
+    </div>
+    <div if.bind="vm.showAddPhoneInfoForm" class="row">
+        <div class="small-12 columns">
+            <form validation-renderer="foundation-form" validation-errors.bind="errors">
+                <fieldset class="fieldset add-contact-info-fieldset">
+                    <div class="form-row">
+                        <label for="phone-number-input" t="phone-number_label"></label>
+                        <input id="phone-number-input" type="text" value.bind="vm.phoneNumber | phoneFormatter & validate" focus.bind="vm.phoneNumberHasFocus" t="[placeholder]phone-number_placeholder" maxlength="16">
+                    </div>
+                    <div class="form-row">
+                        <button class="button" click.trigger="addPhoneInfo($event)">
+                            <span t="add_button"></span>
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div if.bind="!vm.showAddPhoneInfoForm" class="row">
+        <div class="small-12 columns">
+            <button type="button" class="link" click.delegate="showAddPhoneInfoForm($event)">
+                <i t="[class]add_icon"></i>
+                <span t="show-add-phone-info_button"></span>
+            </button>
+        </div>
+    </div>
+    <div class="row c-action-bar">
+        <div class="small-12 medium-8 columns">
+            <strong t="enrollment-step-2_header"></strong>
+        </div>
+        <div class="small-12 medium-4 columns">
+            <button type="button" class="hollow button" click.trigger="skip($event)" if.bind="!isPhoneInfosComplete">
+                <span t="skip_button"></span>
+            </button>
+            <button type="button" class="button" click.trigger="next($event)" if.bind="isPhoneInfosComplete">
+                <span t="next_button"></span>
+            </button>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,21 @@
+<template>
+    <ai-dialog>
+        <ai-dialog-header>
+            <h4>
+                <i t="[class]${vm.headerIcon}"></i>
+                <span t="${vm.headerText}">${vm.headerText}</span>
+            </h4>
+        </ai-dialog-header>
+        <ai-dialog-body>
+            <div t="[html]${vm.message}" t-params.bind="vm.messageParams">${vm.message}</div>
+        </ai-dialog-body>
+        <ai-dialog-footer>
+            <button type="button" class="hollow button" click.trigger="cancel($event)">
+                <span t="${vm.cancelButtonText}">${vm.cancelButtonText}</span>
+            </button>
+            <button type="button" class="button" click.trigger="confirm($event)">
+                <span t="${vm.confirmButtonText}">${vm.confirmButtonText}</span>
+            </button>
+        </ai-dialog-footer>
+    </ai-dialog>
+</template>

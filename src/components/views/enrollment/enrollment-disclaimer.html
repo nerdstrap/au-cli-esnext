@@ -1,0 +1,43 @@
+﻿<template>
+    <div class="row">
+        <div class="small-12 medium-8 columns end">
+            <h3>
+                <span t="enrollment-disclaimer_header"></span>
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-8 columns end">
+            <div t="[html]enrollment-disclaimer_message">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-8 columns end">
+            <div class="callout warning">
+                <h4>
+                    <i t="[class]incomplete_icon"></i>
+                    <span t="enrollment-incomplete_header"></span>
+                </h4>
+                <span t="[html]enrollment-incomplete_message"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row c-action-bar">
+        <div class="small-12 medium-10 columns">
+            <form validation-renderer="foundation-form" validation-errors.bind="errors">
+                <fieldset class="fieldset disclaimer-fieldset">
+                    <div class="form-row">
+                        <input id="confirm-disclaimer-input" type="checkbox" value.bind="vm.confirmDisclaimerChecked & validate" checked.bind="vm.confirmDisclaimerChecked">
+                        <label for="confirm-disclaimer-input" t="confirm-disclaimer_label"></label>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="small-12 medium-2 columns">
+            <button type="button" class="button" click.trigger="next($event)">
+                <span t="next_button"></span>
+            </button>
+        </div>
+    </div>
+</template>

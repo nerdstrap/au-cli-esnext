@@ -1,0 +1,48 @@
+﻿<template>
+    <ai-dialog>
+        <ai-dialog-header>
+            <h3>
+                <i t="[class]verify-email-info_icon"></i>
+                <span t="verify-email-info_header"></span>
+            </h3>
+        </ai-dialog-header>
+        <ai-dialog-body>
+            <div class="row">
+                <div class="small-12 columns" t="[html]verify-email-info_message" t-params.bind="vm.messageParams">
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    <span t="remaining-time_label"></span><span>${vm.remainingTime | timerFormatter}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns" t="[html]verification-code-expired_message">
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    <form validation-renderer="foundation-form" validation-errors.bind="errors">
+                        <fieldset class="fieldset">
+                            <div class="form-row">
+                                <label for="verification-code-input" t="verification-code_label"></label>
+                                <input id="verification-code-input" type="text" autocomplete="off" value.bind="vm.verificationCode & validate" attach-focus.bind="vm.verificationCodeHasFocus" t="[placeholder]verification-code_placeholder">
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </ai-dialog-body>
+        <ai-dialog-footer>
+            <button type="button" class="hollow button" click.trigger="cancel($event)">
+                <span t="cancel_button"></span>
+            </button>
+            <button type="button" class="hollow button" click.trigger="resend($event)">
+                <span t="resend-code_button"></span>
+            </button>
+            <button type="button" class="hollow button" click.trigger="verify($event)">
+                <span t="verify_button"></span>
+            </button>
+        </ai-dialog-footer>
+    </ai-dialog>
+</template>

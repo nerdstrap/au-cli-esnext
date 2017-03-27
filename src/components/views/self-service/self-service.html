@@ -1,0 +1,47 @@
+﻿<template>
+    <div class="row">
+        <div class="small-12 medium-8 columns end">
+            <h3>
+                <i t="[class]service_icon"></i>
+                <span t="self-service_header"></span>
+            </h3>
+            <h2>
+                <span t="signed-in-as_label" t-params.bind="vm.user"></span>
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-8 columns end" t="[html]self-service_message">
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <div class="button-group expanded">
+                <button class="button button--full" click.trigger="goToChangePassword($event)">
+                    <span class="u-dis-b text-center">
+                        <i t="[class]change-password_icon"></i>
+                    </span>
+                    <span class="u-lh-lg text-center">
+                        <span t="go-to-change-password_button"></span>
+                    </span>
+                </button>
+                <button class="button button--full" click.trigger="goToEditProfile($event)">
+                    <span class="u-dis-b text-center">
+                        <i t="[class]profile_icon"></i>
+                    </span>
+                    <span class="u-lh-lg text-center">
+                        <span t="go-to-edit-profile_button"></span>
+                    </span>
+                </button>
+                <button class="button button--full" click.trigger="goToUnlockAccount($event)">
+                    <span class="u-dis-b text-center">
+                        <i t="[class]unlock_icon"></i>
+                    </span>
+                    <span class="u-lh-lg text-center">
+                        <span t="go-to-unlock-account_button"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</template>

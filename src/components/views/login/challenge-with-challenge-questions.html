@@ -1,0 +1,51 @@
+﻿<template>
+    <div class="row">
+        <div class="small-12 medium-8 columns end">
+            <h3>
+                <i t="[class]challenge-questions_icon"></i>
+                <span t="challenge-with-challenge-questions_header"></span>
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-8 columns end" t="[html]challenge-with-challenge-questions_message">
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <form validation-renderer="foundation-form" validation-errors.bind="errors">
+                <fieldset class="fieldset">
+                    <validation-summary errors.bind="errors" autofocus.bind="controller.validateTrigger === 'manual'">
+                    </validation-summary>
+                    <div class="u-gutt-3" repeat.for="challengeQuestion of vm.user.challengeQuestions">
+                        <div class="form-row">
+                            <label for="challenge-question-input-${$index}" t="challenge-question_label"></label>
+                            <select change.delegate="onSelectedAvailableChallengeQuestionAnswerChanged($event, $this, challengeQuestion.selectedAvailableChallengeQuestion)" id="challenge-question-input-${$index}" value.bind="challengeQuestion.selectedAvailableChallengeQuestion">
+                                <option model.bind="null" value="" t="challenge-question_option-default"></option>
+                                <option repeat.for="availableChallengeQuestion of challengeQuestion.availableChallengeQuestions" model.bind="availableChallengeQuestion">${availableChallengeQuestion.challengeQuestionText}</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label for="challenge-question-answer-input-${$index}" t="challenge-question-answer_label"></label>
+                            <input type="${challengeQuestion.showActualAnswer ? 'text' : 'password'}" id="challenge-question-answer-input-${$index}" placeholder="challenge question answer" value.bind="challengeQuestion.userAnswerText & validate" t="[placeholder]challenge-question-answer_placeholder">
+                        </div>
+                        <div class="form-row">
+                            <input type="checkbox" checked.bind="challengeQuestion.showActualAnswer" id="show-actual-answer-input-${$index}"/>
+                            <label for="show-actual-answer-input-${$index}" t="show-actual-answer_label"></label>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div class="row c-action-bar">
+        <div class="small-12 medium-4 columns">
+            <button type="button" class="hollow button" click.trigger="cancel($event)">
+                <span t="cancel_button"></span>
+            </button>
+            <button type="button" class="button" click.trigger="next($event)">
+                <span t="next_button"></span>
+            </button>
+        </div>
+    </div>
+</template>

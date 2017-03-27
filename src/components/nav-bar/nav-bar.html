@@ -1,0 +1,35 @@
+<template bindable="router">
+    <div class="top-bar c-topbar">
+        <div class="top-bar-title o-flex">
+            <span data-responsive-toggle="responsive-menu" data-hide-for="medium" class="o-flex__cell">
+                <button type="button" data-toggle class="c-topbar-menu u-gutt-sm-2">
+                    <i t="[class]menu_icon"></i>
+                </button>
+            </span>
+            <div class="o-flex__cell">
+                <img data-src="images/logo-small.png" class="c-topbar-logo u-gutt-sm-2" t="logo-small_src;[alt]logo_alt"/>
+            </div>
+            <div class="o-flex__cell">
+                <span t="app_title" class="c-topbar-title u-dis-b u-gutt-sm-2">
+                </span>
+            </div>
+        </div>
+        <div id="responsive-menu">
+            <div class="top-bar-right">
+                <ul class="menu vertical">
+                    <li repeat.for="row of router.navigation | authFilter: isAuthenticated" class="${row.isActive ? 'active' : ''}">
+                        <a href.bind="row.href" t.bind="row.settings.t">
+                            ${row.title}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="top" click.trigger="goToLogout($event)" if.bind="isAuthenticated">
+                            <span t="go-to-logout_button"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <loading-indicator loading.bind="router.isNavigating || api.isRequesting"></loading-indicator>
+</template>

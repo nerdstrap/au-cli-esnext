@@ -1,0 +1,47 @@
+﻿<template>
+    <div class="row">
+        <div class="small-12 medium-8 columns end">
+            <h3>
+                <i t="[class]security_icon"></i>
+                <span t="challenge_header"></span>
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns end" t="[html]challenge_message">
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-8 columns end">
+            <form validation-renderer="foundation-form" validation-errors.bind="errors">
+                <fieldset class="fieldset u-gutt-3">
+                    <div class="u-gutt-3" repeat.for="credentialType of vm.user.availableChallengeCredentialTypes">
+                        <div class="form-row">
+                            <label for="challenge-with-${credentialType}-input" t="challenge-with-${credentialType}_label"></label>
+                            <input type="radio" id="challenge-with-${credentialType}-input" model.bind="credentialType" checked.bind="vm.selectedCredentialType & validate"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="fieldset">
+                    <legend t="bind-device_header"></legend>
+                    <div class="u-gutt-3" repeat.for="option of vm.bindDeviceOptions">
+                        <div class="form-row">
+                            <label for="bind-device-${option}-input" t="bind-device-${option}_label"></label>
+                            <input id="bind-device-${option}-input" type="radio" model.bind="option" checked.bind="vm.bindDevice"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div class="row c-action-bar">
+        <div class="small-12 medium-8 columns end">
+            <button type="button" class="hollow button" click.trigger="cancel($event)">
+                <span t="cancel_button"></span>
+            </button>
+            <button type="button" class="button" click.trigger="next($event)">
+                <span t="next_button"></span>
+            </button>
+        </div>
+    </div>
+</template>

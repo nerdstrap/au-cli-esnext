@@ -1,0 +1,61 @@
+﻿<template>
+    <div class="row">
+        <div class="small-12 medium-8 columns end">
+            <h3>
+                <i t="[class]email-infos_icon"></i>
+                <span t="enroll-email-infos_header"></span>
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-8 columns end" t="[html]enroll-email-infos_message">
+        </div>
+    </div>
+    <div repeat.for="emailInfo of vm.user.emailInfos" class="row">
+        <div class="small-12 medium-8 columns end">
+            <span>${emailInfo.emailAddress}</span>
+            <i t="[class]complete_icon"></i>
+            <button type="button" class="button hollow alert" click.trigger="removeEmailInfo($event, emailInfo)">
+                <span t="delete_button"></span>
+            </button>
+        </div>
+    </div>
+    <div if.bind="vm.showAddEmailInfoForm" class="row">
+        <div class="small-12 columns">
+            <form validation-renderer="foundation-form" validation-errors.bind="errors">
+                <fieldset class="fieldset add-contact-info-fieldset">
+                    <div class="form-row">
+                        <label for="email-address-input" t="email-address_label"></label>
+                        <input id="email-address-input" type="text" value.bind="vm.emailAddress & validate" focus.bind="vm.emailAddressHasFocus" t="[placeholder]email-address_placeholder">
+                    </div>
+                    <div class="form-row">
+                        <button class="button" click.trigger="addEmailInfo($event)">
+                            <span t="add_button"></span>
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div if.bind="!vm.showAddEmailInfoForm" class="row">
+        <div class="small-12 columns">
+            <button type="button" class="link" click.delegate="showAddEmailInfoForm($event)">
+                <i t="[class]add_icon"></i>
+                <span t="show-add-email-info_button"></span>
+            </button>
+        </div>
+    </div>
+    <div class="row c-action-bar">
+        <div class="small-12 medium-8 columns">
+            <strong t="enrollment-step-3_header"></strong>
+        </div>
+        <div class="small-12 medium-4 columns">
+            <button type="button" class="hollow button" click.trigger="skip($event)" if.bind="!isEmailInfosComplete">
+                <span t="skip_button"></span>
+            </button>
+            <button type="button" class="button" click.trigger="next($event)" if.bind="isEmailInfosComplete">
+                <span t="next_button"></span>
+            </button>
+        </div>
+    </div>
+</template>
