@@ -10,13 +10,13 @@ import {UserService} from 'services/user-service';
 import {logger} from 'util/logger-helper';
 import {ConfirmDialog} from 'components/views/confirm-dialog/confirm-dialog';
 import {
-    EnrollmentDone
+    EnrollmentComplete
 } from 'resources/messages/enrollment-messages';
 import _ from 'lodash';
 
 @inject(Router, EventAggregator, ValidationControllerFactory, DialogService, Notification, I18N, AuthService, UserService)
 export class EnrollmentReview {
-    vm = {};
+    vm;
 
     constructor(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
         this.router = router;
@@ -31,55 +31,32 @@ export class EnrollmentReview {
 
     activate(viewModel) {
         return new Promise(resolve => {
-            this.vm.user = viewModel.user;
+            this.vm = viewModel;
             resolve();
         });
     }
 
-    goToEnrollChallengeQuestionAnswers(event) {
-        this.router.navigateToRoute('edit-challenge-question-answers');
-    }
-
-    goToEnrollPhoneInfos(event) {
-        this.router.navigateToRoute('edit-phone-infos');
-    }
-
-    goToEnrollEmailInfos(event) {
-        this.router.navigateToRoute('edit-email-infos');
-    }
-
     done(event) {
         return new Promise((resolve, reject) => {
-            if (this.vm.challengeQuestionAnswersComplete &&
-                this.vm.user.smsInfosComplete &&
-                this.vm.user.emailInfosComplete) {
+            if (this.vm.challengeQuestionAnswersComplete
+                && this.vm.user.smsInfosComplete
+                && this.vm.user.emailInfosComplete) {
                 this.eventAggregator.publish(new EnrollmentDone());
                 resolve();
             } else {
-                let confirmDialogModel = {
-                    "headerIcon": "dialog-enroll-review-warning.header-icon",
-                    "headerText": "dialog-enroll-review-warning.header-text",
-                    "message": "dialog-enroll-review-warning.message",
-                    "cancelButtonStyle": "dialog-enroll-review-warning.cancel-button-style",
-                    "cancelButtonText": "dialog-enroll-review-warning.cancel-button-text",
-                    "confirmButtonStyle": "dialog-enroll-review-warning.confirm-button-style",
-                    "confirmButtonText": "dialog-enroll-review-warning.confirm-button-text"
-                };
-                this.dialogService.open({viewModel: ConfirmDialog, model: confirmDialogModel})
-                    .then(openDialogResult => {
+                let confirmDialogModel = this.i18n.tr('confirm-enrollment-review-warning-dialog', {returnObjects: true});
+                this.dialogService.open({viewModel: ConfirmDialog, model: confirmDialogModel, rejectOnCancel: false})
+                    .whenClosed(openDialogResult => {
                         if (!openDialogResult.wasCancelled) {
-                            this.eventAggregator.publish(new EnrollmentDone());
-                            resolve();
-                        } else {
-                            reject(new Error('confirm_canceled'));
+                            this.eventAggregator.publish(new EnrollmentComplete());
                         }
+                        resolve();
                     })
                     .catch(reason => {
                         logger.error(reason);
                         this.notification.error('confirm_error');
                         reject(reason);
                     });
-
             }
         });
     }

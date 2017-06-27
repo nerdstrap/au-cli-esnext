@@ -98,40 +98,39 @@ export const AuthStatusCode = new Enum({
     Challenge: {ordinal: 3, description: 'authStatusCode.challenge'}
 });
 
-export const EnrollmentStep = new Enum({
-    DISCLAIMER: {ordinal: 0, description: 'enrollmentStep.disclaimer'},
-    INTRO: {ordinal: 1, description: 'enrollmentStep.intro'},
-    QUESTIONS: {ordinal: 2, description: 'enrollmentStep.questions'},
-    PHONE: {ordinal: 3, description: 'enrollmentStep.phone'},
-    EMAIL: {ordinal: 4, description: 'enrollmentStep.email'},
-    SUMMARY: {ordinal: 5, description: 'enrollmentStep.summary'}
-});
-
 export const ActionCode = new Enum({
     ALLOW: {ordinal: 0, description: 'actionCode.allow'},
-    CHALLENGE: {ordinal: 1, description: 'actionCode.challenge'},
-    NONE: {ordinal: 2, description: 'actionCode.none'},
-    REVIEW: {ordinal: 3, description: 'actionCode.review'}
+    DENY: {ordinal: 1, description: 'actionCode.deny'},
+    CHALLENGE: {ordinal: 2, description: 'actionCode.challenge'},
+    ENROLL: {ordinal: 3, description: 'actionCode.enroll'}
 });
 
 export const CredentialType = new Enum({
     PASSWORD: {ordinal: 0, description: 'credentialType.password'},
     QUESTIONS: {ordinal: 1, description: 'credentialType.questions'},
-    SMS: {ordinal: 2, description: 'credentialType.sms'},
+    PHONE: {ordinal: 2, description: 'credentialType.phone'},
     EMAIL: {ordinal: 3, description: 'credentialType.email'},
-    ONETIMETOKEN: {ordinal: 4, description: 'credentialType.oneTimeToken'}
+    RSATOKEN: {ordinal: 4, description: 'credentialType.rsaToken'}
 });
 
 export const ContactType = new Enum({
-    PHONE: {ordinal: 0, description: 'contactType.Phone'},
-    EMAIL: {ordinal: 1, description: 'contactType.Email'}
+    PHONE: {ordinal: 0, description: 'contactType.phone'},
+    EMAIL: {ordinal: 1, description: 'contactType.email'}
 });
 
 export const UserStatus = new Enum({
-    ALLOW: {ordinal: 0, description: 'actionCode.allow'},
-    LOCKEDOUT: {ordinal: 1, description: 'actionCode.lockedOut'},
-    NONE: {ordinal: 2, description: 'actionCode.none'},
-    REVIEW: {ordinal: 3, description: 'actionCode.review'}
+    NOTENROLLED: {ordinal: 0, description: 'actionCode.notEnrolled'},
+    UNVERIFIED: {ordinal: 1, description: 'actionCode.unverified'},
+    VERIFIED: {ordinal: 2, description: 'actionCode.verified'},
+    DELETE: {ordinal: 3, description: 'actionCode.delete'},
+    LOCKOUT: {ordinal: 4, description: 'actionCode.lockout'},
+    UNLOCKOUT: {ordinal: 5, description: 'actionCode.unlockout'}
+});
+
+export const UserType = new Enum({
+    PERSISTENT: {ordinal: 0, description: 'actionCode.persistent'},
+    NONPERSISTENT: {ordinal: 1, description: 'actionCode.nonPersistent'},
+    BAIT: {ordinal: 2, description: 'actionCode.bait'}
 });
 
 let determineShiftedValues = (total, highestValue) => {

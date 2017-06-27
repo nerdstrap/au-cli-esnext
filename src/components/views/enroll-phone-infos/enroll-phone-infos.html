@@ -15,7 +15,7 @@
         <div class="small-12 medium-8 columns end">
             <span>${smsInfo.phoneNumber | phoneFormatter}</span>
             <i t="[class]complete_icon"></i>
-            <button type="button" class="button hollow alert" click.trigger="removePhoneInfo($event, phoneInfo)">
+            <button type="button" class="button hollow alert" click.trigger="removePhoneInfo($event, smsInfo)">
                 <span t="delete_button"></span>
             </button>
         </div>
@@ -42,19 +42,6 @@
             <button type="button" class="link" click.delegate="showAddPhoneInfoForm($event)">
                 <i t="[class]add_icon"></i>
                 <span t="show-add-phone-info_button"></span>
-            </button>
-        </div>
-    </div>
-    <div class="row c-action-bar">
-        <div class="small-12 medium-8 columns">
-            <strong t="enrollment-step-2_header"></strong>
-        </div>
-        <div class="small-12 medium-4 columns">
-            <button type="button" class="hollow button" click.trigger="skip($event)" if.bind="!isPhoneInfosComplete">
-                <span t="skip_button"></span>
-            </button>
-            <button type="button" class="button" click.trigger="next($event)" if.bind="isPhoneInfosComplete">
-                <span t="next_button"></span>
             </button>
         </div>
     </div>

@@ -31,9 +31,9 @@ export class NavBar {
     goToLogout() {
         let confirmDialogModel = this.i18n.tr('logout-dialog', {returnObjects: true});
 
-        this.dialogService.open({viewModel: ConfirmDialog, model: confirmDialogModel})
-            .then(response => {
-                if (!response.wasCancelled) {
+        this.dialogService.open({viewModel: ConfirmDialog, model: confirmDialogModel, rejectOnCancel: false})
+            .whenClosed(openDialogResult => {
+                if (!openDialogResult.wasCancelled) {
                     this.router.navigateToRoute('logout');
                 }
             })

@@ -1,0 +1,36 @@
+﻿<template>
+    <div class="row">
+        <div class="small-12 medium-8 columns end">
+            <h3>
+                <i t="[class]challenge-questions_icon"></i>
+                <span t="challenge-with-phone-infos_header"></span>
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-8 columns end" t="[html]challenge-with-phone-infos_message">
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-8 columns end">
+            <form validation-renderer="foundation-form" validation-errors.bind="errors">
+                <fieldset class="fieldset login-fieldset">
+                    <div repeat.for="smsInfo of vm.user.smsInfos" class="form-row">
+                        <label for="challenge-with-${smsInfo.label}-input">${smsInfo.label}</label>
+                        <input type="radio" id="challenge-with-${smsInfo.label}-input" model.bind="smsInfo" checked.bind="vm.selectedSmsInfo & validate"/>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div class="row c-action-bar">
+        <div class="small-12 medium-4 columns">
+            <button type="button" class="hollow button" click.trigger="cancel($event)">
+                <span t="cancel_button"></span>
+            </button>
+            <button type="button" class="button" click.trigger="next($event)">
+                <span t="next_button"></span>
+            </button>
+        </div>
+    </div>
+</template>

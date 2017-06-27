@@ -8793,7 +8793,7 @@ body {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70); }
 
 /* line 1, scss/app/_dialogs.scss */
-ai-dialog-container, ai-dialog-overlay {
+ux-dialog-container, ux-dialog-overlay {
   position: fixed;
   top: 0;
   right: 0;
@@ -8801,16 +8801,16 @@ ai-dialog-container, ai-dialog-overlay {
   left: 0; }
 
 /* line 9, scss/app/_dialogs.scss */
-ai-dialog-overlay {
+ux-dialog-overlay {
   opacity: 0; }
 
 /* line 13, scss/app/_dialogs.scss */
-ai-dialog-overlay.active {
+ux-dialog-overlay.active {
   background-color: black;
   opacity: .5; }
 
 /* line 18, scss/app/_dialogs.scss */
-ai-dialog-container {
+ux-dialog-container {
   display: block;
   transition: opacity .2s linear;
   opacity: 0;
@@ -8819,15 +8819,15 @@ ai-dialog-container {
   -webkit-overflow-scrolling: touch; }
 
 /* line 27, scss/app/_dialogs.scss */
-ai-dialog-container.active {
+ux-dialog-container.active {
   opacity: 1; }
 
 /* line 31, scss/app/_dialogs.scss */
-ai-dialog-container > div {
+ux-dialog-container > div {
   padding: 30px; }
 
 /* line 35, scss/app/_dialogs.scss */
-ai-dialog-container > div > div {
+ux-dialog-container > div > div {
   display: block;
   width: -moz-fit-content;
   width: -webkit-fit-content;
@@ -8838,11 +8838,11 @@ ai-dialog-container > div > div {
   margin: auto; }
 
 /* line 47, scss/app/_dialogs.scss */
-ai-dialog-container, ai-dialog-container > div, ai-dialog-container > div > div {
+ux-dialog-container, ux-dialog-container > div, ux-dialog-container > div > div {
   outline: 0; }
 
 /* line 51, scss/app/_dialogs.scss */
-ai-dialog {
+ux-dialog {
   display: table;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -8863,14 +8863,14 @@ ai-dialog {
   background: #fff; }
 
 /* line 74, scss/app/_dialogs.scss */
-ai-dialog > ai-dialog-header {
+ux-dialog > ux-dialog-header {
   display: block;
   padding: 16px;
   border-bottom: 1px solid #e5e5e5;
   background-color: #e6e6e6; }
 
 /* line 81, scss/app/_dialogs.scss */
-ai-dialog > ai-dialog-header > button {
+ux-dialog > ux-dialog-header > button {
   float: right;
   border: none;
   display: block;
@@ -8884,19 +8884,19 @@ ai-dialog > ai-dialog-header > button {
   cursor: pointer; }
 
 /* line 95, scss/app/_dialogs.scss */
-ai-dialog > ai-dialog-body {
+ux-dialog > ux-dialog-body {
   display: block;
   padding: 16px; }
 
 /* line 100, scss/app/_dialogs.scss */
-ai-dialog > ai-dialog-footer {
+ux-dialog > ux-dialog-footer {
   display: block;
   padding: 6px;
   border-top: 1px solid #e5e5e5;
   text-align: right; }
 
 /* line 107, scss/app/_dialogs.scss */
-ai-dialog > ai-dialog-footer button {
+ux-dialog > ux-dialog-footer button {
   color: #333;
   background-color: #fff;
   padding: 6px 12px;
@@ -8912,18 +8912,18 @@ ai-dialog > ai-dialog-footer button {
   border-radius: 4px;
   margin: 5px 0 5px 5px !important; }
 
-/*ai-dialog > ai-dialog-footer button:disabled {
+/*ux-dialog > ux-dialog-footer button:disabled {
   cursor: default;
   opacity: .45;
 }
 
-ai-dialog > ai-dialog-footer button:hover:enabled {
+ux-dialog > ux-dialog-footer button:hover:enabled {
   color: #333;
   background-color: #e6e6e6;
   border-color: #adadad;
 }*/
 /* line 135, scss/app/_dialogs.scss */
-.ai-dialog-open {
+.ux-dialog-open {
   overflow: hidden; }
 
 /* line 139, scss/app/_dialogs.scss */

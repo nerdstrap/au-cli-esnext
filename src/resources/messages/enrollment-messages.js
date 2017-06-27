@@ -1,4 +1,4 @@
-﻿export class GoToEnrollmentDisclaimer {
+﻿export class EnrollmentDisclaimerConfirmed {
     constructor(attributes) {
         if (attributes) {
             Object.assign(this, attributes);
@@ -6,7 +6,7 @@
     }
 }
 
-export class GoToEnrollmentIntro {
+export class EnrollmentStart {
     constructor(attributes) {
         if (attributes) {
             Object.assign(this, attributes);
@@ -14,7 +14,7 @@ export class GoToEnrollmentIntro {
     }
 }
 
-export class GoToChallengeQuestionAnswers {
+export class EnrollChallengeQuestionAnswersComplete {
     constructor(attributes) {
         if (attributes) {
             Object.assign(this, attributes);
@@ -22,7 +22,7 @@ export class GoToChallengeQuestionAnswers {
     }
 }
 
-export class ChallengeQuestionAnswersDone {
+export class EnrollPhoneInfosComplete {
     constructor(attributes) {
         if (attributes) {
             Object.assign(this, attributes);
@@ -30,7 +30,7 @@ export class ChallengeQuestionAnswersDone {
     }
 }
 
-export class GoToPhoneInfos {
+export class EnrollEmailInfosComplete {
     constructor(attributes) {
         if (attributes) {
             Object.assign(this, attributes);
@@ -38,7 +38,7 @@ export class GoToPhoneInfos {
     }
 }
 
-export class PhoneInfosDone {
+export class EnrollCredentialsComplete {
     constructor(attributes) {
         if (attributes) {
             Object.assign(this, attributes);
@@ -46,31 +46,7 @@ export class PhoneInfosDone {
     }
 }
 
-export class GoToEmailInfos {
-    constructor(attributes) {
-        if (attributes) {
-            Object.assign(this, attributes);
-        }
-    }
-}
-
-export class EmailInfosDone {
-    constructor(attributes) {
-        if (attributes) {
-            Object.assign(this, attributes);
-        }
-    }
-}
-
-export class GoToEnrollmentSummary {
-    constructor(attributes) {
-        if (attributes) {
-            Object.assign(this, attributes);
-        }
-    }
-}
-
-export class EnrollmentDone {
+export class EnrollmentComplete {
     constructor(attributes) {
         if (attributes) {
             Object.assign(this, attributes);

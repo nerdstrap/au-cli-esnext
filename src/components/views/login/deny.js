@@ -11,7 +11,7 @@ import {logger} from 'util/logger-helper';
 
 @inject(Router, EventAggregator, ValidationControllerFactory, DialogService, Notification, I18N, AuthService, UserService)
 export class Deny {
-    vm = {};
+    vm;
 
     constructor(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
         this.router = router;

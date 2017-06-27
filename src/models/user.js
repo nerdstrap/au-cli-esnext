@@ -10,7 +10,9 @@ export class User {
     sessionId = '';
     transactionId = '';
     userId = '';
+    credentials = '';
     fullName = '';
+    access_token = '';
     _availableChallengeQuestions = [];
     _challengeQuestionAnswers = [];
     challengeQuestions = [];
@@ -42,8 +44,8 @@ export class User {
             if (response.userInfo && response.userInfo.fullName) {
                 this.fullName = response.userInfo.fullName;
             }
-            if (response.authToken) {
-                this.authToken = response.authToken;
+            if (response.access_token) {
+                this.access_token = response.access_token;
             }
             let buildChallengeQuestions = false;
             if (response.availableChallengeQuestionAnswers && response.availableChallengeQuestionAnswers.length && response.availableChallengeQuestionAnswers.length > 0) {

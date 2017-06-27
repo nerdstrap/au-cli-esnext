@@ -43,16 +43,4 @@ export class UnlockAccount {
                 this.notification.error('get-user_error');
             });
     }
-
-    goToChangePassword(event) {
-        this.router.navigateToRoute('change-password');
-    }
-
-    goToEditProfile(event) {
-        this.router.navigateToRoute('edit-profile');
-    }
-
-    goToUnlockAccount(event) {
-        this.router.navigateToRoute('unlock-account');
-    }
 }

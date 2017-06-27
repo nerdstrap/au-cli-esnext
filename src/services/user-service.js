@@ -1,10 +1,14 @@
 ﻿import {inject, bindable, computedFrom} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client';
+import {Notification} from 'aurelia-notification';
+import {Router} from 'aurelia-router';
+import * as nprogress from 'nprogress';
 import {Config} from 'aurelia-api';
+import {AuthService} from 'aurelia-authentication';
 import {logger} from 'util/logger-helper';
 import {DeviceHelper} from 'util/device-helper';
 
-@inject(Config, DeviceHelper)
+@inject(Config, DeviceHelper, Router, Notification, AuthService)
 export class UserService {
     isRequesting = false;
 
@@ -13,120 +17,126 @@ export class UserService {
         this.deviceHelper = deviceHelper;
     }
 
-    signin(signinRequest) {
-        this.isRequesting = true;
-        signinRequest.deviceRequest = this.deviceHelper.deviceRequest;
-        return this.userEndpoint.post('signin', signinRequest)
+    signin(request) {
+        this._pre(request);
+        return this.userEndpoint.post('signin', request)
             .then(response => {
-                this.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+                this._post(response);
                 return response;
             });
     }
 
-    analyzeUser(analyzeUserRequest) {
-        this.isRequesting = true;
-        analyzeUserRequest.deviceRequest = this.deviceHelper.deviceRequest;
-        return this.userEndpoint.post('analyzeuser', analyzeUserRequest)
+    analyzePreAuthUser(request) {
+        this._pre(request);
+        return this.userEndpoint.post('analyzepreauthuser', request)
             .then(response => {
-                this.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+                this._post(response);
                 return response;
             });
     }
 
-    challengeUser(challengeUserRequest) {
-        this.isRequesting = true;
-        challengeUserRequest.deviceRequest = this.deviceHelper.deviceRequest;
-        return this.userEndpoint.post('challengeuser', challengeUserRequest)
+    challengePreAuthUser(request) {
+        this._pre(request);
+        return this.userEndpoint.post('challengepreauthuser', request)
             .then(response => {
-                this.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+                this._post(response);
                 return response;
             });
     }
 
-    authenticateUser(authenticateUserRequest) {
-        this.isRequesting = true;
-        authenticateUserRequest.deviceRequest = this.deviceHelper.deviceRequest;
-        return this.userEndpoint.post('authenticateuser', authenticateUserRequest)
+    challengeUser(request) {
+        this._pre(request);
+        return this.userEndpoint.post('challengeuser', request)
             .then(response => {
-                this.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+                this._post(response);
+            });
+    }
+
+    authenticatePreAuthUser(request) {
+        this._pre(request);
+        return this.userEndpoint.post('authenticatepreauthuser', request)
+            .then(response => {
+                this._post(response);
                 return response;
             });
     }
 
-    getUser(getUserRequest) {
-        this.isRequesting = true;
-        getUserRequest.deviceRequest = this.deviceHelper.deviceRequest;
-        return this.userEndpoint.post('getuser', getUserRequest)
+    authenticateUser(request) {
+        this._pre(request);
+        return this.userEndpoint.post('authenticateuser', request)
             .then(response => {
-                this.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+                this._post(response);
                 return response;
             });
     }
 
-    addChallengeQuestionAnswers(addChallengeQuestionAnswersRequest) {
-        this.isRequesting = true;
-        addChallengeQuestionAnswersRequest.deviceRequest = this.deviceHelper.deviceRequest;
-        return this.userEndpoint.post('addchallengequestionanswers', addChallengeQuestionAnswersRequest)
+    getPreAuthUser(request) {
+        this._pre(request);
+        return this.userEndpoint.post('getpreauthuser', request)
             .then(response => {
-                this.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+                this._post(response);
                 return response;
             });
     }
 
-    verifyContactInfo(verifyContactInfoRequest) {
-        this.isRequesting = true;
-        verifyContactInfoRequest.deviceRequest = this.deviceHelper.deviceRequest;
-        return this.userEndpoint.post('verifycontactinfo', verifyContactInfoRequest)
+    getUser(request) {
+        this._pre(request);
+        return this.userEndpoint.post('getuser', request)
             .then(response => {
-                this.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+                this._post(response);
                 return response;
             });
     }
 
-    removeContactInfo(removeContactInfoRequest) {
-        this.isRequesting = true;
-        removeContactInfoRequest.deviceRequest = this.deviceHelper.deviceRequest;
-        return this.userEndpoint.post('removecontactinfo', removeContactInfoRequest)
+    addChallengeQuestionAnswers(request) {
+        this._pre(request);
+        return this.userEndpoint.post('addchallengequestionanswers', request)
             .then(response => {
-                this.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+                this._post(response);
                 return response;
             });
     }
 
-    resetPassword(resetPasswordRequest) {
-        this.isRequesting = true;
-        resetPasswordRequest.deviceRequest = this.deviceHelper.deviceRequest;
-        return this.userEndpoint.post('resetcredentials', resetPasswordRequest)
+    verifyContactInfo(request) {
+        this._pre(request);
+        return this.userEndpoint.post('verifycontactinfo', request)
             .then(response => {
-                this.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+                this._post(response);
                 return response;
             });
+    }
+
+    removeContactInfo(request) {
+        this._pre(request);
+        return this.userEndpoint.post('removecontactinfo', request)
+            .then(response => {
+                this._post(response);
+                return response;
+            });
+    }
+
+    resetPassword(request) {
+        this._pre(request);
+        return this.userEndpoint.post('resetcredentials', request)
+            .then(response => {
+                this._post(response);
+                return response;
+            });
+    }
+
+    _pre(request) {
+        nprogress.start();
+        this.isRequesting = true;
+        if (request) {
+            request.deviceRequest = this.deviceHelper.deviceRequest;
+        }
+    }
+
+    _post(response) {
+        if (response && response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
+            this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
+        }
+        this.isRequesting = false;
+        nprogress.done();
     }
 }

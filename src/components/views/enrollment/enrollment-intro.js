@@ -7,16 +7,14 @@ import {I18N} from 'aurelia-i18n';
 import {AuthService} from 'aurelia-authentication';
 import {UserService} from 'services/user-service';
 import {
-    GoToChallengeQuestionAnswers,
-    GoToPhoneInfos,
-    GoToEmailInfos
+    EnrollmentStart
 } from 'resources/messages/enrollment-messages';
 import {logger} from 'util/logger-helper';
 
 
 @inject(Router, EventAggregator, DialogService, Notification, I18N, AuthService, UserService)
 export class EnrollmentIntro {
-    vm = {};
+    vm;
 
     constructor(router, eventAggregator, dialogService, notification, i18n, authService, userService) {
         this.router = router;
@@ -35,15 +33,10 @@ export class EnrollmentIntro {
         });
     }
 
-    goToChallengeQuestionAnswers(event) {
-        this.eventAggregator.publish(new GoToChallengeQuestionAnswers());
-    }
-
-    goToPhoneInfos(event) {
-        this.eventAggregator.publish(new GoToPhoneInfos());
-    }
-
-    goToEmailInfos(event) {
-        this.eventAggregator.publish(new GoToEmailInfos());
+    start(event) {
+        return new Promise(resolve => {
+            this.eventAggregator.publish(new EnrollmentStart());
+            resolve();
+        });
     }
 }

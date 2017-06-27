@@ -76,47 +76,14 @@ export default {
                 roles: []
             }
         }, {
-            route: '/self-service/edit-profile',
+            route: '/self-service/edit-credentials',
             name: 'edit-profile',
-            moduleId: 'components/views/edit-profile/edit-profile',
+            moduleId: 'components/views/edit-credentials/edit-credentials',
             nav: false,
             auth: true,
-            title: 'Edit Profile',
+            title: 'Edit Credentials',
             settings: {
-                t: 'edit-profile_route',
-                roles: []
-            }
-        }, {
-            route: '/self-service/edit-challenge-question-answers',
-            name: 'edit-challenge-question-answers',
-            moduleId: 'components/views/edit-challenge-question-answers/edit-challenge-question-answers',
-            nav: false,
-            auth: true,
-            title: 'Edit Challenge Question Answers',
-            settings: {
-                t: 'edit-challenge-question-answers_route',
-                roles: []
-            }
-        }, {
-            route: '/self-service/edit-phone-infos',
-            name: 'edit-phone-infos',
-            moduleId: 'components/views/edit-phone-infos/edit-phone-infos',
-            nav: false,
-            auth: true,
-            title: 'Edit Phone Infos',
-            settings: {
-                t: 'edit-phone-infos_route',
-                roles: []
-            }
-        }, {
-            route: '/self-service/edit-email-infos',
-            name: 'edit-email-infos',
-            moduleId: 'components/views/edit-email-infos/edit-email-infos',
-            nav: false,
-            auth: true,
-            title: 'Edit Email Infos',
-            settings: {
-                t: 'edit-email-infos_route',
+                t: 'edit-credentials_route',
                 roles: []
             }
         }],

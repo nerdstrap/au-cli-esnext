@@ -1,22 +1,22 @@
 ﻿<template>
-    <ai-dialog>
-        <ai-dialog-header>
+    <ux-dialog>
+        <ux-dialog-header>
             <h3>
                 <i t="[class]verify-phone-info_icon"></i>
                 <span t="verify-phone-info_header"></span>
             </h3>
-        </ai-dialog-header>
-        <ai-dialog-body>
+        </ux-dialog-header>
+        <ux-dialog-body>
             <div class="row">
                 <div class="small-12 columns" t="[html]verify-phone-info_message" t-params.bind="vm.messageParams">
                 </div>
             </div>
-            <div class="row">
+            <div if.bind="!vm.eventTimerExpired" class="row">
                 <div class="small-12 columns">
                     <span t="remaining-time_label"></span><span>${vm.remainingTime | timerFormatter}</span>
                 </div>
             </div>
-            <div class="row">
+            <div if.bind="vm.eventTimerExpired" class="row">
                 <div class="small-12 columns" t="[html]verification-code-expired_message">
                 </div>
             </div>
@@ -32,17 +32,17 @@
                     </form>
                 </div>
             </div>
-        </ai-dialog-body>
-        <ai-dialog-footer>
+        </ux-dialog-body>
+        <ux-dialog-footer>
             <button type="button" class="hollow button" click.trigger="cancel($event)">
                 <span t="cancel_button"></span>
             </button>
-            <button type="button" class="hollow button" click.trigger="resend($event)">
+            <button if.bind="vm.eventTimerExpired" type="button" class="hollow button" click.trigger="resend($event)">
                 <span t="resend-code_button"></span>
             </button>
-            <button type="button" class="hollow button" click.trigger="verify($event)">
+            <button if.bind="!vm.eventTimerExpired" type="button" class="hollow button" click.trigger="verify($event)">
                 <span t="verify_button"></span>
             </button>
-        </ai-dialog-footer>
-    </ai-dialog>
+        </ux-dialog-footer>
+    </ux-dialog>
 </template>

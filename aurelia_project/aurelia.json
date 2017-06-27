@@ -236,6 +236,11 @@
                         "main": "numbro"
                     },
                     {
+                        "name": "nprogress",
+                        "path": "../node_modules/nprogress",
+                        "main": "nprogress"
+                    },
+                    {
                         "name": "zxcvbn",
                         "path": "../node_modules/zxcvbn/lib",
                         "main": "main",

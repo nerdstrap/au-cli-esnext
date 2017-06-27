@@ -163,7 +163,7 @@ define('app/app',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-aut
         function App(router, authService, notification, i18n) {
             _classCallCheck(this, App);
 
-            this.languages = [{ code: 'en', locale: 'en-US', flag: 'us' }, { code: 'nl', locale: 'nl-NL', flag: 'nl' }];
+            this.languages = [{ code: 'en', locale: 'en-US', flag: 'us' }];
 
             this.router = router;
             this.authService = authService;
@@ -197,197 +197,7 @@ define('components/index',["exports"], function (exports) {
     });
     exports.configure = configure;
     function configure(config) {
-        config.globalResources(["./nav-bar/nav-bar", "./enrollment-nav-bar/enrollment-nav-bar", "./site-footer/site-footer", "./validation-summary/validation-summary"]);
-    }
-});
-define('foundation-validation/foundation-validation-renderer',['exports', 'aurelia-validation'], function (exports, _aureliaValidation) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.FoundationValidationRenderer = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    if (window.Element && !Element.prototype.closest) {
-        Element.prototype.closest = function (s) {
-            var matches = (this.document || this.ownerDocument).querySelectorAll(s);
-            var i = void 0;
-            var el = this;
-            do {
-                i = matches.length;
-                while (--i >= 0 && matches.item(i) !== el) {}
-            } while (i < 0 && (el = el.parentElement));
-            return el;
-        };
-    }
-
-    var abideLabels = false;
-
-    var FoundationValidationRenderer = exports.FoundationValidationRenderer = function () {
-        function FoundationValidationRenderer() {
-            _classCallCheck(this, FoundationValidationRenderer);
-        }
-
-        FoundationValidationRenderer.prototype.render = function render(instruction) {
-            for (var _iterator = instruction.unrender, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
-                var _ref2;
-
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref2 = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref2 = _i.value;
-                }
-
-                var _ref5 = _ref2;
-                var result = _ref5.result,
-                    elements = _ref5.elements;
-
-                for (var _iterator3 = elements, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator]();;) {
-                    var _ref6;
-
-                    if (_isArray3) {
-                        if (_i3 >= _iterator3.length) break;
-                        _ref6 = _iterator3[_i3++];
-                    } else {
-                        _i3 = _iterator3.next();
-                        if (_i3.done) break;
-                        _ref6 = _i3.value;
-                    }
-
-                    var element = _ref6;
-
-                    FoundationValidationRenderer.remove(element, result);
-                }
-            }
-
-            for (var _iterator2 = instruction.render, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
-                var _ref4;
-
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref4 = _iterator2[_i2++];
-                } else {
-                    _i2 = _iterator2.next();
-                    if (_i2.done) break;
-                    _ref4 = _i2.value;
-                }
-
-                var _ref7 = _ref4;
-                var result = _ref7.result,
-                    elements = _ref7.elements;
-
-                for (var _iterator4 = elements, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator]();;) {
-                    var _ref8;
-
-                    if (_isArray4) {
-                        if (_i4 >= _iterator4.length) break;
-                        _ref8 = _iterator4[_i4++];
-                    } else {
-                        _i4 = _iterator4.next();
-                        if (_i4.done) break;
-                        _ref8 = _i4.value;
-                    }
-
-                    var _element = _ref8;
-
-                    FoundationValidationRenderer.add(_element, result);
-                }
-            }
-        };
-
-        FoundationValidationRenderer.add = function add(element, result) {
-            var formRow = element.closest('.form-row');
-            if (!formRow) {
-                return;
-            }
-
-            var formLabel = formRow.getElementsByTagName('label')[0];
-            var formInput = formRow.getElementsByTagName('input')[0];
-            if (result.valid) {
-                if (abideLabels && formLabel && !formLabel.classList.contains('is-invalid-label')) {
-                    formLabel.classList.add('is-valid-label');
-                }
-
-                if (formInput && !formInput.classList.contains('is-invalid-input')) {
-                    formInput.classList.add('is-valid-input');
-                }
-            } else {
-                if (abideLabels && formLabel) {
-                    formLabel.classList.remove('is-valid-label');
-                    formLabel.classList.add('is-invalid-label');
-                }
-
-                if (formInput) {
-                    formInput.classList.remove('is-valid-input');
-                    formInput.classList.add('is-invalid-input');
-                    formInput.setAttribute('aria-invalid', 'true');
-                }
-
-                var message = document.createElement('span');
-                message.className = 'form-error is-visible';
-                message.textContent = result.message;
-                message.id = 'validation-message-' + result.id;
-                formRow.appendChild(message);
-            }
-        };
-
-        FoundationValidationRenderer.remove = function remove(element, result) {
-            var formRow = element.closest('.form-row');
-            if (!formRow) {
-                return;
-            }
-
-            var formLabel = formRow.getElementsByTagName('label')[0];
-            var formInput = formRow.getElementsByTagName('input')[0];
-
-            if (result.valid) {
-                if (abideLabels && formLabel) {
-                    formLabel.classList.remove('is-valid-label');
-                }
-
-                if (formInput) {
-                    formInput.classList.remove('is-valid-input');
-                }
-            } else {
-                if (abideLabels && formLabel) {
-                    formLabel.classList.remove('is-invalid-label');
-                }
-
-                if (formInput) {
-                    formInput.classList.remove('is-invalid-input');
-                    formInput.setAttribute('aria-invalid', 'false');
-                }
-
-                var message = formRow.querySelector('#validation-message-' + result.id);
-                if (message) {
-                    formRow.removeChild(message);
-                }
-            }
-        };
-
-        return FoundationValidationRenderer;
-    }();
-});
-define('foundation-validation/index',['exports', 'foundation-validation/foundation-validation-renderer'], function (exports, _foundationValidationRenderer) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.configure = configure;
-    function configure(config) {
-        config.container.registerHandler('foundation-form', function (container) {
-            return container.get(_foundationValidationRenderer.FoundationValidationRenderer);
-        });
+        config.globalResources(["./nav-bar/nav-bar", "./site-footer/site-footer", "./validation-summary/validation-summary"]);
     }
 });
 define('config/app',['exports'], function (exports) {
@@ -423,6 +233,10 @@ define('config/app',['exports'], function (exports) {
             locale: 'en-US'
         },
         'aurelia-notification': {
+            defaults: {
+                timeout: 5000,
+                clickToClose: true
+            },
             notifications: {
                 success: 'humane-flatty-success',
                 error: 'humane-flatty-error',
@@ -434,7 +248,8 @@ define('config/app',['exports'], function (exports) {
             numberOfRequiredSmsInfos: 1,
             numberOfRequiredEmailInfos: 1,
             confirmDisclaimerEventTimerStartTime: 1,
-            verifyEmailInfoTimerStartTime: 120
+            verifyPhoneInfoTimerStartTime: 10,
+            verifyEmailInfoTimerStartTime: 10
         }
     };
 });
@@ -460,6 +275,10 @@ define('config/auth',['exports'], function (exports) {
 
             profileUrl: '/me',
 
+            accessTokenProp: 'access_token',
+            refreshTokenProp: 'refresh_token',
+            idTokenProp: 'id_token',
+            refreshTokenSubmitProp: 'refresh_token',
             refreshTokenUrl: '/refresh-token',
             useRefreshToken: true
         }
@@ -575,52 +394,215 @@ define('config/router',['exports'], function (exports) {
                 roles: []
             }
         }, {
-            route: '/self-service/edit-profile',
+            route: '/self-service/edit-credentials',
             name: 'edit-profile',
-            moduleId: 'components/views/edit-profile/edit-profile',
+            moduleId: 'components/views/edit-credentials/edit-credentials',
             nav: false,
             auth: true,
-            title: 'Edit Profile',
+            title: 'Edit Credentials',
             settings: {
-                t: 'edit-profile_route',
-                roles: []
-            }
-        }, {
-            route: '/self-service/edit-challenge-question-answers',
-            name: 'edit-challenge-question-answers',
-            moduleId: 'components/views/edit-challenge-question-answers/edit-challenge-question-answers',
-            nav: false,
-            auth: true,
-            title: 'Edit Challenge Question Answers',
-            settings: {
-                t: 'edit-challenge-question-answers_route',
-                roles: []
-            }
-        }, {
-            route: '/self-service/edit-phone-infos',
-            name: 'edit-phone-infos',
-            moduleId: 'components/views/edit-phone-infos/edit-phone-infos',
-            nav: false,
-            auth: true,
-            title: 'Edit Phone Infos',
-            settings: {
-                t: 'edit-phone-infos_route',
-                roles: []
-            }
-        }, {
-            route: '/self-service/edit-email-infos',
-            name: 'edit-email-infos',
-            moduleId: 'components/views/edit-email-infos/edit-email-infos',
-            nav: false,
-            auth: true,
-            title: 'Edit Email Infos',
-            settings: {
-                t: 'edit-email-infos_route',
+                t: 'edit-credentials_route',
                 roles: []
             }
         }],
         fallbackRoute: 'login'
     };
+});
+define('foundation-validation/foundation-validation-renderer',['exports', 'aurelia-validation'], function (exports, _aureliaValidation) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.FoundationValidationRenderer = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    if (window.Element && !Element.prototype.closest) {
+        Element.prototype.closest = function (s) {
+            var matches = (this.document || this.ownerDocument).querySelectorAll(s);
+            var i = void 0;
+            var el = this;
+            do {
+                i = matches.length;
+                while (--i >= 0 && matches.item(i) !== el) {}
+            } while (i < 0 && (el = el.parentElement));
+            return el;
+        };
+    }
+
+    var abideLabels = false;
+
+    var FoundationValidationRenderer = exports.FoundationValidationRenderer = function () {
+        function FoundationValidationRenderer() {
+            _classCallCheck(this, FoundationValidationRenderer);
+        }
+
+        FoundationValidationRenderer.prototype.render = function render(instruction) {
+            for (var _iterator = instruction.unrender, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+                var _ref2;
+
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref2 = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref2 = _i.value;
+                }
+
+                var _ref5 = _ref2;
+                var result = _ref5.result,
+                    elements = _ref5.elements;
+
+                for (var _iterator3 = elements, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator]();;) {
+                    var _ref6;
+
+                    if (_isArray3) {
+                        if (_i3 >= _iterator3.length) break;
+                        _ref6 = _iterator3[_i3++];
+                    } else {
+                        _i3 = _iterator3.next();
+                        if (_i3.done) break;
+                        _ref6 = _i3.value;
+                    }
+
+                    var element = _ref6;
+
+                    FoundationValidationRenderer.remove(element, result);
+                }
+            }
+
+            for (var _iterator2 = instruction.render, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
+                var _ref4;
+
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref4 = _iterator2[_i2++];
+                } else {
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
+                    _ref4 = _i2.value;
+                }
+
+                var _ref7 = _ref4;
+                var result = _ref7.result,
+                    elements = _ref7.elements;
+
+                if (!result.valid) {
+                    for (var _iterator4 = elements, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator]();;) {
+                        var _ref8;
+
+                        if (_isArray4) {
+                            if (_i4 >= _iterator4.length) break;
+                            _ref8 = _iterator4[_i4++];
+                        } else {
+                            _i4 = _iterator4.next();
+                            if (_i4.done) break;
+                            _ref8 = _i4.value;
+                        }
+
+                        var _element = _ref8;
+
+                        FoundationValidationRenderer.add(_element, result);
+                    }
+                }
+            }
+        };
+
+        FoundationValidationRenderer.add = function add(element, result) {
+            if (element) {
+                var formRow = element.closest('.form-row');
+                if (!formRow) {
+                    return;
+                }
+
+                var formLabel = formRow.getElementsByTagName('label')[0];
+                var formInput = formRow.getElementsByTagName('input')[0];
+                if (result.valid) {
+                    if (abideLabels && formLabel && !formLabel.classList.contains('is-invalid-label')) {
+                        formLabel.classList.add('is-valid-label');
+                    }
+
+                    if (formInput && !formInput.classList.contains('is-invalid-input')) {
+                        formInput.classList.add('is-valid-input');
+                    }
+                } else {
+                    if (abideLabels && formLabel) {
+                        formLabel.classList.remove('is-valid-label');
+                        formLabel.classList.add('is-invalid-label');
+                    }
+
+                    if (formInput) {
+                        formInput.classList.remove('is-valid-input');
+                        formInput.classList.add('is-invalid-input');
+                        formInput.setAttribute('aria-invalid', 'true');
+                    }
+
+                    var message = document.createElement('span');
+                    message.className = 'form-error is-visible';
+                    message.textContent = result.message;
+                    message.id = 'validation-message-' + result.id;
+                    formRow.appendChild(message);
+                }
+            }
+        };
+
+        FoundationValidationRenderer.remove = function remove(element, result) {
+            if (element) {
+                var formRow = element.closest('.form-row');
+                if (!formRow) {
+                    return;
+                }
+
+                var formLabel = formRow.getElementsByTagName('label')[0];
+                var formInput = formRow.getElementsByTagName('input')[0];
+
+                if (result.valid) {
+                    if (abideLabels && formLabel) {
+                        formLabel.classList.remove('is-valid-label');
+                    }
+
+                    if (formInput) {
+                        formInput.classList.remove('is-valid-input');
+                    }
+                } else {
+                    if (abideLabels && formLabel) {
+                        formLabel.classList.remove('is-invalid-label');
+                    }
+
+                    if (formInput) {
+                        formInput.classList.remove('is-invalid-input');
+                        formInput.setAttribute('aria-invalid', 'false');
+                    }
+
+                    var message = formRow.querySelector('#validation-message-' + result.id);
+                    if (message) {
+                        formRow.removeChild(message);
+                    }
+                }
+            }
+        };
+
+        return FoundationValidationRenderer;
+    }();
+});
+define('foundation-validation/index',['exports', 'foundation-validation/foundation-validation-renderer'], function (exports, _foundationValidationRenderer) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.configure = configure;
+    function configure(config) {
+        config.container.registerHandler('foundation-form', function (container) {
+            return container.get(_foundationValidationRenderer.FoundationValidationRenderer);
+        });
+    }
 });
 define('models/challengeQuestion',['exports'], function (exports) {
     'use strict';
@@ -828,7 +810,9 @@ define('models/user',['exports', 'models/challengeQuestion', 'models/challengeQu
             this.sessionId = '';
             this.transactionId = '';
             this.userId = '';
+            this.credentials = '';
             this.fullName = '';
+            this.access_token = '';
             this._availableChallengeQuestions = [];
             this._challengeQuestionAnswers = [];
             this.challengeQuestions = [];
@@ -859,8 +843,8 @@ define('models/user',['exports', 'models/challengeQuestion', 'models/challengeQu
                 if (response.userInfo && response.userInfo.fullName) {
                     this.fullName = response.userInfo.fullName;
                 }
-                if (response.authToken) {
-                    this.authToken = response.authToken;
+                if (response.access_token) {
+                    this.access_token = response.access_token;
                 }
                 var buildChallengeQuestions = false;
                 if (response.availableChallengeQuestionAnswers && response.availableChallengeQuestionAnswers.length && response.availableChallengeQuestionAnswers.length > 0) {
@@ -1027,13 +1011,32 @@ define('resources/index',["exports"], function (exports) {
         config.globalResources(["./value-converters/date-formatter", "./value-converters/phone-formatter", "./value-converters/timer-formatter"]);
     }
 });
-define('services/user-service',['exports', 'aurelia-framework', 'aurelia-fetch-client', 'aurelia-api', 'util/logger-helper', 'util/device-helper'], function (exports, _aureliaFramework, _aureliaFetchClient, _aureliaApi, _loggerHelper, _deviceHelper) {
+define('services/user-service',['exports', 'aurelia-framework', 'aurelia-fetch-client', 'aurelia-notification', 'aurelia-router', 'nprogress', 'aurelia-api', 'aurelia-authentication', 'util/logger-helper', 'util/device-helper'], function (exports, _aureliaFramework, _aureliaFetchClient, _aureliaNotification, _aureliaRouter, _nprogress, _aureliaApi, _aureliaAuthentication, _loggerHelper, _deviceHelper) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.UserService = undefined;
+
+    var nprogress = _interopRequireWildcard(_nprogress);
+
+    function _interopRequireWildcard(obj) {
+        if (obj && obj.__esModule) {
+            return obj;
+        } else {
+            var newObj = {};
+
+            if (obj != null) {
+                for (var key in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+                }
+            }
+
+            newObj.default = obj;
+            return newObj;
+        }
+    }
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -1043,7 +1046,7 @@ define('services/user-service',['exports', 'aurelia-framework', 'aurelia-fetch-c
 
     var _dec, _class;
 
-    var UserService = exports.UserService = (_dec = (0, _aureliaFramework.inject)(_aureliaApi.Config, _deviceHelper.DeviceHelper), _dec(_class = function () {
+    var UserService = exports.UserService = (_dec = (0, _aureliaFramework.inject)(_aureliaApi.Config, _deviceHelper.DeviceHelper, _aureliaRouter.Router, _aureliaNotification.Notification, _aureliaAuthentication.AuthService), _dec(_class = function () {
         function UserService(config, deviceHelper) {
             _classCallCheck(this, UserService);
 
@@ -1053,130 +1056,139 @@ define('services/user-service',['exports', 'aurelia-framework', 'aurelia-fetch-c
             this.deviceHelper = deviceHelper;
         }
 
-        UserService.prototype.signin = function signin(signinRequest) {
+        UserService.prototype.signin = function signin(request) {
             var _this = this;
 
-            this.isRequesting = true;
-            signinRequest.deviceRequest = this.deviceHelper.deviceRequest;
-            return this.userEndpoint.post('signin', signinRequest).then(function (response) {
-                _this.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    _this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+            this._pre(request);
+            return this.userEndpoint.post('signin', request).then(function (response) {
+                _this._post(response);
                 return response;
             });
         };
 
-        UserService.prototype.analyzeUser = function analyzeUser(analyzeUserRequest) {
+        UserService.prototype.analyzePreAuthUser = function analyzePreAuthUser(request) {
             var _this2 = this;
 
-            this.isRequesting = true;
-            analyzeUserRequest.deviceRequest = this.deviceHelper.deviceRequest;
-            return this.userEndpoint.post('analyzeuser', analyzeUserRequest).then(function (response) {
-                _this2.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    _this2.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+            this._pre(request);
+            return this.userEndpoint.post('analyzepreauthuser', request).then(function (response) {
+                _this2._post(response);
                 return response;
             });
         };
 
-        UserService.prototype.challengeUser = function challengeUser(challengeUserRequest) {
+        UserService.prototype.challengePreAuthUser = function challengePreAuthUser(request) {
             var _this3 = this;
 
-            this.isRequesting = true;
-            challengeUserRequest.deviceRequest = this.deviceHelper.deviceRequest;
-            return this.userEndpoint.post('challengeuser', challengeUserRequest).then(function (response) {
-                _this3.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    _this3.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+            this._pre(request);
+            return this.userEndpoint.post('challengepreauthuser', request).then(function (response) {
+                _this3._post(response);
                 return response;
             });
         };
 
-        UserService.prototype.authenticateUser = function authenticateUser(authenticateUserRequest) {
+        UserService.prototype.challengeUser = function challengeUser(request) {
             var _this4 = this;
 
-            this.isRequesting = true;
-            authenticateUserRequest.deviceRequest = this.deviceHelper.deviceRequest;
-            return this.userEndpoint.post('authenticateuser', authenticateUserRequest).then(function (response) {
-                _this4.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    _this4.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
-                return response;
+            this._pre(request);
+            return this.userEndpoint.post('challengeuser', request).then(function (response) {
+                _this4._post(response);
             });
         };
 
-        UserService.prototype.getUser = function getUser(getUserRequest) {
+        UserService.prototype.authenticatePreAuthUser = function authenticatePreAuthUser(request) {
             var _this5 = this;
 
-            this.isRequesting = true;
-            getUserRequest.deviceRequest = this.deviceHelper.deviceRequest;
-            return this.userEndpoint.post('getuser', getUserRequest).then(function (response) {
-                _this5.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    _this5.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+            this._pre(request);
+            return this.userEndpoint.post('authenticatepreauthuser', request).then(function (response) {
+                _this5._post(response);
                 return response;
             });
         };
 
-        UserService.prototype.addChallengeQuestionAnswers = function addChallengeQuestionAnswers(addChallengeQuestionAnswersRequest) {
+        UserService.prototype.authenticateUser = function authenticateUser(request) {
             var _this6 = this;
 
-            this.isRequesting = true;
-            addChallengeQuestionAnswersRequest.deviceRequest = this.deviceHelper.deviceRequest;
-            return this.userEndpoint.post('addchallengequestionanswers', addChallengeQuestionAnswersRequest).then(function (response) {
-                _this6.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    _this6.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+            this._pre(request);
+            return this.userEndpoint.post('authenticateuser', request).then(function (response) {
+                _this6._post(response);
                 return response;
             });
         };
 
-        UserService.prototype.verifyContactInfo = function verifyContactInfo(verifyContactInfoRequest) {
+        UserService.prototype.getPreAuthUser = function getPreAuthUser(request) {
             var _this7 = this;
 
-            this.isRequesting = true;
-            verifyContactInfoRequest.deviceRequest = this.deviceHelper.deviceRequest;
-            return this.userEndpoint.post('verifycontactinfo', verifyContactInfoRequest).then(function (response) {
-                _this7.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    _this7.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+            this._pre(request);
+            return this.userEndpoint.post('getpreauthuser', request).then(function (response) {
+                _this7._post(response);
                 return response;
             });
         };
 
-        UserService.prototype.removeContactInfo = function removeContactInfo(removeContactInfoRequest) {
+        UserService.prototype.getUser = function getUser(request) {
             var _this8 = this;
 
-            this.isRequesting = true;
-            removeContactInfoRequest.deviceRequest = this.deviceHelper.deviceRequest;
-            return this.userEndpoint.post('removecontactinfo', removeContactInfoRequest).then(function (response) {
-                _this8.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    _this8.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+            this._pre(request);
+            return this.userEndpoint.post('getuser', request).then(function (response) {
+                _this8._post(response);
                 return response;
             });
         };
 
-        UserService.prototype.resetPassword = function resetPassword(resetPasswordRequest) {
+        UserService.prototype.addChallengeQuestionAnswers = function addChallengeQuestionAnswers(request) {
             var _this9 = this;
 
-            this.isRequesting = true;
-            resetPasswordRequest.deviceRequest = this.deviceHelper.deviceRequest;
-            return this.userEndpoint.post('resetcredentials', resetPasswordRequest).then(function (response) {
-                _this9.isRequesting = false;
-                if (response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
-                    _this9.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
-                }
+            this._pre(request);
+            return this.userEndpoint.post('addchallengequestionanswers', request).then(function (response) {
+                _this9._post(response);
                 return response;
             });
+        };
+
+        UserService.prototype.verifyContactInfo = function verifyContactInfo(request) {
+            var _this10 = this;
+
+            this._pre(request);
+            return this.userEndpoint.post('verifycontactinfo', request).then(function (response) {
+                _this10._post(response);
+                return response;
+            });
+        };
+
+        UserService.prototype.removeContactInfo = function removeContactInfo(request) {
+            var _this11 = this;
+
+            this._pre(request);
+            return this.userEndpoint.post('removecontactinfo', request).then(function (response) {
+                _this11._post(response);
+                return response;
+            });
+        };
+
+        UserService.prototype.resetPassword = function resetPassword(request) {
+            var _this12 = this;
+
+            this._pre(request);
+            return this.userEndpoint.post('resetcredentials', request).then(function (response) {
+                _this12._post(response);
+                return response;
+            });
+        };
+
+        UserService.prototype._pre = function _pre(request) {
+            nprogress.start();
+            this.isRequesting = true;
+            if (request) {
+                request.deviceRequest = this.deviceHelper.deviceRequest;
+            }
+        };
+
+        UserService.prototype._post = function _post(response) {
+            if (response && response.deviceRequest && response.deviceRequest.deviceTokenCookie) {
+                this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
+            }
+            this.isRequesting = false;
+            nprogress.done();
         };
 
         return UserService;
@@ -1188,7 +1200,7 @@ define('util/common-models',['exports', 'lodash'], function (exports, _lodash) {
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.EnumeratedTypeHelper = exports.UserStatus = exports.ContactType = exports.CredentialType = exports.ActionCode = exports.EnrollmentStep = exports.AuthStatusCode = exports.Enum = exports.EnumSymbol = undefined;
+    exports.EnumeratedTypeHelper = exports.UserType = exports.UserStatus = exports.ContactType = exports.CredentialType = exports.ActionCode = exports.AuthStatusCode = exports.Enum = exports.EnumSymbol = undefined;
 
     var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -1333,40 +1345,39 @@ define('util/common-models',['exports', 'lodash'], function (exports, _lodash) {
         Challenge: { ordinal: 3, description: 'authStatusCode.challenge' }
     });
 
-    var EnrollmentStep = exports.EnrollmentStep = new Enum({
-        DISCLAIMER: { ordinal: 0, description: 'enrollmentStep.disclaimer' },
-        INTRO: { ordinal: 1, description: 'enrollmentStep.intro' },
-        QUESTIONS: { ordinal: 2, description: 'enrollmentStep.questions' },
-        PHONE: { ordinal: 3, description: 'enrollmentStep.phone' },
-        EMAIL: { ordinal: 4, description: 'enrollmentStep.email' },
-        SUMMARY: { ordinal: 5, description: 'enrollmentStep.summary' }
-    });
-
     var ActionCode = exports.ActionCode = new Enum({
         ALLOW: { ordinal: 0, description: 'actionCode.allow' },
-        CHALLENGE: { ordinal: 1, description: 'actionCode.challenge' },
-        NONE: { ordinal: 2, description: 'actionCode.none' },
-        REVIEW: { ordinal: 3, description: 'actionCode.review' }
+        DENY: { ordinal: 1, description: 'actionCode.deny' },
+        CHALLENGE: { ordinal: 2, description: 'actionCode.challenge' },
+        ENROLL: { ordinal: 3, description: 'actionCode.enroll' }
     });
 
     var CredentialType = exports.CredentialType = new Enum({
         PASSWORD: { ordinal: 0, description: 'credentialType.password' },
         QUESTIONS: { ordinal: 1, description: 'credentialType.questions' },
-        SMS: { ordinal: 2, description: 'credentialType.sms' },
+        PHONE: { ordinal: 2, description: 'credentialType.phone' },
         EMAIL: { ordinal: 3, description: 'credentialType.email' },
-        ONETIMETOKEN: { ordinal: 4, description: 'credentialType.oneTimeToken' }
+        RSATOKEN: { ordinal: 4, description: 'credentialType.rsaToken' }
     });
 
     var ContactType = exports.ContactType = new Enum({
-        PHONE: { ordinal: 0, description: 'contactType.Phone' },
-        EMAIL: { ordinal: 1, description: 'contactType.Email' }
+        PHONE: { ordinal: 0, description: 'contactType.phone' },
+        EMAIL: { ordinal: 1, description: 'contactType.email' }
     });
 
     var UserStatus = exports.UserStatus = new Enum({
-        ALLOW: { ordinal: 0, description: 'actionCode.allow' },
-        LOCKEDOUT: { ordinal: 1, description: 'actionCode.lockedOut' },
-        NONE: { ordinal: 2, description: 'actionCode.none' },
-        REVIEW: { ordinal: 3, description: 'actionCode.review' }
+        NOTENROLLED: { ordinal: 0, description: 'actionCode.notEnrolled' },
+        UNVERIFIED: { ordinal: 1, description: 'actionCode.unverified' },
+        VERIFIED: { ordinal: 2, description: 'actionCode.verified' },
+        DELETE: { ordinal: 3, description: 'actionCode.delete' },
+        LOCKOUT: { ordinal: 4, description: 'actionCode.lockout' },
+        UNLOCKOUT: { ordinal: 5, description: 'actionCode.unlockout' }
+    });
+
+    var UserType = exports.UserType = new Enum({
+        PERSISTENT: { ordinal: 0, description: 'actionCode.persistent' },
+        NONPERSISTENT: { ordinal: 1, description: 'actionCode.nonPersistent' },
+        BAIT: { ordinal: 2, description: 'actionCode.bait' }
     });
 
     var determineShiftedValues = function determineShiftedValues(total, highestValue) {
@@ -1790,57 +1801,6 @@ define('util/window-helper',["exports"], function (exports) {
         return WindowHelper;
     }();
 });
-define('components/enrollment-nav-bar/enrollment-nav-bar',['exports', 'aurelia-framework', 'aurelia-event-aggregator', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/logger-helper', 'resources/messages/enrollment-messages'], function (exports, _aureliaFramework, _aureliaEventAggregator, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loggerHelper, _enrollmentMessages) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.EnrollmentNavBar = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var EnrollmentNavBar = exports.EnrollmentNavBar = (_dec = (0, _aureliaFramework.inject)(_aureliaFramework.BindingEngine, _aureliaEventAggregator.EventAggregator, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService), _dec(_class = function () {
-        function EnrollmentNavBar(bindingEngine, eventAggregator, dialogService, notification, i18n, authService, userService) {
-            _classCallCheck(this, EnrollmentNavBar);
-
-            this.vm = {
-                user: {},
-                showNavBar: false
-            };
-
-            this.bindingEngine = bindingEngine;
-            this.eventAggregator = eventAggregator;
-            this.dialogService = dialogService;
-            this.notification = notification;
-            this.i18n = i18n;
-        }
-
-        EnrollmentNavBar.prototype.bind = function bind(bindingContext, overrideContext) {
-            this.vm = bindingContext.vm;
-        };
-
-        EnrollmentNavBar.prototype.goToChallengeQuestionAnswers = function goToChallengeQuestionAnswers(event) {
-            this.eventAggregator.publish(new _enrollmentMessages.GoToChallengeQuestionAnswers());
-        };
-
-        EnrollmentNavBar.prototype.goToPhoneInfos = function goToPhoneInfos(event) {
-            this.eventAggregator.publish(new _enrollmentMessages.GoToPhoneInfos());
-        };
-
-        EnrollmentNavBar.prototype.goToEmailInfos = function goToEmailInfos(event) {
-            this.eventAggregator.publish(new _enrollmentMessages.GoToEmailInfos());
-        };
-
-        return EnrollmentNavBar;
-    }()) || _class);
-});
 define('components/nav-bar/nav-bar',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'components/views/confirm-dialog/confirm-dialog', 'util/logger-helper'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _confirmDialog, _loggerHelper) {
     'use strict';
 
@@ -1940,8 +1900,8 @@ define('components/nav-bar/nav-bar',['exports', 'aurelia-framework', 'aurelia-ro
 
             var confirmDialogModel = this.i18n.tr('logout-dialog', { returnObjects: true });
 
-            this.dialogService.open({ viewModel: _confirmDialog.ConfirmDialog, model: confirmDialogModel }).then(function (response) {
-                if (!response.wasCancelled) {
+            this.dialogService.open({ viewModel: _confirmDialog.ConfirmDialog, model: confirmDialogModel, rejectOnCancel: false }).whenClosed(function (openDialogResult) {
+                if (!openDialogResult.wasCancelled) {
                     _this.router.navigateToRoute('logout');
                 }
             }).catch(function (reason) {
@@ -2155,16 +2115,8 @@ define('resources/messages/challenge-messages',["exports"], function (exports) {
         }
     }
 
-    var GoToChallenge = exports.GoToChallenge = function GoToChallenge(attributes) {
-        _classCallCheck(this, GoToChallenge);
-
-        if (attributes) {
-            Object.assign(this, attributes);
-        }
-    };
-
-    var GoToChallengeWithCredentials = exports.GoToChallengeWithCredentials = function GoToChallengeWithCredentials(attributes) {
-        _classCallCheck(this, GoToChallengeWithCredentials);
+    var ChallengeStart = exports.ChallengeStart = function ChallengeStart(attributes) {
+        _classCallCheck(this, ChallengeStart);
 
         if (attributes) {
             Object.assign(this, attributes);
@@ -2173,6 +2125,22 @@ define('resources/messages/challenge-messages',["exports"], function (exports) {
 
     var ChallengeCancel = exports.ChallengeCancel = function ChallengeCancel(attributes) {
         _classCallCheck(this, ChallengeCancel);
+
+        if (attributes) {
+            Object.assign(this, attributes);
+        }
+    };
+
+    var ChallengeReceived = exports.ChallengeReceived = function ChallengeReceived(attributes) {
+        _classCallCheck(this, ChallengeReceived);
+
+        if (attributes) {
+            Object.assign(this, attributes);
+        }
+    };
+
+    var ChallengeVerify = exports.ChallengeVerify = function ChallengeVerify(attributes) {
+        _classCallCheck(this, ChallengeVerify);
 
         if (attributes) {
             Object.assign(this, attributes);
@@ -2194,6 +2162,14 @@ define('resources/messages/challenge-messages',["exports"], function (exports) {
             Object.assign(this, attributes);
         }
     };
+
+    var ChallengeComplete = exports.ChallengeComplete = function ChallengeComplete(attributes) {
+        _classCallCheck(this, ChallengeComplete);
+
+        if (attributes) {
+            Object.assign(this, attributes);
+        }
+    };
 });
 define('resources/messages/enrollment-messages',["exports"], function (exports) {
     "use strict";
@@ -2208,80 +2184,77 @@ define('resources/messages/enrollment-messages',["exports"], function (exports) 
         }
     }
 
-    var GoToEnrollmentDisclaimer = exports.GoToEnrollmentDisclaimer = function GoToEnrollmentDisclaimer(attributes) {
-        _classCallCheck(this, GoToEnrollmentDisclaimer);
+    var EnrollmentDisclaimerConfirmed = exports.EnrollmentDisclaimerConfirmed = function EnrollmentDisclaimerConfirmed(attributes) {
+        _classCallCheck(this, EnrollmentDisclaimerConfirmed);
 
         if (attributes) {
             Object.assign(this, attributes);
         }
     };
 
-    var GoToEnrollmentIntro = exports.GoToEnrollmentIntro = function GoToEnrollmentIntro(attributes) {
-        _classCallCheck(this, GoToEnrollmentIntro);
+    var EnrollmentStart = exports.EnrollmentStart = function EnrollmentStart(attributes) {
+        _classCallCheck(this, EnrollmentStart);
 
         if (attributes) {
             Object.assign(this, attributes);
         }
     };
 
-    var GoToChallengeQuestionAnswers = exports.GoToChallengeQuestionAnswers = function GoToChallengeQuestionAnswers(attributes) {
-        _classCallCheck(this, GoToChallengeQuestionAnswers);
+    var EnrollChallengeQuestionAnswersComplete = exports.EnrollChallengeQuestionAnswersComplete = function EnrollChallengeQuestionAnswersComplete(attributes) {
+        _classCallCheck(this, EnrollChallengeQuestionAnswersComplete);
 
         if (attributes) {
             Object.assign(this, attributes);
         }
     };
 
-    var ChallengeQuestionAnswersDone = exports.ChallengeQuestionAnswersDone = function ChallengeQuestionAnswersDone(attributes) {
-        _classCallCheck(this, ChallengeQuestionAnswersDone);
+    var EnrollPhoneInfosComplete = exports.EnrollPhoneInfosComplete = function EnrollPhoneInfosComplete(attributes) {
+        _classCallCheck(this, EnrollPhoneInfosComplete);
 
         if (attributes) {
             Object.assign(this, attributes);
         }
     };
 
-    var GoToPhoneInfos = exports.GoToPhoneInfos = function GoToPhoneInfos(attributes) {
-        _classCallCheck(this, GoToPhoneInfos);
+    var EnrollEmailInfosComplete = exports.EnrollEmailInfosComplete = function EnrollEmailInfosComplete(attributes) {
+        _classCallCheck(this, EnrollEmailInfosComplete);
 
         if (attributes) {
             Object.assign(this, attributes);
         }
     };
 
-    var PhoneInfosDone = exports.PhoneInfosDone = function PhoneInfosDone(attributes) {
-        _classCallCheck(this, PhoneInfosDone);
+    var EnrollCredentialsComplete = exports.EnrollCredentialsComplete = function EnrollCredentialsComplete(attributes) {
+        _classCallCheck(this, EnrollCredentialsComplete);
 
         if (attributes) {
             Object.assign(this, attributes);
         }
     };
 
-    var GoToEmailInfos = exports.GoToEmailInfos = function GoToEmailInfos(attributes) {
-        _classCallCheck(this, GoToEmailInfos);
+    var EnrollmentComplete = exports.EnrollmentComplete = function EnrollmentComplete(attributes) {
+        _classCallCheck(this, EnrollmentComplete);
 
         if (attributes) {
             Object.assign(this, attributes);
         }
     };
+});
+define('resources/messages/event-messages',["exports"], function (exports) {
+    "use strict";
 
-    var EmailInfosDone = exports.EmailInfosDone = function EmailInfosDone(attributes) {
-        _classCallCheck(this, EmailInfosDone);
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
 
-        if (attributes) {
-            Object.assign(this, attributes);
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
         }
-    };
+    }
 
-    var GoToEnrollmentSummary = exports.GoToEnrollmentSummary = function GoToEnrollmentSummary(attributes) {
-        _classCallCheck(this, GoToEnrollmentSummary);
-
-        if (attributes) {
-            Object.assign(this, attributes);
-        }
-    };
-
-    var EnrollmentDone = exports.EnrollmentDone = function EnrollmentDone(attributes) {
-        _classCallCheck(this, EnrollmentDone);
+    var RequiredCredentialTypeChanged = exports.RequiredCredentialTypeChanged = function RequiredCredentialTypeChanged(attributes) {
+        _classCallCheck(this, RequiredCredentialTypeChanged);
 
         if (attributes) {
             Object.assign(this, attributes);
@@ -2309,6 +2282,14 @@ define('resources/messages/login-messages',["exports"], function (exports) {
         }
     };
 
+    var GoToLogout = exports.GoToLogout = function GoToLogout(attributes) {
+        _classCallCheck(this, GoToLogout);
+
+        if (attributes) {
+            Object.assign(this, attributes);
+        }
+    };
+
     var SigninSuccess = exports.SigninSuccess = function SigninSuccess(attributes) {
         _classCallCheck(this, SigninSuccess);
 
@@ -2317,8 +2298,16 @@ define('resources/messages/login-messages',["exports"], function (exports) {
         }
     };
 
-    var GoToChallenge = exports.GoToChallenge = function GoToChallenge(attributes) {
-        _classCallCheck(this, GoToChallenge);
+    var ChallengeWithCredentials = exports.ChallengeWithCredentials = function ChallengeWithCredentials(attributes) {
+        _classCallCheck(this, ChallengeWithCredentials);
+
+        if (attributes) {
+            Object.assign(this, attributes);
+        }
+    };
+
+    var AuthenticateUserFail = exports.AuthenticateUserFail = function AuthenticateUserFail(attributes) {
+        _classCallCheck(this, AuthenticateUserFail);
 
         if (attributes) {
             Object.assign(this, attributes);
@@ -2541,6 +2530,563 @@ define('resources/value-converters/timer-formatter',['exports', 'numbro'], funct
         return TimerFormatterValueConverter;
     }();
 });
+define('components/views/challenge-with-challenge-questions/challenge-with-challenge-questions',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/logger-helper', 'resources/messages/challenge-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loggerHelper, _challengeMessages, _lodash) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.ChallengeWithChallengeQuestions = undefined;
+
+    var _lodash2 = _interopRequireDefault(_lodash);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var ChallengeWithChallengeQuestions = exports.ChallengeWithChallengeQuestions = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaValidation.ValidationControllerFactory, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService), _dec(_class = function () {
+        function ChallengeWithChallengeQuestions(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
+            _classCallCheck(this, ChallengeWithChallengeQuestions);
+
+            this.router = router;
+            this.eventAggregator = eventAggregator;
+            this.controller = controllerFactory.createForCurrentScope();
+            this.dialogService = dialogService;
+            this.notification = notification;
+            this.i18n = i18n;
+            this.authService = authService;
+            this.userService = userService;
+        }
+
+        ChallengeWithChallengeQuestions.prototype.activate = function activate(viewModel) {
+            var _this = this;
+
+            return new Promise(function (resolve) {
+                _this.vm = viewModel;
+                resolve();
+            });
+        };
+
+        ChallengeWithChallengeQuestions.prototype.applyValidationRules = function applyValidationRules() {
+            for (var i = 0; i < this.vm.user.challengeQuestions.length; i++) {
+                var challengeQuestion = this.vm.user.challengeQuestions[i];
+                _aureliaValidation.ValidationRules.ensure('userAnswerText').required().on(challengeQuestion);
+            }
+        };
+
+        ChallengeWithChallengeQuestions.prototype.onSelectedAvailableChallengeQuestionAnswerChanged = function onSelectedAvailableChallengeQuestionAnswerChanged(event, bindingContext, selectedAvailableChallengeQuestion) {
+            this.vm.user.updateAvailableChallengeQuestions(bindingContext.challengeQuestion, selectedAvailableChallengeQuestion);
+        };
+
+        ChallengeWithChallengeQuestions.prototype.cancel = function cancel(event) {
+            var _this2 = this;
+
+            return new Promise(function (resolve) {
+                _this2.eventAggregator.publish(new _challengeMessages.ChallengeCancel());
+                resolve();
+            });
+        };
+
+        ChallengeWithChallengeQuestions.prototype._getCredentials = function _getCredentials() {
+            var credentials = '';
+            for (var _iterator = this.vm.user.challengeQuestions, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+                var _ref;
+
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+
+                var challengeQuestion = _ref;
+
+                if (challengeQuestion.userAnswerText !== null || challengeQuestion.userAnswerText.length >= 0) {
+                    credentials = credentials + challengeQuestion.selectedAvailableChallengeQuestion.challengeQuestionId + '|' + challengeQuestion.userAnswerText + ',';
+                }
+            }
+            credentials = _lodash2.default.trimEnd(credentials, ',');
+            return credentials;
+        };
+
+        ChallengeWithChallengeQuestions.prototype.next = function next() {
+            var _this3 = this;
+
+            return new Promise(function (resolve, reject) {
+                _this3.controller.validate().then(function (result) {
+                    if (result.valid) {
+                        var credentials = _this3._getCredentials();
+                        var message = {
+                            credentialType: 'Questions',
+                            credentials: credentials
+                        };
+                        _this3.eventAggregator.publish(new _challengeMessages.ChallengeVerify(message));
+                    }
+                    resolve();
+                }).catch(function (validateReason) {
+                    _loggerHelper.logger.error(validateReason);
+                    _this3.notification.error('challenge_error');
+                    reject(validateReason);
+                });
+            });
+        };
+
+        return ChallengeWithChallengeQuestions;
+    }()) || _class);
+});
+define('components/views/challenge-with-email-info/challenge-with-email-info',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'components/views/verify-email-info-dialog/verify-email-info-dialog', 'resources/messages/challenge-messages', 'util/logger-helper', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _verifyEmailInfoDialog, _challengeMessages, _loggerHelper, _lodash) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.ChallengeWithEmailInfo = undefined;
+
+    var _lodash2 = _interopRequireDefault(_lodash);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var ChallengeWithEmailInfo = exports.ChallengeWithEmailInfo = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaValidation.ValidationControllerFactory, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService), _dec(_class = function () {
+        function ChallengeWithEmailInfo(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
+            _classCallCheck(this, ChallengeWithEmailInfo);
+
+            this.router = router;
+            this.eventAggregator = eventAggregator;
+            this.controller = controllerFactory.createForCurrentScope();
+            this.controller.validateTrigger = _aureliaValidation.validateTrigger.manual;
+            this.dialogService = dialogService;
+            this.notification = notification;
+            this.i18n = i18n;
+            this.authService = authService;
+            this.userService = userService;
+        }
+
+        ChallengeWithEmailInfo.prototype.activate = function activate(viewModel) {
+            var _this = this;
+
+            return new Promise(function (resolve, reject) {
+                _this.vm = viewModel;
+                var request = {
+                    userId: _this.vm.user.userId,
+                    token: _this.vm.user.token
+                };
+                _this.userService.getPreAuthUser(request).then(function (response) {
+                    _this.vm.user.fromJson(response);
+                    resolve();
+                }).catch(function (reason) {
+                    _loggerHelper.logger.error(reason);
+                    _this.notification.error('get-user_error');
+                    reject(reason);
+                });
+            });
+        };
+
+        ChallengeWithEmailInfo.prototype.cancel = function cancel(message) {
+            this.eventAggregator.publish(new _challengeMessages.ChallengeCancel());
+        };
+
+        ChallengeWithEmailInfo.prototype.challengeUser = function challengeUser(event) {
+            var _this2 = this;
+
+            return new Promise(function (resolve, reject) {
+                _this2.controller.validate().then(function (result) {
+                    if (result.valid) {
+                        var request = {
+                            userId: _this2.vm.user.userId,
+                            credentialType: 'Email',
+                            contactInfo: _this2.vm.emailAddress,
+                            label: _this2.vm.emailAddress,
+                            isDefault: true
+                        };
+                        _this2.userService.challengeUser(request).then(function (response) {
+                            _this2.vm.user.sessionId = response.sessionId;
+                            _this2.vm.user.transactionId = response.transactionId;
+                            if (response.challengeStatus !== 'Deny') {
+                                _this2.goToVerifyEmailInfo(response);
+                            } else {
+                                _this2.notification.error('challenge-user-deny_error');
+                            }
+                            resolve();
+                        }).catch(function (reason) {
+                            _loggerHelper.logger.error(reason);
+                            _this2.notification.error('challenge-user_error');
+                            reject(reason);
+                        });
+                    } else {
+                        resolve();
+                    }
+                }).catch(function (validateReason) {
+                    _loggerHelper.logger.error(validateReason);
+                    reject(validateReason);
+                });
+            });
+        };
+
+        ChallengeWithEmailInfo.prototype.goToVerifyEmailInfo = function goToVerifyEmailInfo(message) {
+            var _this3 = this;
+
+            var verifyEmailInfoModel = {
+                user: {
+                    userId: this.vm.user.userId,
+                    sessionId: this.vm.user.sessionId,
+                    transactionId: this.vm.user.transactionId
+                },
+                verificationCode: '',
+                verificationCodeHasFocus: true
+            };
+            verifyEmailInfoModel.messageParams = {
+                'emailAddress': this.vm.emailAddress
+            };
+            return this.dialogService.open({ viewModel: _verifyEmailInfoDialog.VerifyEmailInfoDialog, model: verifyEmailInfoModel, rejectOnCancel: false }).whenClosed(function (openDialogResult) {
+                if (openDialogResult.wasCancelled) {
+                    if (openDialogResult.output && openDialogResult.output.resendCode) {
+                        _this3.notification.info('verify-email-info_resend');
+                        _this3.challengeUser();
+                    } else {
+                        _this3.notification.info('verify-email-info_canceled');
+                    }
+                } else {
+                    _this3.onChallengeSuccess(openDialogResult.output);
+                }
+            }).catch(function (reason) {
+                _loggerHelper.logger.error(reason);
+                _this3.notification.info('verify-email-info_error');
+            });
+        };
+
+        ChallengeWithEmailInfo.prototype.onChallengeSuccess = function onChallengeSuccess(message) {
+            this.eventAggregator.publish(new _challengeMessages.ChallengeSuccess(message));
+        };
+
+        ChallengeWithEmailInfo.prototype.onChallengeFail = function onChallengeFail(message) {
+            this.eventAggregator.publish(new _challengeMessages.ChallengeFail(message));
+        };
+
+        return ChallengeWithEmailInfo;
+    }()) || _class);
+});
+define('components/views/challenge-with-phone-info/challenge-with-phone-info',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'components/views/verify-phone-info-dialog/verify-phone-info-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/logger-helper', 'resources/messages/challenge-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _verifyPhoneInfoDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loggerHelper, _challengeMessages, _lodash) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.ChallengeWithPhoneInfo = undefined;
+
+    var _lodash2 = _interopRequireDefault(_lodash);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var ChallengeWithPhoneInfo = exports.ChallengeWithPhoneInfo = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaValidation.ValidationControllerFactory, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService), _dec(_class = function () {
+        function ChallengeWithPhoneInfo(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
+            _classCallCheck(this, ChallengeWithPhoneInfo);
+
+            this.subscribers = [];
+
+            this.router = router;
+            this.eventAggregator = eventAggregator;
+            this.controller = controllerFactory.createForCurrentScope();
+            this.dialogService = dialogService;
+            this.notification = notification;
+            this.i18n = i18n;
+            this.authService = authService;
+            this.userService = userService;
+        }
+
+        ChallengeWithPhoneInfo.prototype.activate = function activate(viewModel) {
+            var _this = this;
+
+            return new Promise(function (resolve) {
+                _this.vm = viewModel;
+                _this.vm.selectedSmsInfo = null;
+                _this.applyValidationRules();
+                resolve();
+            });
+        };
+
+        ChallengeWithPhoneInfo.prototype.attached = function attached() {
+            var _this2 = this;
+
+            this.subscribers.push(this.eventAggregator.subscribe(_challengeMessages.ChallengeReceived, function (message) {
+                return _this2.onChallengeReceived(message);
+            }));
+        };
+
+        ChallengeWithPhoneInfo.prototype.detached = function detached() {
+            _lodash2.default.each(this.subscribers, function (subscriber) {
+                if (subscriber && subscriber.dispose) {
+                    subscriber.dispose();
+                }
+            });
+        };
+
+        ChallengeWithPhoneInfo.prototype.applyValidationRules = function applyValidationRules() {
+            _aureliaValidation.ValidationRules.ensure('selectedSmsInfo').required().on(this.vm);
+        };
+
+        ChallengeWithPhoneInfo.prototype.cancel = function cancel(event) {
+            var _this3 = this;
+
+            return new Promise(function (resolve) {
+                _this3.eventAggregator.publish(new _challengeMessages.ChallengeCancel());
+                resolve();
+            });
+        };
+
+        ChallengeWithPhoneInfo.prototype.next = function next(event) {
+            var _this4 = this;
+
+            return new Promise(function (resolve, reject) {
+                _this4.controller.validate().then(function (result) {
+                    if (result.valid) {
+                        var message = {
+                            credentialType: 'Phone',
+                            label: _this4.vm.selectedSmsInfo.label
+                        };
+                        _this4.eventAggregator.publish(new _challengeMessages.ChallengeStart(message));
+                    }
+                    resolve();
+                }).catch(function (validateReason) {
+                    _loggerHelper.logger.error(validateReason);
+                    _this4.notification.error('challenge_error');
+                    reject(validateReason);
+                });
+            });
+        };
+
+        ChallengeWithPhoneInfo.prototype.onChallengeReceived = function onChallengeReceived(message) {
+            var _this5 = this;
+
+            var verifyPhoneInfoModel = {
+                user: {
+                    userId: this.vm.user.userId,
+                    sessionId: this.vm.user.sessionId,
+                    transactionId: this.vm.user.transactionId,
+                    access_token: this.vm.user.access_token
+                },
+                verificationCode: '',
+                verificationCodeHasFocus: true
+            };
+            verifyPhoneInfoModel.messageParams = {
+                'phoneNumber': this.vm.selectedSmsInfo.phoneNumber
+            };
+            return this.dialogService.open({
+                viewModel: _verifyPhoneInfoDialog.VerifyPhoneInfoDialog,
+                model: verifyPhoneInfoModel,
+                rejectOnCancel: false
+            }).whenClosed(function (openDialogResult) {
+                if (openDialogResult.wasCancelled) {
+                    if (openDialogResult.output && openDialogResult.output.resendCode) {
+                        _this5.notification.info('verify-phone-info_resend');
+                        _this5.next();
+                    } else {
+                        _this5.notification.info('verify-phone-info_canceled');
+                    }
+                }
+            }).catch(function (reason) {
+                _loggerHelper.logger.error(reason);
+                _this5.notification.info('verify-phone-info_error');
+            });
+        };
+
+        return ChallengeWithPhoneInfo;
+    }()) || _class);
+});
+define('components/views/challenge-with-rsa-token/challenge-with-rsa-token',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/logger-helper', 'resources/messages/challenge-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loggerHelper, _challengeMessages, _lodash) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.ChallengeWithRSAToken = undefined;
+
+    var _lodash2 = _interopRequireDefault(_lodash);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var ChallengeWithRSAToken = exports.ChallengeWithRSAToken = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaValidation.ValidationControllerFactory, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService), _dec(_class = function () {
+        function ChallengeWithRSAToken(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
+            _classCallCheck(this, ChallengeWithRSAToken);
+
+            this.router = router;
+            this.eventAggregator = eventAggregator;
+            this.controller = controllerFactory.createForCurrentScope();
+            this.dialogService = dialogService;
+            this.notification = notification;
+            this.i18n = i18n;
+            this.authService = authService;
+            this.userService = userService;
+        }
+
+        ChallengeWithRSAToken.prototype.activate = function activate(viewModel) {
+            var _this = this;
+
+            return new Promise(function (resolve, reject) {
+                _this.vm = viewModel;
+                var request = {
+                    userId: _this.vm.user.userId,
+                    credentialType: 'Questions',
+                    authToken: _this.vm.authToken
+                };
+                _this.userService.challengeUser(request).then(function (response) {
+                    if (response.challengeStatus !== 'Deny') {
+                        _this.vm.user.fromJson(response);
+                        _this.applyValidationRules();
+                    } else {
+                        _this.notification.error('challenge-user_error');
+                    }
+                    resolve();
+                }).catch(function (reason) {
+                    _loggerHelper.logger.error(reason);
+                    _this.notification.error('challenge-user_error');
+                    reject(reason);
+                });
+            });
+        };
+
+        ChallengeWithRSAToken.prototype.applyValidationRules = function applyValidationRules() {
+            for (var i = 0; i < this.vm.user.challengeQuestions.length; i++) {
+                var challengeQuestion = this.vm.user.challengeQuestions[i];
+                _aureliaValidation.ValidationRules.ensure('userAnswerText').required().on(challengeQuestion);
+            }
+        };
+
+        ChallengeWithRSAToken.prototype.onSelectedAvailableChallengeQuestionAnswerChanged = function onSelectedAvailableChallengeQuestionAnswerChanged(event, bindingContext, selectedAvailableChallengeQuestion) {
+            this.vm.user.updateAvailableChallengeQuestions(bindingContext.challengeQuestion, selectedAvailableChallengeQuestion);
+        };
+
+        ChallengeWithRSAToken.prototype.cancel = function cancel(event) {
+            var _this2 = this;
+
+            return new Promise(function (resolve) {
+                _this2.eventAggregator.publish(new _challengeMessages.ChallengeCancel());
+                resolve();
+            });
+        };
+
+        ChallengeWithRSAToken.prototype._getCredentials = function _getCredentials() {
+            var credentials = '';
+            for (var _iterator = this.vm.user.challengeQuestions, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+                var _ref;
+
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+
+                var challengeQuestion = _ref;
+
+                if (challengeQuestion.userAnswerText !== null || challengeQuestion.userAnswerText.length >= 0) {
+                    credentials = credentials + challengeQuestion.selectedAvailableChallengeQuestion.challengeQuestionId + '|' + challengeQuestion.userAnswerText + ',';
+                }
+            }
+            credentials = _lodash2.default.trimEnd(credentials, ',');
+            return credentials;
+        };
+
+        ChallengeWithRSAToken.prototype.next = function next() {
+            var _this3 = this;
+
+            return new Promise(function (resolve, reject) {
+                _this3.controller.validate().then(function (controllerValidateResult) {
+                    if (controllerValidateResult.valid) {
+                        var credentials = _this3._getCredentials();
+                        var request = {
+                            sessionId: _this3.vm.user.sessionId,
+                            transactionId: _this3.vm.user.transactionId,
+                            userId: _this3.vm.user.userId,
+                            authToken: _this3.vm.user.authToken,
+                            credentialType: 'Questions',
+                            credentials: credentials,
+                            bindDevice: _this3.vm.bindDevice
+                        };
+                        _this3.userService.authenticateUser(request).then(function (response) {
+                            if (response.authStatusCode !== 'Deny') {
+                                _this3.onChallengeSuccess(response);
+                            } else {
+                                _this3.notification.error('challenge_error');
+                                _this3.onChallengeFail(response);
+                            }
+                            resolve();
+                        }).catch(function (reason) {
+                            _loggerHelper.logger.error(reason);
+                            _this3.notification.error('challenge_error');
+                            reject(reason);
+                        });
+                    } else {
+                        resolve();
+                    }
+                }).catch(function (validateReason) {
+                    _loggerHelper.logger.error(validateReason);
+                    _this3.notification.error('challenge_error');
+                    reject(validateReason);
+                });
+            });
+        };
+
+        ChallengeWithRSAToken.prototype.onChallengeSuccess = function onChallengeSuccess(message) {
+            this.eventAggregator.publish(new _challengeMessages.ChallengeSuccess(message));
+        };
+
+        ChallengeWithRSAToken.prototype.onChallengeFail = function onChallengeFail(message) {
+            this.eventAggregator.publish(new _challengeMessages.ChallengeFail(message));
+        };
+
+        return ChallengeWithRSAToken;
+    }()) || _class);
+});
 define('components/views/change-password/change-password',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'models/user', 'util/logger-helper'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _user, _loggerHelper) {
     'use strict';
 
@@ -2590,18 +3136,6 @@ define('components/views/change-password/change-password',['exports', 'aurelia-f
                 _loggerHelper.logger.error(reason);
                 _this.notification.error('get-user_error');
             });
-        };
-
-        ChangePassword.prototype.goToChangePassword = function goToChangePassword(event) {
-            this.router.navigateToRoute('change-password');
-        };
-
-        ChangePassword.prototype.goToEditProfile = function goToEditProfile(event) {
-            this.router.navigateToRoute('edit-profile');
-        };
-
-        ChangePassword.prototype.goToUnlockAccount = function goToUnlockAccount(event) {
-            this.router.navigateToRoute('unlock-account');
         };
 
         return ChangePassword;
@@ -2659,13 +3193,13 @@ define('components/views/confirm-dialog/confirm-dialog',['exports', 'aurelia-fra
         return ConfirmDialog;
     }()) || _class);
 });
-define('components/views/enrollment/enroll-challenge-question-answers',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/logger-helper', 'resources/messages/enrollment-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loggerHelper, _enrollmentMessages, _lodash) {
+define('components/views/edit-credentials/edit-credentials',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/logger-helper', 'util/common-models', 'resources/messages/enrollment-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loggerHelper, _commonModels, _enrollmentMessages, _lodash) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.EnrollChallengeQuestionAnswers = undefined;
+    exports.EditCredentials = undefined;
 
     var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -2683,15 +3217,100 @@ define('components/views/enrollment/enroll-challenge-question-answers',['exports
 
     var _dec, _class;
 
+    var EditCredentials = exports.EditCredentials = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService), _dec(_class = function () {
+        function EditCredentials(router, eventAggregator, dialogService, notification, i18n, authService, userService) {
+            _classCallCheck(this, EditCredentials);
+
+            this.subscribers = [];
+
+            this.router = router;
+            this.eventAggregator = eventAggregator;
+            this.dialogService = dialogService;
+            this.notification = notification;
+            this.i18n = i18n;
+            this.authService = authService;
+            this.userService = userService;
+        }
+
+        EditCredentials.prototype.activate = function activate(viewModel) {
+            var _this = this;
+
+            return new Promise(function (resolve) {
+                _this.vm = viewModel;
+                _this.vm.credentialType = _commonModels.CredentialType.QUESTIONS;
+
+                resolve();
+            });
+        };
+
+        EditCredentials.prototype.attached = function attached() {
+            var _this2 = this;
+
+            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EnrollChallengeQuestionAnswersComplete, function (message) {
+                return _this2.onEnrollChallengeQuestionAnswersComplete(message);
+            }));
+            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EnrollPhoneInfosComplete, function (message) {
+                return _this2.onEnrollPhoneInfosComplete(message);
+            }));
+            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EnrollEmailInfosComplete, function (message) {
+                return _this2.onEnrollEmailInfosComplete(message);
+            }));
+        };
+
+        EditCredentials.prototype.detached = function detached() {
+            _lodash2.default.each(this.subscribers, function (subscriber) {
+                if (subscriber && subscriber.dispose) {
+                    subscriber.dispose();
+                }
+            });
+        };
+
+        EditCredentials.prototype.onGoToEnrollChallengeQuestionAnswers = function onGoToEnrollChallengeQuestionAnswers(event) {
+            this.editCredentialsViewModel = 'components/views/enroll-challenge-question-answers/enroll-challenge-question-answers';
+        };
+
+        EditCredentials.prototype.onEnrollChallengeQuestionAnswersComplete = function onEnrollChallengeQuestionAnswersComplete(message) {
+            this.editCredentialsViewModel = null;
+        };
+
+        EditCredentials.prototype.onGoToEnrollPhoneInfos = function onGoToEnrollPhoneInfos(event) {
+            this.editCredentialsViewModel = 'components/views/enroll-phone-infos/enroll-phone-infos';
+        };
+
+        EditCredentials.prototype.onEnrollPhoneInfosComplete = function onEnrollPhoneInfosComplete(message) {
+            this.editCredentialsViewModel = null;
+        };
+
+        EditCredentials.prototype.onGoToEnrollEmailInfos = function onGoToEnrollEmailInfos(event) {
+            this.editCredentialsViewModel = 'components/views/enroll-email-infos/enroll-email-infos';
+        };
+
+        EditCredentials.prototype.onEnrollEmailInfosComplete = function onEnrollEmailInfosComplete(message) {
+            this.editCredentialsViewModel = null;
+        };
+
+        return EditCredentials;
+    }()) || _class);
+});
+define('components/views/enroll-challenge-question-answers/enroll-challenge-question-answers',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/logger-helper', 'resources/messages/enrollment-messages'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loggerHelper, _enrollmentMessages) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.EnrollChallengeQuestionAnswers = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
     var EnrollChallengeQuestionAnswers = exports.EnrollChallengeQuestionAnswers = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaValidation.ValidationControllerFactory, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService), _dec(_class = function () {
         function EnrollChallengeQuestionAnswers(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
             _classCallCheck(this, EnrollChallengeQuestionAnswers);
-
-            this.vm = {
-                user: {
-                    challengeQuestions: [{}, {}, {}, {}, {}]
-                }
-            };
 
             this.router = router;
             this.eventAggregator = eventAggregator;
@@ -2707,7 +3326,7 @@ define('components/views/enrollment/enroll-challenge-question-answers',['exports
             var _this = this;
 
             return new Promise(function (resolve) {
-                _this.vm.user = viewModel.user;
+                _this.vm = viewModel;
                 _this.applyValidationRules();
                 resolve();
             });
@@ -2724,42 +3343,32 @@ define('components/views/enrollment/enroll-challenge-question-answers',['exports
             this.vm.user.updateAvailableChallengeQuestions(bindingContext.challengeQuestion, selectedAvailableChallengeQuestion);
         };
 
-        EnrollChallengeQuestionAnswers.prototype.cancel = function cancel(event) {
+        EnrollChallengeQuestionAnswers.prototype.save = function save(event) {
             var _this2 = this;
 
-            return new Promise(function (resolve) {
-                _this2.eventAggregator.publish(new _enrollmentMessages.GoToEnrollmentIntro());
-                resolve();
-            });
-        };
-
-        EnrollChallengeQuestionAnswers.prototype.next = function next(event) {
-            var _this3 = this;
-
             return new Promise(function (resolve, reject) {
-                _this3.controller.validate().then(function (controllerValidateResult) {
+                _this2.controller.validate().then(function (controllerValidateResult) {
                     if (controllerValidateResult.valid) {
-                        var challengeQuestionAnswers = _this3.vm.user.getChallengeQuestionAnswers();
+                        var challengeQuestionAnswers = _this2.vm.user.getChallengeQuestionAnswers();
                         var request = {
-                            sessionId: _this3.vm.user.sessionId,
-                            transactionId: _this3.vm.user.transactionId,
-                            userId: _this3.vm.user.userId,
+                            sessionId: _this2.vm.user.sessionId,
+                            transactionId: _this2.vm.user.transactionId,
+                            userId: _this2.vm.user.userId,
                             challengeQuestionAnswers: challengeQuestionAnswers
                         };
-                        _this3.userService.addChallengeQuestionAnswers(request).then(function (response) {
-                            _this3.onAddChallengeQuestionAnswersSuccess();
-                            _this3.notification.success('add-challenge-question-answers_success');
-                            _this3.eventAggregator.publish(new _enrollmentMessages.EnrollChallengeQuestionAnswersDone());
+                        _this2.userService.addChallengeQuestionAnswers(request).then(function (response) {
+                            _this2.notification.success('add-challenge-question-answers_success');
+                            _this2.eventAggregator.publish(new _enrollmentMessages.EnrollChallengeQuestionAnswersComplete());
                             resolve();
                         }).catch(function (reason) {
                             _loggerHelper.logger.error(reason);
-                            _this3.notification.error('add-challenge-question-answers_error');
+                            _this2.notification.error('add-challenge-question-answers_error');
                             reject(reason);
                         });
                     } else {
                         var validateError = new Error('validate_error');
                         _loggerHelper.logger.error(validateError);
-                        _this3.notification.error('validate_error');
+                        _this2.notification.error('validate_error');
                         reject(validateError);
                     }
                 }).catch(function (exception) {
@@ -2769,26 +3378,10 @@ define('components/views/enrollment/enroll-challenge-question-answers',['exports
             });
         };
 
-        EnrollChallengeQuestionAnswers.prototype.onAddChallengeQuestionAnswersSuccess = function onAddChallengeQuestionAnswersSuccess(message) {
-            var _this4 = this;
-
-            var request = {
-                sessionId: this.vm.user.sessionId,
-                transactionId: this.vm.user.transactionId,
-                userId: this.vm.user.userId
-            };
-            return this.userService.getUser(request).then(function (response) {
-                _loggerHelper.logger.error('get-user_success');
-            }).catch(function (reason) {
-                _loggerHelper.logger.error(reason);
-                _this4.notification.error('get-user_error');
-            });
-        };
-
         return EnrollChallengeQuestionAnswers;
     }()) || _class);
 });
-define('components/views/enrollment/enroll-email-infos',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/window-helper', 'components/views/confirm-dialog/confirm-dialog', 'components/views/verify-email-info-dialog/verify-email-info-dialog', 'resources/messages/enrollment-messages', 'util/logger-helper', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _windowHelper, _confirmDialog, _verifyEmailInfoDialog, _enrollmentMessages, _loggerHelper, _lodash) {
+define('components/views/enroll-email-infos/enroll-email-infos',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/window-helper', 'components/views/confirm-dialog/confirm-dialog', 'components/views/verify-email-info-dialog/verify-email-info-dialog', 'resources/messages/enrollment-messages', 'util/logger-helper', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _windowHelper, _confirmDialog, _verifyEmailInfoDialog, _enrollmentMessages, _loggerHelper, _lodash) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -2810,43 +3403,16 @@ define('components/views/enrollment/enroll-email-infos',['exports', 'aurelia-fra
         }
     }
 
-    var _createClass = function () {
-        function defineProperties(target, props) {
-            for (var i = 0; i < props.length; i++) {
-                var descriptor = props[i];
-                descriptor.enumerable = descriptor.enumerable || false;
-                descriptor.configurable = true;
-                if ("value" in descriptor) descriptor.writable = true;
-                Object.defineProperty(target, descriptor.key, descriptor);
-            }
-        }
-
-        return function (Constructor, protoProps, staticProps) {
-            if (protoProps) defineProperties(Constructor.prototype, protoProps);
-            if (staticProps) defineProperties(Constructor, staticProps);
-            return Constructor;
-        };
-    }();
-
     var _dec, _class;
 
     var EnrollEmailInfos = exports.EnrollEmailInfos = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaValidation.ValidationControllerFactory, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService, _windowHelper.WindowHelper), _dec(_class = function () {
         function EnrollEmailInfos(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService, windowHelper) {
             _classCallCheck(this, EnrollEmailInfos);
 
-            this.vm = {
-                user: {
-                    emailInfos: []
-                },
-                showEnrollEmailInfoWarning: true,
-                emailAddress: '',
-                emailAddressHasFocus: true,
-                showAddEmailInfoForm: true
-            };
-
             this.router = router;
             this.eventAggregator = eventAggregator;
             this.controller = controllerFactory.createForCurrentScope();
+            this.controller.validateTrigger = _aureliaValidation.validateTrigger.manual;
             this.dialogService = dialogService;
             this.notification = notification;
             this.i18n = i18n;
@@ -2861,7 +3427,11 @@ define('components/views/enrollment/enroll-email-infos',['exports', 'aurelia-fra
             var _this = this;
 
             return new Promise(function (resolve) {
-                _this.vm.user = viewModel.user;
+                _this.vm = viewModel;
+                _this.vm.showEnrollEmailInfoWarning = true;
+                _this.vm.emailAddress = '';
+                _this.vm.emailAddressHasFocus = true;
+                _this.vm.showAddEmailInfoForm = true;
                 if (_this.vm.user.emailInfos.length > 0) {
                     _this.vm.showAddEmailInfoForm = false;
                 } else {
@@ -2900,7 +3470,7 @@ define('components/views/enrollment/enroll-email-infos',['exports', 'aurelia-fra
             confirmDialogModel.messageParams = {
                 'emailAddress': contactInfo.emailAddress
             };
-            return this.dialogService.open({ viewModel: _confirmDialog.ConfirmDialog, model: confirmDialogModel }).then(function (openDialogResult) {
+            return this.dialogService.open({ viewModel: _confirmDialog.ConfirmDialog, model: confirmDialogModel, rejectOnCancel: false }).whenClosed(function (openDialogResult) {
                 if (!openDialogResult.wasCancelled) {
                     _this2.onConfirmRemoveEmailInfo(contactInfo);
                 }
@@ -2925,13 +3495,9 @@ define('components/views/enrollment/enroll-email-infos',['exports', 'aurelia-fra
             return this.userService.removeContactInfo(request).then(function (response) {
                 _this3.vm.user.sessionId = response.sessionId;
                 _this3.vm.user.transactionId = response.transactionId;
-                if (response.success) {
-                    _this3.notification.info('remove-contact-info_success');
-                    _this3.vm.user.emailInfos.splice(_lodash2.default.findIndex(_this3.vm.user.emailInfos, contactInfo), 1);
-                } else {
-                    _loggerHelper.logger.error(response);
-                    _this3.notification.error('remove-contact-info_error');
-                }
+                _this3.notification.info('remove-contact-info_success');
+                _this3.vm.user.emailInfos.splice(_lodash2.default.findIndex(_this3.vm.user.emailInfos, contactInfo), 1);
+                _this3.eventAggregator.publish(new _enrollmentMessages.EnrollEmailInfosComplete());
             }).catch(function (reason) {
                 _loggerHelper.logger.error(reason);
                 _this3.notification.error('remove-contact-info_error');
@@ -2950,11 +3516,11 @@ define('components/views/enrollment/enroll-email-infos',['exports', 'aurelia-fra
 
             return new Promise(function (resolve, reject) {
                 if (_this4.isEmailAddressUnique(_this4.vm.emailAddress)) {
-                    _this4.controller.validate().then(function (controllerValidateResult) {
-                        if (controllerValidateResult.valid) {
+                    _this4.controller.validate().then(function (result) {
+                        if (result.valid) {
                             var request = {
                                 userId: _this4.vm.user.userId,
-                                credentialType: 'SMS',
+                                credentialType: 'Email',
                                 contactInfo: _this4.vm.emailAddress,
                                 label: _this4.vm.emailAddress,
                                 isDefault: true
@@ -3003,7 +3569,7 @@ define('components/views/enrollment/enroll-email-infos',['exports', 'aurelia-fra
             verifyEmailInfoModel.messageParams = {
                 'emailAddress': this.vm.emailAddress
             };
-            return this.dialogService.open({ viewModel: _verifyEmailInfoDialog.VerifyEmailInfoDialog, model: verifyEmailInfoModel }).then(function (openDialogResult) {
+            return this.dialogService.open({ viewModel: _verifyEmailInfoDialog.VerifyEmailInfoDialog, model: verifyEmailInfoModel, rejectOnCancel: false }).whenClosed(function (openDialogResult) {
                 if (openDialogResult.wasCancelled) {
                     if (openDialogResult.output && openDialogResult.output.resendCode) {
                         _this5.notification.info('verify-email-info_resend');
@@ -3013,6 +3579,7 @@ define('components/views/enrollment/enroll-email-infos',['exports', 'aurelia-fra
                     }
                 } else {
                     _this5.onVerifyEmailInfoSuccess(openDialogResult.output);
+                    _this5.eventAggregator.publish(new _enrollmentMessages.EnrollEmailInfosComplete());
                 }
             }).catch(function (reason) {
                 _loggerHelper.logger.error(reason);
@@ -3021,66 +3588,28 @@ define('components/views/enrollment/enroll-email-infos',['exports', 'aurelia-fra
         };
 
         EnrollEmailInfos.prototype.onVerifyEmailInfoSuccess = function onVerifyEmailInfoSuccess(message) {
-            var contactInfo = '1' + JSON.parse(JSON.stringify(message.contactInfo));
-            var emailInfo = {
-                emailAddress: contactInfo,
-                label: contactInfo.substring(1, 11),
-                isDefault: false,
-                verified: true,
-                hasActiveToken: false
-            };
-            this.vm.user.emailInfos.push(emailInfo);
+            if (message) {
+                var emailInfo = {
+                    emailAddress: message.contactInfo,
+                    label: message.contactInfo,
+                    isDefault: false,
+                    verified: true,
+                    hasActiveToken: false
+                };
+                this.vm.user.emailInfos.push(emailInfo);
 
-            this.vm.user.sessionId = null;
-            this.vm.user.transactionId = null;
-            this.vm.emailAddress = '';
-            this.vm.emailAddressHasFocus = true;
-            this.vm.showAddEmailInfoForm = false;
-        };
-
-        EnrollEmailInfos.prototype.showAddEmailInfoForm = function showAddEmailInfoForm(event) {
-            var _this6 = this;
-
-            return new Promise(function (resolve) {
-                _this6.vm.showAddEmailInfoForm = true;
-                resolve();
-            });
-        };
-
-        EnrollEmailInfos.prototype.skip = function skip(event) {
-            var _this7 = this;
-
-            var confirmDialogModel = this.i18n.tr('confirm-skip-enroll-email-infos-dialog', { returnObjects: true });
-            return this.dialogService.open({ viewModel: _confirmDialog.ConfirmDialog, model: confirmDialogModel }).then(function (openDialogResult) {
-                if (!openDialogResult.wasCancelled) {
-                    _this7.eventAggregator.publish(new _enrollmentMessages.EnrollEmailInfosDone({ emailInfosSkipped: true }));
-                }
-            }).catch(function (reason) {
-                _loggerHelper.logger.error(reason);
-                _this7.notification.error('confirm_error');
-            });
-        };
-
-        EnrollEmailInfos.prototype.next = function next(event) {
-            var _this8 = this;
-
-            return new Promise(function (resolve) {
-                _this8.eventAggregator.publish(new _enrollmentMessages.EnrollEmailInfosDone());
-                resolve();
-            });
-        };
-
-        _createClass(EnrollEmailInfos, [{
-            key: 'isEmailInfosComplete',
-            get: function get() {
-                return this.vm.user.emailInfosComplete;
+                this.vm.user.sessionId = null;
+                this.vm.user.transactionId = null;
+                this.vm.emailAddress = '';
+                this.vm.emailAddressHasFocus = true;
+                this.vm.showAddEmailInfoForm = false;
             }
-        }]);
+        };
 
         return EnrollEmailInfos;
     }()) || _class);
 });
-define('components/views/enrollment/enroll-phone-infos',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/window-helper', 'components/views/confirm-dialog/confirm-dialog', 'components/views/verify-phone-info-dialog/verify-phone-info-dialog', 'resources/messages/enrollment-messages', 'util/logger-helper', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _windowHelper, _confirmDialog, _verifyPhoneInfoDialog, _enrollmentMessages, _loggerHelper, _lodash) {
+define('components/views/enroll-phone-infos/enroll-phone-infos',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/logger-helper', 'util/window-helper', 'components/views/confirm-dialog/confirm-dialog', 'components/views/verify-phone-info-dialog/verify-phone-info-dialog', 'resources/messages/enrollment-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loggerHelper, _windowHelper, _confirmDialog, _verifyPhoneInfoDialog, _enrollmentMessages, _lodash) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -3102,43 +3631,16 @@ define('components/views/enrollment/enroll-phone-infos',['exports', 'aurelia-fra
         }
     }
 
-    var _createClass = function () {
-        function defineProperties(target, props) {
-            for (var i = 0; i < props.length; i++) {
-                var descriptor = props[i];
-                descriptor.enumerable = descriptor.enumerable || false;
-                descriptor.configurable = true;
-                if ("value" in descriptor) descriptor.writable = true;
-                Object.defineProperty(target, descriptor.key, descriptor);
-            }
-        }
-
-        return function (Constructor, protoProps, staticProps) {
-            if (protoProps) defineProperties(Constructor.prototype, protoProps);
-            if (staticProps) defineProperties(Constructor, staticProps);
-            return Constructor;
-        };
-    }();
-
     var _dec, _class;
 
     var EnrollPhoneInfos = exports.EnrollPhoneInfos = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaValidation.ValidationControllerFactory, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService, _windowHelper.WindowHelper), _dec(_class = function () {
         function EnrollPhoneInfos(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService, windowHelper) {
             _classCallCheck(this, EnrollPhoneInfos);
 
-            this.vm = {
-                user: {
-                    phoneInfos: []
-                },
-                showEnrollPhoneInfoWarning: true,
-                phoneNumber: '',
-                phoneNumberHasFocus: true,
-                showAddPhoneInfoForm: true
-            };
-
             this.router = router;
             this.eventAggregator = eventAggregator;
             this.controller = controllerFactory.createForCurrentScope();
+            this.controller.validateTrigger = _aureliaValidation.validateTrigger.manual;
             this.dialogService = dialogService;
             this.notification = notification;
             this.i18n = i18n;
@@ -3153,7 +3655,11 @@ define('components/views/enrollment/enroll-phone-infos',['exports', 'aurelia-fra
             var _this = this;
 
             return new Promise(function (resolve) {
-                _this.vm.user = viewModel.user;
+                _this.vm = viewModel;
+                _this.vm.showEnrollPhoneInfoWarning = true;
+                _this.vm.phoneNumber = '';
+                _this.vm.phoneNumberHasFocus = true;
+                _this.vm.showAddPhoneInfoForm = true;
                 if (_this.vm.user.smsInfos.length > 0) {
                     _this.vm.showAddPhoneInfoForm = false;
                 } else {
@@ -3192,7 +3698,7 @@ define('components/views/enrollment/enroll-phone-infos',['exports', 'aurelia-fra
             confirmDialogModel.messageParams = {
                 'phoneNumber': contactInfo.phoneNumber
             };
-            return this.dialogService.open({ viewModel: _confirmDialog.ConfirmDialog, model: confirmDialogModel }).then(function (openDialogResult) {
+            return this.dialogService.open({ viewModel: _confirmDialog.ConfirmDialog, model: confirmDialogModel, rejectOnCancel: false }).whenClosed(function (openDialogResult) {
                 if (!openDialogResult.wasCancelled) {
                     _this2.onConfirmRemovePhoneInfo(contactInfo);
                 }
@@ -3217,13 +3723,9 @@ define('components/views/enrollment/enroll-phone-infos',['exports', 'aurelia-fra
             return this.userService.removeContactInfo(request).then(function (response) {
                 _this3.vm.user.sessionId = response.sessionId;
                 _this3.vm.user.transactionId = response.transactionId;
-                if (response.success) {
-                    _this3.notification.info('remove-contact-info_success');
-                    _this3.vm.user.smsInfos.splice(_lodash2.default.findIndex(_this3.vm.user.smsInfos, contactInfo), 1);
-                } else {
-                    _loggerHelper.logger.error(response);
-                    _this3.notification.error('remove-contact-info_error');
-                }
+                _this3.notification.info('remove-contact-info_success');
+                _this3.vm.user.smsInfos.splice(_lodash2.default.findIndex(_this3.vm.user.smsInfos, contactInfo), 1);
+                _this3.eventAggregator.publish(new _enrollmentMessages.EnrollPhoneInfosComplete());
             }).catch(function (reason) {
                 _loggerHelper.logger.error(reason);
                 _this3.notification.error('remove-contact-info_error');
@@ -3242,8 +3744,8 @@ define('components/views/enrollment/enroll-phone-infos',['exports', 'aurelia-fra
 
             return new Promise(function (resolve, reject) {
                 if (_this4.isPhoneNumberUnique(_this4.vm.phoneNumber)) {
-                    _this4.controller.validate().then(function (controllerValidateResult) {
-                        if (controllerValidateResult.valid) {
+                    _this4.controller.validate().then(function (result) {
+                        if (result.valid) {
                             var request = {
                                 userId: _this4.vm.user.userId,
                                 credentialType: 'SMS',
@@ -3295,7 +3797,7 @@ define('components/views/enrollment/enroll-phone-infos',['exports', 'aurelia-fra
             verifyPhoneInfoModel.messageParams = {
                 'phoneNumber': this.vm.phoneNumber
             };
-            return this.dialogService.open({ viewModel: _verifyPhoneInfoDialog.VerifyPhoneInfoDialog, model: verifyPhoneInfoModel }).then(function (openDialogResult) {
+            return this.dialogService.open({ viewModel: _verifyPhoneInfoDialog.VerifyPhoneInfoDialog, model: verifyPhoneInfoModel, rejectOnCancel: false }).whenClosed(function (openDialogResult) {
                 if (openDialogResult.wasCancelled) {
                     if (openDialogResult.output && openDialogResult.output.resendCode) {
                         _this5.notification.info('verify-phone-info_resend');
@@ -3305,6 +3807,7 @@ define('components/views/enrollment/enroll-phone-infos',['exports', 'aurelia-fra
                     }
                 } else {
                     _this5.onVerifyPhoneInfoSuccess(openDialogResult.output);
+                    _this5.eventAggregator.publish(new _enrollmentMessages.EnrollPhoneInfosComplete());
                 }
             }).catch(function (reason) {
                 _loggerHelper.logger.error(reason);
@@ -3313,63 +3816,176 @@ define('components/views/enrollment/enroll-phone-infos',['exports', 'aurelia-fra
         };
 
         EnrollPhoneInfos.prototype.onVerifyPhoneInfoSuccess = function onVerifyPhoneInfoSuccess(message) {
-            var contactInfo = '1' + JSON.parse(JSON.stringify(message.contactInfo));
-            var phoneInfo = {
-                phoneNumber: contactInfo,
-                label: contactInfo.substring(1, 11),
-                isDefault: false,
-                verified: true,
-                hasActiveToken: false
-            };
-            this.vm.user.smsInfos.push(phoneInfo);
+            if (message) {
+                var phoneInfo = {
+                    phoneNumber: message.contactInfo,
+                    label: message.contactInfo,
+                    isDefault: false,
+                    verified: true,
+                    hasActiveToken: false
+                };
+                this.vm.user.smsInfos.push(phoneInfo);
 
-            this.vm.user.sessionId = null;
-            this.vm.user.transactionId = null;
-            this.vm.phoneNumber = '';
-            this.vm.phoneNumberHasFocus = true;
-            this.vm.showAddPhoneInfoForm = false;
+                this.vm.user.sessionId = null;
+                this.vm.user.transactionId = null;
+                this.vm.phoneNumber = '';
+                this.vm.phoneNumberHasFocus = true;
+                this.vm.showAddPhoneInfoForm = false;
+            }
         };
 
-        EnrollPhoneInfos.prototype.showAddPhoneInfoForm = function showAddPhoneInfoForm(event) {
-            var _this6 = this;
+        return EnrollPhoneInfos;
+    }()) || _class);
+});
+define('components/views/enrollment/enroll-credentials',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'components/views/confirm-dialog/confirm-dialog', 'util/logger-helper', 'util/common-models', 'resources/messages/enrollment-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _confirmDialog, _loggerHelper, _commonModels, _enrollmentMessages, _lodash) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.EnrollCredentials = undefined;
+
+    var _lodash2 = _interopRequireDefault(_lodash);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _createClass = function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ("value" in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    }();
+
+    var _dec, _class;
+
+    var EnrollCredentials = exports.EnrollCredentials = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService), _dec(_class = function () {
+        function EnrollCredentials(router, eventAggregator, dialogService, notification, i18n, authService, userService) {
+            _classCallCheck(this, EnrollCredentials);
+
+            this.subscribers = [];
+
+            this.router = router;
+            this.eventAggregator = eventAggregator;
+            this.dialogService = dialogService;
+            this.notification = notification;
+            this.i18n = i18n;
+            this.authService = authService;
+            this.userService = userService;
+        }
+
+        EnrollCredentials.prototype.activate = function activate(viewModel) {
+            var _this = this;
 
             return new Promise(function (resolve) {
-                _this6.vm.showAddPhoneInfoForm = true;
+                _this.vm = viewModel;
+                _this.vm.credentialType = _commonModels.CredentialType.QUESTIONS;
+                _this.enrollCredentialsViewModel = 'components/views/enroll-challenge-question-answers/enroll-challenge-question-answers';
                 resolve();
             });
         };
 
-        EnrollPhoneInfos.prototype.skip = function skip(event) {
-            var _this7 = this;
+        EnrollCredentials.prototype.attached = function attached() {
+            var _this2 = this;
 
-            var confirmDialogModel = this.i18n.tr('confirm-skip-enroll-phone-infos-dialog', { returnObjects: true });
-            return this.dialogService.open({ viewModel: _confirmDialog.ConfirmDialog, model: confirmDialogModel }).then(function (openDialogResult) {
-                if (!openDialogResult.wasCancelled) {
-                    _this7.eventAggregator.publish(new EnrollPhoneInfosDone({ phoneInfosSkipped: true }));
+            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EnrollChallengeQuestionAnswersComplete, function (message) {
+                return _this2.onEnrollChallengeQuestionAnswersComplete(message);
+            }));
+            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EnrollPhoneInfosComplete, function (message) {
+                return _this2.onEnrollPhoneInfosComplete(message);
+            }));
+            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EnrollEmailInfosComplete, function (message) {
+                return _this2.onEnrollEmailInfosComplete(message);
+            }));
+        };
+
+        EnrollCredentials.prototype.detached = function detached() {
+            _lodash2.default.each(this.subscribers, function (subscriber) {
+                if (subscriber && subscriber.dispose) {
+                    subscriber.dispose();
                 }
-            }).catch(function (reason) {
-                _loggerHelper.logger.error(reason);
-                _this7.notification.error('confirm_error');
             });
         };
 
-        EnrollPhoneInfos.prototype.next = function next(event) {
-            var _this8 = this;
+        EnrollCredentials.prototype.skip = function skip(event) {
+            var _this3 = this;
 
-            return new Promise(function (resolve) {
-                _this8.eventAggregator.publish(new EnrollPhoneInfosDone());
-                resolve();
-            });
+            if (this.vm.credentialType === _commonModels.CredentialType.QUESTIONS) {
+                this.eventAggregator.publish(new _enrollmentMessages.EnrollCredentialsComplete({ credentialType: _commonModels.CredentialType.QUESTIONS }));
+            } else {
+                var confirmDialogModel = void 0;
+                if (this.vm.credentialType === _commonModels.CredentialType.PHONE) {
+                    confirmDialogModel = this.i18n.tr('confirm-skip-enroll-phone-infos-dialog', { returnObjects: true });
+                } else if (this.vm.credentialType === _commonModels.CredentialType.EMAIL) {
+                    confirmDialogModel = this.i18n.tr('confirm-skip-enroll-email-infos-dialog', { returnObjects: true });
+                }
+                return this.dialogService.open({ viewModel: _confirmDialog.ConfirmDialog, model: confirmDialogModel, rejectOnCancel: false }).whenClosed(function (openDialogResult) {
+                    if (!openDialogResult.wasCancelled) {
+                        _this3.next(event);
+                    }
+                }).catch(function (reason) {
+                    _loggerHelper.logger.error(reason);
+                    _this3.notification.error('confirm_error');
+                });
+            }
         };
 
-        _createClass(EnrollPhoneInfos, [{
-            key: 'isPhoneInfosComplete',
+        EnrollCredentials.prototype.next = function next(event) {
+            if (this.vm.credentialType === _commonModels.CredentialType.QUESTIONS) {
+                this.vm.credentialType = _commonModels.CredentialType.PHONE;
+                this.enrollCredentialsViewModel = 'components/views/enroll-phone-infos/enroll-phone-infos';
+            } else if (this.vm.credentialType === _commonModels.CredentialType.PHONE) {
+                this.vm.credentialType = _commonModels.CredentialType.EMAIL;
+                this.enrollCredentialsViewModel = 'components/views/enroll-email-infos/enroll-email-infos';
+            } else if (this.vm.credentialType === _commonModels.CredentialType.EMAIL) {
+                this.vm.credentialType = _commonModels.CredentialType.QUESTIONS;
+                this.enrollCredentialsViewModel = 'components/views/enroll-phone-infos/enroll-phone-infos';
+                this.eventAggregator.publish(new _enrollmentMessages.EnrollCredentialsComplete());
+            }
+        };
+
+        EnrollCredentials.prototype.onEnrollChallengeQuestionAnswersComplete = function onEnrollChallengeQuestionAnswersComplete(message) {};
+
+        EnrollCredentials.prototype.onEnrollPhoneInfosComplete = function onEnrollPhoneInfosComplete(message) {};
+
+        EnrollCredentials.prototype.onEnrollEmailInfosComplete = function onEnrollEmailInfosComplete(message) {};
+
+        _createClass(EnrollCredentials, [{
+            key: 'enrollCredentialsComplete',
             get: function get() {
-                return this.vm.user.phoneInfosComplete;
+                var credentialsComplete = false;
+                if (this.vm.credentialType === _commonModels.CredentialType.QUESTIONS) {
+                    credentialsComplete = this.vm.user.challengeQuestionAnswersComplete;
+                } else if (this.vm.credentialType === _commonModels.CredentialType.PHONE) {
+                    credentialsComplete = this.vm.user.smsInfosComplete;
+                } else if (this.vm.credentialType === _commonModels.CredentialType.EMAIL) {
+                    credentialsComplete = this.vm.user.emailInfosComplete;
+                }
+                return credentialsComplete;
             }
         }]);
 
-        return EnrollPhoneInfos;
+        return EnrollCredentials;
     }()) || _class);
 });
 define('components/views/enrollment/enrollment-disclaimer',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/logger-helper', 'util/event-timer', 'config/app', 'resources/messages/enrollment-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loggerHelper, _eventTimer, _app, _enrollmentMessages, _lodash) {
@@ -3404,7 +4020,6 @@ define('components/views/enrollment/enrollment-disclaimer',['exports', 'aurelia-
         function EnrollmentDisclaimer(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
             _classCallCheck(this, EnrollmentDisclaimer);
 
-            this.vm = {};
             this.eventTimerStartTime = _app2.default.enrollment.confirmDisclaimerEventTimerStartTime || 5;
             this.eventTimerTickKey = 'enrollment-disclaimer-tick';
             this.eventTimerTimeoutKey = 'enrollment-disclaimer-timeout';
@@ -3431,9 +4046,11 @@ define('components/views/enrollment/enrollment-disclaimer',['exports', 'aurelia-
 
             return new Promise(function (resolve) {
                 _this.vm = viewModel;
-                _this.applyValidationRules();
+                _this.vm.confirmDisclaimerChecked = false;
+                _this.vm.eventTimerExpired = false;
                 _this.vm.remainingTime = _this.eventTimerStartTime;
                 _this.timer.start(_this.eventTimerStartTime, _this.eventTimerTickKey, _this.eventTimerTimeoutKey);
+                _this.applyValidationRules();
                 resolve();
             });
         };
@@ -3475,7 +4092,7 @@ define('components/views/enrollment/enrollment-disclaimer',['exports', 'aurelia-
             return new Promise(function (resolve, reject) {
                 _this3.controller.validate().then(function (controllerValidateResult) {
                     if (controllerValidateResult.valid) {
-                        _this3.eventAggregator.publish(new _enrollmentMessages.GoToEnrollmentIntro());
+                        _this3.eventAggregator.publish(new _enrollmentMessages.EnrollmentDisclaimerConfirmed());
                     }
                     resolve();
                 }).catch(function (reason) {
@@ -3508,8 +4125,6 @@ define('components/views/enrollment/enrollment-intro',['exports', 'aurelia-frame
         function EnrollmentIntro(router, eventAggregator, dialogService, notification, i18n, authService, userService) {
             _classCallCheck(this, EnrollmentIntro);
 
-            this.vm = {};
-
             this.router = router;
             this.eventAggregator = eventAggregator;
             this.dialogService = dialogService;
@@ -3528,16 +4143,13 @@ define('components/views/enrollment/enrollment-intro',['exports', 'aurelia-frame
             });
         };
 
-        EnrollmentIntro.prototype.goToChallengeQuestionAnswers = function goToChallengeQuestionAnswers(event) {
-            this.eventAggregator.publish(new _enrollmentMessages.GoToChallengeQuestionAnswers());
-        };
+        EnrollmentIntro.prototype.start = function start(event) {
+            var _this2 = this;
 
-        EnrollmentIntro.prototype.goToPhoneInfos = function goToPhoneInfos(event) {
-            this.eventAggregator.publish(new _enrollmentMessages.GoToPhoneInfos());
-        };
-
-        EnrollmentIntro.prototype.goToEmailInfos = function goToEmailInfos(event) {
-            this.eventAggregator.publish(new _enrollmentMessages.GoToEmailInfos());
+            return new Promise(function (resolve) {
+                _this2.eventAggregator.publish(new _enrollmentMessages.EnrollmentStart());
+                resolve();
+            });
         };
 
         return EnrollmentIntro;
@@ -3571,8 +4183,6 @@ define('components/views/enrollment/enrollment-review',['exports', 'aurelia-fram
         function EnrollmentReview(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
             _classCallCheck(this, EnrollmentReview);
 
-            this.vm = {};
-
             this.router = router;
             this.eventAggregator = eventAggregator;
             this.controller = controllerFactory.createForCurrentScope();
@@ -3587,21 +4197,9 @@ define('components/views/enrollment/enrollment-review',['exports', 'aurelia-fram
             var _this = this;
 
             return new Promise(function (resolve) {
-                _this.vm.user = viewModel.user;
+                _this.vm = viewModel;
                 resolve();
             });
-        };
-
-        EnrollmentReview.prototype.goToEnrollChallengeQuestionAnswers = function goToEnrollChallengeQuestionAnswers(event) {
-            this.router.navigateToRoute('edit-challenge-question-answers');
-        };
-
-        EnrollmentReview.prototype.goToEnrollPhoneInfos = function goToEnrollPhoneInfos(event) {
-            this.router.navigateToRoute('edit-phone-infos');
-        };
-
-        EnrollmentReview.prototype.goToEnrollEmailInfos = function goToEnrollEmailInfos(event) {
-            this.router.navigateToRoute('edit-email-infos');
         };
 
         EnrollmentReview.prototype.done = function done(event) {
@@ -3609,25 +4207,15 @@ define('components/views/enrollment/enrollment-review',['exports', 'aurelia-fram
 
             return new Promise(function (resolve, reject) {
                 if (_this2.vm.challengeQuestionAnswersComplete && _this2.vm.user.smsInfosComplete && _this2.vm.user.emailInfosComplete) {
-                    _this2.eventAggregator.publish(new _enrollmentMessages.EnrollmentDone());
+                    _this2.eventAggregator.publish(new EnrollmentDone());
                     resolve();
                 } else {
-                    var confirmDialogModel = {
-                        "headerIcon": "dialog-enroll-review-warning.header-icon",
-                        "headerText": "dialog-enroll-review-warning.header-text",
-                        "message": "dialog-enroll-review-warning.message",
-                        "cancelButtonStyle": "dialog-enroll-review-warning.cancel-button-style",
-                        "cancelButtonText": "dialog-enroll-review-warning.cancel-button-text",
-                        "confirmButtonStyle": "dialog-enroll-review-warning.confirm-button-style",
-                        "confirmButtonText": "dialog-enroll-review-warning.confirm-button-text"
-                    };
-                    _this2.dialogService.open({ viewModel: _confirmDialog.ConfirmDialog, model: confirmDialogModel }).then(function (openDialogResult) {
+                    var confirmDialogModel = _this2.i18n.tr('confirm-enrollment-review-warning-dialog', { returnObjects: true });
+                    _this2.dialogService.open({ viewModel: _confirmDialog.ConfirmDialog, model: confirmDialogModel, rejectOnCancel: false }).whenClosed(function (openDialogResult) {
                         if (!openDialogResult.wasCancelled) {
-                            _this2.eventAggregator.publish(new _enrollmentMessages.EnrollmentDone());
-                            resolve();
-                        } else {
-                            reject(new Error('confirm_canceled'));
+                            _this2.eventAggregator.publish(new _enrollmentMessages.EnrollmentComplete());
                         }
+                        resolve();
                     }).catch(function (reason) {
                         _loggerHelper.logger.error(reason);
                         _this2.notification.error('confirm_error');
@@ -3640,7 +4228,7 @@ define('components/views/enrollment/enrollment-review',['exports', 'aurelia-fram
         return EnrollmentReview;
     }()) || _class);
 });
-define('components/views/enrollment/enrollment',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'models/user', 'util/logger-helper', 'util/common-models', 'resources/messages/enrollment-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _user, _loggerHelper, _commonModels, _enrollmentMessages, _lodash) {
+define('components/views/enrollment/enrollment',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'models/user', 'util/logger-helper', 'resources/messages/enrollment-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _user, _loggerHelper, _enrollmentMessages, _lodash) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -3669,11 +4257,7 @@ define('components/views/enrollment/enrollment',['exports', 'aurelia-framework',
             _classCallCheck(this, Enrollment);
 
             this.vm = {
-                user: {},
-                showNavBar: false,
-                confirmDisclaimerChecked: false,
-                remainingTime: 0,
-                eventTimerExpired: false
+                user: new _user.User()
             };
             this.subscribers = [];
 
@@ -3686,7 +4270,7 @@ define('components/views/enrollment/enrollment',['exports', 'aurelia-framework',
             this.userService = userService;
 
             var payload = authService.getTokenPayload();
-            this.vm.user.userId = payload ? payload.username : null;
+            this.vm.user.fromJson(payload);
         }
 
         Enrollment.prototype.activate = function activate(params, routeConfig, navigationInstruction) {
@@ -3698,9 +4282,8 @@ define('components/views/enrollment/enrollment',['exports', 'aurelia-framework',
                 userId: this.vm.user.userId
             };
             return this.userService.getUser(request).then(function (response) {
-                _this.vm.user = new _user.User();
                 _this.vm.user.fromJson(response);
-                _this.onGoToEnrollmentIntro(response);
+                _this.enrollmentViewModel = './enrollment-disclaimer';
             }).catch(function (reason) {
                 _loggerHelper.logger.error(reason);
                 _this.notification.error('get-user_error');
@@ -3710,35 +4293,17 @@ define('components/views/enrollment/enrollment',['exports', 'aurelia-framework',
         Enrollment.prototype.attached = function attached() {
             var _this2 = this;
 
-            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.GoToEnrollmentDisclaimer, function (message) {
-                return _this2.onGoToEnrollmentDisclaimer(message);
+            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EnrollmentDisclaimerConfirmed, function (message) {
+                return _this2.onEnrollmentDisclaimerConfirmed(message);
             }));
-            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.GoToEnrollmentIntro, function (message) {
-                return _this2.onGoToEnrollmentIntro(message);
+            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EnrollmentStart, function (message) {
+                return _this2.onEnrollmentStart(message);
             }));
-            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.GoToChallengeQuestionAnswers, function (message) {
-                return _this2.onGoToEnrollChallengeQuestionAnswers(message);
+            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EnrollCredentialsComplete, function (message) {
+                return _this2.onEnrollCredentialsComplete(message);
             }));
-            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.ChallengeQuestionAnswersDone, function (message) {
-                return _this2.onEnrollChallengeQuestionAnswersDone(message);
-            }));
-            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.GoToPhoneInfos, function (message) {
-                return _this2.onGoToEnrollPhoneInfos(message);
-            }));
-            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.PhoneInfosDone, function (message) {
-                return _this2.onEnrollPhoneInfosDone(message);
-            }));
-            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.GoToEmailInfos, function (message) {
-                return _this2.onGoToEnrollEmailInfos(message);
-            }));
-            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EmailInfosDone, function (message) {
-                return _this2.onEnrollEmailInfosDone(message);
-            }));
-            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.GoToEnrollmentSummary, function (message) {
-                return _this2.onGoToEnrollmentSummary(message);
-            }));
-            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EnrollmentDone, function (message) {
-                return _this2.onEnrollmentDone(message);
+            this.subscribers.push(this.eventAggregator.subscribe(_enrollmentMessages.EnrollmentComplete, function (message) {
+                return _this2.onEnrollmentComplete(message);
             }));
         };
 
@@ -3750,242 +4315,26 @@ define('components/views/enrollment/enrollment',['exports', 'aurelia-framework',
             });
         };
 
-        Enrollment.prototype.onGoToEnrollmentDisclaimer = function onGoToEnrollmentDisclaimer(message) {
-            this.vm.showNavBar = false;
-            this.vm.enrollmentStep = _commonModels.EnrollmentStep.DISCLAIMER;
-            this.enrollmentViewModel = './enrollment-disclaimer';
-        };
-
-        Enrollment.prototype.onGoToEnrollmentIntro = function onGoToEnrollmentIntro(message) {
-            this.vm.showNavBar = false;
-            this.vm.enrollmentStep = _commonModels.EnrollmentStep.INTRO;
+        Enrollment.prototype.onEnrollmentDisclaimerConfirmed = function onEnrollmentDisclaimerConfirmed(message) {
             this.enrollmentViewModel = './enrollment-intro';
         };
 
-        Enrollment.prototype.onGoToEnrollChallengeQuestionAnswers = function onGoToEnrollChallengeQuestionAnswers(message) {
-            this.vm.showNavBar = true;
-            this.vm.enrollmentStep = _commonModels.EnrollmentStep.QUESTIONS;
-            this.enrollmentViewModel = './enroll-challenge-question-answers';
+        Enrollment.prototype.onEnrollmentStart = function onEnrollmentStart(message) {
+            this.enrollmentViewModel = './enroll-credentials';
         };
 
-        Enrollment.prototype.onEnrollChallengeQuestionAnswersDone = function onEnrollChallengeQuestionAnswersDone(message) {
-            this.vm.challengeQuestionAnswersComplete = this.vm.user.challengeQuestionAnswersComplete;
-            this.onGoToEnrollPhoneInfos();
-        };
-
-        Enrollment.prototype.onGoToEnrollPhoneInfos = function onGoToEnrollPhoneInfos(message) {
-            this.vm.showNavBar = true;
-            this.vm.enrollmentStep = _commonModels.EnrollmentStep.PHONE;
-            this.enrollmentViewModel = './enroll-phone-infos';
-        };
-
-        Enrollment.prototype.onEnrollPhoneInfosDone = function onEnrollPhoneInfosDone(message) {
-            if (this.vm.user.smsInfosComplete) {
-                this.vm.phoneInfosComplete = true;
-                this.vm.phoneInfosSkipped = false;
-            } else {
-                if (message && message.phoneInfosSkipped) {
-                    this.vm.phoneInfosComplete = false;
-                    this.vm.phoneInfosSkipped = true;
-                }
-            }
-            this.onGoToEnrollEmailInfos();
-        };
-
-        Enrollment.prototype.onGoToEnrollEmailInfos = function onGoToEnrollEmailInfos(message) {
-            this.vm.showNavBar = true;
-            this.vm.enrollmentStep = _commonModels.EnrollmentStep.EMAIL;
-            this.enrollmentViewModel = './enroll-email-infos';
-        };
-
-        Enrollment.prototype.onEnrollEmailInfosDone = function onEnrollEmailInfosDone(message) {
-            if (this.vm.user.emailInfosComplete) {
-                this.vm.emailInfosComplete = true;
-                this.vm.emailInfosSkipped = false;
-            } else {
-                if (message && message.emailInfosSkipped) {
-                    this.vm.emailInfosComplete = false;
-                    this.vm.emailInfosSkipped = true;
-                }
-            }
-            this.onGoToEnrollmentSummary();
-        };
-
-        Enrollment.prototype.onGoToEnrollmentSummary = function onGoToEnrollmentSummary(message) {
-            this.vm.showNavBar = false;
-            this.vm.enrollmentStep = _commonModels.EnrollmentStep.SUMMARY;
+        Enrollment.prototype.onEnrollCredentialsComplete = function onEnrollCredentialsComplete(message) {
             this.enrollmentViewModel = './enrollment-review';
         };
 
-        Enrollment.prototype.onEnrollmentDone = function onEnrollmentDone(message) {
+        Enrollment.prototype.onEnrollmentComplete = function onEnrollmentComplete(message) {
             this.router.navigateToRoute('self-service');
         };
 
         return Enrollment;
     }()) || _class);
 });
-define('components/views/login/challenge-with-challenge-questions',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/logger-helper', 'resources/messages/challenge-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loggerHelper, _challengeMessages, _lodash) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.ChallengeWithChallengeQuestions = undefined;
-
-    var _lodash2 = _interopRequireDefault(_lodash);
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var ChallengeWithChallengeQuestions = exports.ChallengeWithChallengeQuestions = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaValidation.ValidationControllerFactory, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService), _dec(_class = function () {
-        function ChallengeWithChallengeQuestions(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
-            _classCallCheck(this, ChallengeWithChallengeQuestions);
-
-            this.vm = {};
-
-            this.router = router;
-            this.eventAggregator = eventAggregator;
-            this.controller = controllerFactory.createForCurrentScope();
-            this.dialogService = dialogService;
-            this.notification = notification;
-            this.i18n = i18n;
-            this.authService = authService;
-            this.userService = userService;
-        }
-
-        ChallengeWithChallengeQuestions.prototype.activate = function activate(viewModel) {
-            var _this = this;
-
-            return new Promise(function (resolve, reject) {
-                _this.vm = viewModel;
-                var request = {
-                    userId: _this.vm.user.userId,
-                    credentialType: 'Questions',
-                    authToken: _this.vm.authToken
-                };
-                _this.userService.challengeUser(request).then(function (response) {
-                    if (response.challengeStatus !== 'Deny') {
-                        _this.vm.user.fromJson(response);
-                        _this.applyValidationRules();
-                    } else {
-                        _this.notification.error('challenge-user_error');
-                    }
-                    resolve();
-                }).catch(function (reason) {
-                    _loggerHelper.logger.error(reason);
-                    _this.notification.error('challenge-user_error');
-                    reject(reason);
-                });
-            });
-        };
-
-        ChallengeWithChallengeQuestions.prototype.applyValidationRules = function applyValidationRules() {
-            for (var i = 0; i < this.vm.user.challengeQuestions.length; i++) {
-                var challengeQuestion = this.vm.user.challengeQuestions[i];
-                _aureliaValidation.ValidationRules.ensure('userAnswerText').required().on(challengeQuestion);
-            }
-        };
-
-        ChallengeWithChallengeQuestions.prototype.onSelectedAvailableChallengeQuestionAnswerChanged = function onSelectedAvailableChallengeQuestionAnswerChanged(event, bindingContext, selectedAvailableChallengeQuestion) {
-            this.vm.user.updateAvailableChallengeQuestions(bindingContext.challengeQuestion, selectedAvailableChallengeQuestion);
-        };
-
-        ChallengeWithChallengeQuestions.prototype.cancel = function cancel(event) {
-            var _this2 = this;
-
-            return new Promise(function (resolve) {
-                _this2.eventAggregator.publish(new _challengeMessages.ChallengeCancel());
-                resolve();
-            });
-        };
-
-        ChallengeWithChallengeQuestions.prototype._getCredentials = function _getCredentials() {
-            var credentials = '';
-            for (var _iterator = this.vm.user.challengeQuestions, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
-                var _ref;
-
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref = _i.value;
-                }
-
-                var challengeQuestion = _ref;
-
-                if (challengeQuestion.userAnswerText !== null || challengeQuestion.userAnswerText.length >= 0) {
-                    credentials = credentials + challengeQuestion.selectedAvailableChallengeQuestion.challengeQuestionId + '|' + challengeQuestion.userAnswerText + ',';
-                }
-            }
-            credentials = _lodash2.default.trimEnd(credentials, ',');
-            return credentials;
-        };
-
-        ChallengeWithChallengeQuestions.prototype.next = function next() {
-            var _this3 = this;
-
-            return new Promise(function (resolve, reject) {
-                _this3.controller.validate().then(function (controllerValidateResult) {
-                    if (controllerValidateResult.valid) {
-                        var credentials = _this3._getCredentials();
-                        var request = {
-                            sessionId: _this3.vm.user.sessionId,
-                            transactionId: _this3.vm.user.transactionId,
-                            userId: _this3.vm.user.userId,
-                            authToken: _this3.vm.user.authToken,
-                            credentialType: 'Questions',
-                            credentials: credentials,
-                            bindDevice: _this3.vm.bindDevice
-                        };
-                        _this3.userService.authenticateUser(request).then(function (response) {
-                            if (response.authStatusCode !== 'Deny') {
-                                _this3.onChallengeSuccess(response);
-                            } else {
-                                _this3.notification.error('challenge_error');
-                                _this3.onChallengeFail(response);
-                            }
-                            resolve();
-                        }).catch(function (reason) {
-                            _loggerHelper.logger.error(reason);
-                            _this3.notification.error('challenge_error');
-                            reject(reason);
-                        });
-                    } else {
-                        resolve();
-                    }
-                }).catch(function (validateReason) {
-                    _loggerHelper.logger.error(validateReason);
-                    _this3.notification.error('challenge_error');
-                    reject(validateReason);
-                });
-            });
-        };
-
-        ChallengeWithChallengeQuestions.prototype.onChallengeSuccess = function onChallengeSuccess(message) {
-            this.eventAggregator.publish(new _challengeMessages.ChallengeSuccess(message));
-        };
-
-        ChallengeWithChallengeQuestions.prototype.onChallengeFail = function onChallengeFail(message) {
-            this.eventAggregator.publish(new _challengeMessages.ChallengeFail(message));
-        };
-
-        return ChallengeWithChallengeQuestions;
-    }()) || _class);
-});
-define('components/views/login/challenge-with-credentials',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'resources/messages/login-messages', 'resources/messages/challenge-messages', 'util/logger-helper', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loginMessages, _challengeMessages, _loggerHelper, _lodash) {
+define('components/views/login/challenge-with-credentials',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'util/logger-helper', 'resources/messages/login-messages', 'resources/messages/challenge-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loggerHelper, _loginMessages, _challengeMessages, _lodash) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -4013,7 +4362,6 @@ define('components/views/login/challenge-with-credentials',['exports', 'aurelia-
         function ChallengeWithCredentials(router, eventAggregator, dialogService, notification, i18n, authService, userService) {
             _classCallCheck(this, ChallengeWithCredentials);
 
-            this.vm = {};
             this.subscribers = [];
 
             this.router = router;
@@ -4031,31 +4379,36 @@ define('components/views/login/challenge-with-credentials',['exports', 'aurelia-
             return new Promise(function (resolve) {
                 _this.vm = viewModel;
                 if (_this.vm.selectedCredentialType === 'challenge-questions') {
-                    _this.challengeWithCredentialsViewModel = './challenge-with-challenge-questions';
+                    _this.challengePreAuthUser('Questions').then(function (response) {
+                        _this.challengeWithCredentialsViewModel = 'components/views/challenge-with-challenge-questions/challenge-with-challenge-questions';
+                        resolve();
+                    });
                 } else if (_this.vm.selectedCredentialType === 'phone-info') {
-                    _this.challengeWithCredentialsViewModel = './challenge-with-phone-info';
+                    _this.getPreAuthUser('Phone').then(function (response) {
+                        _this.challengeWithCredentialsViewModel = 'components/views/challenge-with-phone-info/challenge-with-phone-info';
+                        resolve();
+                    });
                 } else if (_this.vm.selectedCredentialType === 'email-info') {
-                    _this.challengeWithCredentialsViewModel = './challenge-with-email-info';
+                    _this.challengeWithCredentialsViewModel = 'components/views/challenge-with-email-info/challenge-with-email-info';
                 } else if (_this.vm.selectedCredentialType === 'rsa-token') {
-                    _this.challengeWithCredentialsViewModel = './challenge-with-rsa-token';
+                    _this.challengeWithCredentialsViewModel = 'components/views/challenge-with-rsa-token/challenge-with-rsa-token';
                 } else {
                     _this.eventAggregator.publish(new _challengeMessages.ChallengeFail());
                 }
-                resolve();
             });
         };
 
         ChallengeWithCredentials.prototype.attached = function attached() {
             var _this2 = this;
 
+            this.subscribers.push(this.eventAggregator.subscribe(_challengeMessages.ChallengeStart, function (message) {
+                return _this2.onChallengeStart(message);
+            }));
             this.subscribers.push(this.eventAggregator.subscribe(_challengeMessages.ChallengeCancel, function (message) {
                 return _this2.onChallengeCancel(message);
             }));
             this.subscribers.push(this.eventAggregator.subscribe(_challengeMessages.ChallengeSuccess, function (message) {
                 return _this2.onChallengeSuccess(message);
-            }));
-            this.subscribers.push(this.eventAggregator.subscribe(_challengeMessages.ChallengeFail, function (message) {
-                return _this2.onChallengeFail(message);
             }));
         };
 
@@ -4067,8 +4420,87 @@ define('components/views/login/challenge-with-credentials',['exports', 'aurelia-
             });
         };
 
+        ChallengeWithCredentials.prototype.getPreAuthUser = function getPreAuthUser(credentialType) {
+            var _this3 = this;
+
+            var request = {
+                userId: this.vm.user.userId,
+                credentialType: credentialType,
+                access_token: this.vm.user.access_token
+            };
+            return this.userService.getPreAuthUser(request).then(function (response) {
+                _this3.vm.user.fromJson(response);
+                return response;
+            }).catch(function (reason) {
+                _loggerHelper.logger.error(reason);
+                _this3.notification.error('get-user_error');
+            });
+        };
+
+        ChallengeWithCredentials.prototype.onChallengeStart = function onChallengeStart(message) {
+            var _this4 = this;
+
+            if (message) {
+                this.challengePreAuthUser(message.credentialType, message.label).then(function (response) {
+                    _this4.eventAggregator.publish(new ChallengeReceived(response));
+                });
+            }
+        };
+
+        ChallengeWithCredentials.prototype.challengePreAuthUser = function challengePreAuthUser(credentialType, label) {
+            var _this5 = this;
+
+            var request = {
+                userId: this.vm.user.userId,
+                credentialType: credentialType,
+                access_token: this.vm.user.access_token
+            };
+            if (label) {
+                request.label = label;
+            }
+            return this.userService.challengePreAuthUser(request).then(function (response) {
+                if (response.challengeStatus !== 'Deny') {
+                    _this5.vm.user.fromJson(response);
+                    return response;
+                } else {
+                    _this5.notification.error('challenge-user_error');
+                }
+            }).catch(function (reason) {
+                _loggerHelper.logger.error(reason);
+                _this5.notification.error('challenge-user_error');
+            });
+        };
+
+        ChallengeWithCredentials.prototype.onChallengeVerify = function onChallengeVerify(message) {
+            var _this6 = this;
+
+            if (message) {
+                this.authenticatePreAuthUser(message.credentialType, message.credentials).then(function (response) {
+                    _this6.eventAggregator.publish(new ChallengeVerify(response));
+                });
+            }
+        };
+
+        ChallengeWithCredentials.prototype.authenticatePreAuthUser = function authenticatePreAuthUser(credentialType, credentials) {
+            var _this7 = this;
+
+            var request = {
+                userId: this.vm.user.userId,
+                credentialType: credentialType,
+                credentials: credentials,
+                access_token: this.vm.user.access_token
+            };
+            return this.userService.authenticatePreAuthUser(request).then(function (response) {
+                return response;
+            }).catch(function (reason) {
+                _loggerHelper.logger.error(reason);
+                _this7.notification.error('verify-phone-info_error');
+                reject(reason);
+            });
+        };
+
         ChallengeWithCredentials.prototype.onChallengeCancel = function onChallengeCancel() {
-            this.eventAggregator.publish(new _loginMessages.GoToLogin());
+            this.eventAggregator.publish(new _loginMessages.GoToLogout());
         };
 
         ChallengeWithCredentials.prototype.onChallengeSuccess = function onChallengeSuccess(message) {
@@ -4078,12 +4510,13 @@ define('components/views/login/challenge-with-credentials',['exports', 'aurelia-
         ChallengeWithCredentials.prototype.onChallengeFail = function onChallengeFail(message) {
             this.vm.user.sessionId = '';
             this.vm.user.transactionId = '';
+            this.eventAggregator.publish(new _loginMessages.AuthenticateUserFail(message));
         };
 
         return ChallengeWithCredentials;
     }()) || _class);
 });
-define('components/views/login/challenge',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'resources/messages/challenge-messages', 'util/logger-helper'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _challengeMessages, _loggerHelper) {
+define('components/views/login/challenge',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-validation', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'resources/messages/login-messages', 'util/logger-helper'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaValidation, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _loginMessages, _loggerHelper) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -4102,8 +4535,6 @@ define('components/views/login/challenge',['exports', 'aurelia-framework', 'aure
     var Challenge = exports.Challenge = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaValidation.ValidationControllerFactory, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService), _dec(_class = function () {
         function Challenge(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
             _classCallCheck(this, Challenge);
-
-            this.vm = {};
 
             this.router = router;
             this.eventAggregator = eventAggregator;
@@ -4135,7 +4566,7 @@ define('components/views/login/challenge',['exports', 'aurelia-framework', 'aure
             var _this2 = this;
 
             return new Promise(function (resolve) {
-                _this2.eventAggregator.publish(new _challengeMessages.ChallengeCancel());
+                _this2.eventAggregator.publish(new _loginMessages.GoToLogout());
                 resolve();
             });
         };
@@ -4146,7 +4577,7 @@ define('components/views/login/challenge',['exports', 'aurelia-framework', 'aure
             return new Promise(function (resolve, reject) {
                 _this3.controller.validate().then(function (result) {
                     if (result.valid) {
-                        _this3.eventAggregator.publish(new _challengeMessages.GoToChallengeWithCredentials());
+                        _this3.eventAggregator.publish(new _loginMessages.ChallengeWithCredentials());
                     }
                     resolve();
                 }).catch(function (reason) {
@@ -4179,8 +4610,6 @@ define('components/views/login/deny',['exports', 'aurelia-framework', 'aurelia-r
         function Deny(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
             _classCallCheck(this, Deny);
 
-            this.vm = {};
-
             this.router = router;
             this.eventAggregator = eventAggregator;
             this.controller = controllerFactory.createForCurrentScope();
@@ -4204,7 +4633,7 @@ define('components/views/login/deny',['exports', 'aurelia-framework', 'aurelia-r
         return Deny;
     }()) || _class);
 });
-define('components/views/login/login',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'models/user', 'resources/messages/login-messages', 'resources/messages/challenge-messages', 'util/logger-helper', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _user, _loginMessages, _challengeMessages, _loggerHelper, _lodash) {
+define('components/views/login/login',['exports', 'aurelia-framework', 'aurelia-router', 'aurelia-event-aggregator', 'aurelia-dialog', 'aurelia-notification', 'aurelia-i18n', 'aurelia-authentication', 'services/user-service', 'models/user', 'util/logger-helper', 'resources/messages/login-messages', 'lodash'], function (exports, _aureliaFramework, _aureliaRouter, _aureliaEventAggregator, _aureliaDialog, _aureliaNotification, _aureliaI18n, _aureliaAuthentication, _userService, _user, _loggerHelper, _loginMessages, _lodash) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -4233,10 +4662,7 @@ define('components/views/login/login',['exports', 'aurelia-framework', 'aurelia-
             _classCallCheck(this, Login);
 
             this.vm = {
-                user: {},
-                userIdHasFocus: true,
-                credentialsHasFocus: false,
-                selectedCredentialType: null
+                user: new _user.User()
             };
             this.subscribers = [];
 
@@ -4263,8 +4689,8 @@ define('components/views/login/login',['exports', 'aurelia-framework', 'aurelia-
             this.subscribers.push(this.eventAggregator.subscribe(_loginMessages.AuthenticateUserSuccess, function (message) {
                 return _this.onAuthenticateUserSuccess(message);
             }));
-            this.subscribers.push(this.eventAggregator.subscribe(_challengeMessages.GoToChallengeWithCredentials, function (message) {
-                return _this.onGoToChallengeWithCredentials(message);
+            this.subscribers.push(this.eventAggregator.subscribe(_loginMessages.ChallengeWithCredentials, function (message) {
+                return _this.onChallengeWithCredentials(message);
             }));
             this.subscribers.push(this.eventAggregator.subscribe(_loginMessages.GoToForgotPassword, function (message) {
                 return _this.onGoToForgotPassword(message);
@@ -4284,25 +4710,34 @@ define('components/views/login/login',['exports', 'aurelia-framework', 'aurelia-
         };
 
         Login.prototype.onSigninSuccess = function onSigninSuccess(message) {
-            if (message && message.authStatusCode === 'Challenge' && message.userStatus === 'Enrolled') {
-                this.vm.user = new _user.User(message);
+            var _this2 = this;
+
+            if (message && message.authStatusCode === 'Challenge' && message.userStatus === 'Verified') {
+                this.vm.user.fromJson(message);
                 this.loginViewModel = './challenge';
-            } else if (message.authStatusCode === 'Success' && message.userStatus === 'Enrolled') {
-                this.onAuthenticateUserSuccess(message);
-            } else if (message.authStatusCode === 'Success') {
-                this.router.navigateToRoute('enrollment');
+            } else if (message.authStatusCode === 'Success' && message.userStatus === 'Verified') {
+                this.onAuthenticateUserSuccess(message).then(function (response) {
+                    _this2.router.navigateToRoute('self-service');
+                });
+            } else if (message.authStatusCode === 'Success' && message.userStatus === 'Unverified') {
+                this.onAuthenticateUserSuccess(message).then(function (response) {
+                    _this2.router.navigateToRoute('enrollment');
+                });
             } else {
                 this.loginViewModel = './deny';
             }
         };
 
-        Login.prototype.onGoToChallengeWithCredentials = function onGoToChallengeWithCredentials() {
+        Login.prototype.onChallengeWithCredentials = function onChallengeWithCredentials() {
             this.loginViewModel = './challenge-with-credentials';
         };
 
         Login.prototype.onAuthenticateUserSuccess = function onAuthenticateUserSuccess(message) {
-            this.authService.setResponseObject({ token: message.authToken });
-            this.router.navigateToRoute('self-service');
+            var request = {
+                username: this.vm.user.userId,
+                password: this.vm.user.credentials
+            };
+            return this.authService.login(request);
         };
 
         Login.prototype.onGoToForgotPassword = function onGoToForgotPassword(message) {
@@ -4331,8 +4766,6 @@ define('components/views/login/network-credentials',['exports', 'aurelia-framewo
     var NetworkCredentials = exports.NetworkCredentials = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaEventAggregator.EventAggregator, _aureliaValidation.ValidationControllerFactory, _aureliaDialog.DialogService, _aureliaNotification.Notification, _aureliaI18n.I18N, _aureliaAuthentication.AuthService, _userService.UserService, _windowHelper.WindowHelper), _dec(_class = function () {
         function NetworkCredentials(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService, windowHelper) {
             _classCallCheck(this, NetworkCredentials);
-
-            this.vm = {};
 
             this.router = router;
             this.eventAggregator = eventAggregator;
@@ -4384,8 +4817,8 @@ define('components/views/login/network-credentials',['exports', 'aurelia-framewo
             var _this2 = this;
 
             return new Promise(function (resolve, reject) {
-                _this2.controller.validate().then(function (controllerValidateResult) {
-                    if (controllerValidateResult.valid) {
+                _this2.controller.validate().then(function (result) {
+                    if (result.valid) {
                         var request = {
                             sessionId: _this2.vm.user.sessionId,
                             transactionId: _this2.vm.user.transactionId,
@@ -4473,7 +4906,9 @@ define('components/views/self-service/self-service',['exports', 'aurelia-framewo
         function SelfService(router, eventAggregator, dialogService, notification, i18n, authService, userService) {
             _classCallCheck(this, SelfService);
 
-            this.vm = {};
+            this.vm = {
+                user: new _user.User()
+            };
             this.subscribers = [];
 
             this.router = router;
@@ -4483,18 +4918,19 @@ define('components/views/self-service/self-service',['exports', 'aurelia-framewo
             this.i18n = i18n;
             this.authService = authService;
             this.userService = userService;
+
+            var payload = this.authService.getTokenPayload();
+            this.vm.user.fromJson(payload);
         }
 
         SelfService.prototype.activate = function activate(params, routeConfig, navigationInstruction) {
             var _this = this;
 
-            var payload = this.authService.getTokenPayload();
-            var userId = payload ? payload.username : null;
             var request = {
-                userId: userId
+                userId: this.vm.user.userId
             };
             return this.userService.getUser(request).then(function (response) {
-                _this.vm.user = new _user.User(response);
+                _this.vm.user.fromJson(response);
             }).catch(function (reason) {
                 _loggerHelper.logger.error(reason);
                 _this.notification.error('get-user_error');
@@ -4506,7 +4942,7 @@ define('components/views/self-service/self-service',['exports', 'aurelia-framewo
         };
 
         SelfService.prototype.goToEditProfile = function goToEditProfile(event) {
-            this.router.navigateToRoute('edit-profile');
+            this.router.navigateToRoute('edit-credentials');
         };
 
         SelfService.prototype.goToUnlockAccount = function goToUnlockAccount(event) {
@@ -4567,18 +5003,6 @@ define('components/views/unlock-account/unlock-account',['exports', 'aurelia-fra
             });
         };
 
-        UnlockAccount.prototype.goToChangePassword = function goToChangePassword(event) {
-            this.router.navigateToRoute('change-password');
-        };
-
-        UnlockAccount.prototype.goToEditProfile = function goToEditProfile(event) {
-            this.router.navigateToRoute('edit-profile');
-        };
-
-        UnlockAccount.prototype.goToUnlockAccount = function goToUnlockAccount(event) {
-            this.router.navigateToRoute('unlock-account');
-        };
-
         return UnlockAccount;
     }()) || _class);
 });
@@ -4622,6 +5046,7 @@ define('components/views/verify-email-info-dialog/verify-email-info-dialog',['ex
             this.dialogController = dialogController;
             this.eventAggregator = eventAggregator;
             this.controller = controllerFactory.createForCurrentScope();
+            this.controller.validateTrigger = _aureliaValidation.validateTrigger.manual;
             this.notification = notification;
             this.i18n = i18n;
             this.authService = authService;
@@ -4709,8 +5134,8 @@ define('components/views/verify-email-info-dialog/verify-email-info-dialog',['ex
             var _this3 = this;
 
             return new Promise(function (resolve, reject) {
-                _this3.controller.validate().then(function (controllerValidateResult) {
-                    if (controllerValidateResult.valid) {
+                _this3.controller.validate().then(function (result) {
+                    if (result.valid) {
                         var request = {
                             sessionId: _this3.vm.user.sessionId,
                             transactionId: _this3.vm.user.transactionId,
@@ -4732,7 +5157,12 @@ define('components/views/verify-email-info-dialog/verify-email-info-dialog',['ex
                             _this3.notification.error('verify-email-info_error');
                             reject(reason);
                         });
+                    } else {
+                        resolve();
                     }
+                }).catch(function (validateReason) {
+                    _loggerHelper.logger.error(validateReason);
+                    reject(validateReason);
                 });
             });
         };
@@ -4780,6 +5210,7 @@ define('components/views/verify-phone-info-dialog/verify-phone-info-dialog',['ex
             this.dialogController = dialogController;
             this.eventAggregator = eventAggregator;
             this.controller = controllerFactory.createForCurrentScope();
+            this.controller.validateTrigger = _aureliaValidation.validateTrigger.manual;
             this.notification = notification;
             this.i18n = i18n;
             this.authService = authService;
@@ -4867,8 +5298,8 @@ define('components/views/verify-phone-info-dialog/verify-phone-info-dialog',['ex
             var _this3 = this;
 
             return new Promise(function (resolve, reject) {
-                _this3.controller.validate().then(function (controllerValidateResult) {
-                    if (controllerValidateResult.valid) {
+                _this3.controller.validate().then(function (result) {
+                    if (result.valid) {
                         var request = {
                             sessionId: _this3.vm.user.sessionId,
                             transactionId: _this3.vm.user.transactionId,
@@ -4890,7 +5321,12 @@ define('components/views/verify-phone-info-dialog/verify-phone-info-dialog',['ex
                             _this3.notification.error('verify-phone-info_error');
                             reject(reason);
                         });
+                    } else {
+                        resolve();
                     }
+                }).catch(function (validateReason) {
+                    _loggerHelper.logger.error(validateReason);
+                    reject(validateReason);
                 });
             });
         };
@@ -10706,745 +11142,886 @@ module.exports = {
 };
 });
 
-define('aurelia-dialog/ai-dialog',['exports', 'aurelia-templating'], function (exports, _aureliaTemplating) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.AiDialog = undefined;
-
-  
-
-  var _dec, _dec2, _class;
-
-  var AiDialog = exports.AiDialog = (_dec = (0, _aureliaTemplating.customElement)('ai-dialog'), _dec2 = (0, _aureliaTemplating.inlineView)('\n  <template>\n    <slot></slot>\n  </template>\n'), _dec(_class = _dec2(_class = function AiDialog() {
-    
-  }) || _class) || _class);
-});
-define('aurelia-dialog/ai-dialog-header',['exports', 'aurelia-templating', './dialog-controller'], function (exports, _aureliaTemplating, _dialogController) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.AiDialogHeader = undefined;
-
-  
-
-  var _dec, _dec2, _class, _class2, _temp;
-
-  var AiDialogHeader = exports.AiDialogHeader = (_dec = (0, _aureliaTemplating.customElement)('ai-dialog-header'), _dec2 = (0, _aureliaTemplating.inlineView)('\n  <template>\n    <button type="button" class="dialog-close" aria-label="Close" if.bind="!controller.settings.lock" click.trigger="controller.cancel()">\n      <span aria-hidden="true">&times;</span>\n    </button>\n\n    <div class="dialog-header-content">\n      <slot></slot>\n    </div>\n  </template>\n'), _dec(_class = _dec2(_class = (_temp = _class2 = function AiDialogHeader(controller) {
-    
-
-    this.controller = controller;
-  }, _class2.inject = [_dialogController.DialogController], _temp)) || _class) || _class);
-});
-define('aurelia-dialog/dialog-controller',['exports', './lifecycle', './dialog-result'], function (exports, _lifecycle, _dialogResult) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.DialogController = undefined;
-
-  
-
-  var DialogController = exports.DialogController = function () {
-    function DialogController(renderer, settings, resolve, reject) {
-      
-
-      this.renderer = renderer;
-      this.settings = settings;
-      this._resolve = resolve;
-      this._reject = reject;
-    }
-
-    DialogController.prototype.ok = function ok(output) {
-      return this.close(true, output);
+define('aurelia-dialog/dialog-configuration',["require", "exports", "./renderer", "./dialog-settings", "./dialog-renderer", "aurelia-pal"], function (require, exports, renderer_1, dialog_settings_1, dialog_renderer_1, aurelia_pal_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var defaultRenderer = dialog_renderer_1.DialogRenderer;
+    var resources = {
+        'ux-dialog': aurelia_pal_1.PLATFORM.moduleName('./ux-dialog'),
+        'ux-dialog-header': aurelia_pal_1.PLATFORM.moduleName('./ux-dialog-header'),
+        'ux-dialog-body': aurelia_pal_1.PLATFORM.moduleName('./ux-dialog-body'),
+        'ux-dialog-footer': aurelia_pal_1.PLATFORM.moduleName('./ux-dialog-footer'),
+        'attach-focus': aurelia_pal_1.PLATFORM.moduleName('./attach-focus')
     };
-
-    DialogController.prototype.cancel = function cancel(output) {
-      return this.close(false, output);
-    };
-
-    DialogController.prototype.error = function error(message) {
-      var _this = this;
-
-      return (0, _lifecycle.invokeLifecycle)(this.viewModel, 'deactivate').then(function () {
-        return _this.renderer.hideDialog(_this);
-      }).then(function () {
-        _this.controller.unbind();
-        _this._reject(message);
-      });
-    };
-
-    DialogController.prototype.close = function close(ok, output) {
-      var _this2 = this;
-
-      if (this._closePromise) {
-        return this._closePromise;
-      }
-
-      this._closePromise = (0, _lifecycle.invokeLifecycle)(this.viewModel, 'canDeactivate').then(function (canDeactivate) {
-        if (canDeactivate) {
-          return (0, _lifecycle.invokeLifecycle)(_this2.viewModel, 'deactivate').then(function () {
-            return _this2.renderer.hideDialog(_this2);
-          }).then(function () {
-            var result = new _dialogResult.DialogResult(!ok, output);
-            _this2.controller.unbind();
-            _this2._resolve(result);
-            return result;
-          });
+    // tslint:disable-next-line:max-line-length
+    var defaultCSSText = "ux-dialog-container,ux-dialog-overlay{position:fixed;top:0;right:0;bottom:0;left:0}ux-dialog-overlay{opacity:0}ux-dialog-overlay.active{opacity:1}ux-dialog-container{display:block;transition:opacity .2s linear;opacity:0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}ux-dialog-container.active{opacity:1}ux-dialog-container>div{padding:30px}ux-dialog-container>div>div{display:block;min-width:300px;width:-moz-fit-content;width:-webkit-fit-content;width:fit-content;height:-moz-fit-content;height:-webkit-fit-content;height:fit-content;margin:auto}ux-dialog-container,ux-dialog-container>div,ux-dialog-container>div>div{outline:0}ux-dialog{display:table;box-shadow:0 5px 15px rgba(0,0,0,.5);border:1px solid rgba(0,0,0,.2);border-radius:5px;padding:3px;min-width:300px;width:-moz-fit-content;width:-webkit-fit-content;width:fit-content;height:-moz-fit-content;height:-webkit-fit-content;height:fit-content;margin:auto;border-image-source:initial;border-image-slice:initial;border-image-width:initial;border-image-outset:initial;border-image-repeat:initial;background:#fff}ux-dialog>ux-dialog-header{display:block;padding:16px;border-bottom:1px solid #e5e5e5}ux-dialog>ux-dialog-header>button{float:right;border:none;display:block;width:32px;height:32px;background:0 0;font-size:22px;line-height:16px;margin:-14px -16px 0 0;padding:0;cursor:pointer}ux-dialog>ux-dialog-body{display:block;padding:16px}ux-dialog>ux-dialog-footer{display:block;padding:6px;border-top:1px solid #e5e5e5;text-align:right}ux-dialog>ux-dialog-footer button{color:#333;background-color:#fff;padding:6px 12px;font-size:14px;text-align:center;white-space:nowrap;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;background-image:none;border:1px solid #ccc;border-radius:4px;margin:5px 0 5px 5px}ux-dialog>ux-dialog-footer button:disabled{cursor:default;opacity:.45}ux-dialog>ux-dialog-footer button:hover:enabled{color:#333;background-color:#e6e6e6;border-color:#adadad}.ux-dialog-open{overflow:hidden}";
+    /**
+     * A configuration builder for the dialog plugin.
+     */
+    var DialogConfiguration = (function () {
+        function DialogConfiguration(frameworkConfiguration, applySetter) {
+            var _this = this;
+            this.resources = [];
+            this.fwConfig = frameworkConfiguration;
+            this.settings = this.fwConfig.container.get(dialog_settings_1.DefaultDialogSettings);
+            applySetter(function () { return _this._apply(); });
         }
-
-        _this2._closePromise = undefined;
-      }, function (e) {
-        _this2._closePromise = undefined;
-        return Promise.reject(e);
-      });
-
-      return this._closePromise;
-    };
-
-    return DialogController;
-  }();
+        DialogConfiguration.prototype._apply = function () {
+            var _this = this;
+            this.fwConfig.transient(renderer_1.Renderer, this.renderer);
+            this.resources.forEach(function (resourceName) { return _this.fwConfig.globalResources(resources[resourceName]); });
+            if (this.cssText) {
+                aurelia_pal_1.DOM.injectStyles(this.cssText);
+            }
+        };
+        /**
+         * Selects the Aurelia conventional defaults for the dialog plugin.
+         * @return This instance.
+         */
+        DialogConfiguration.prototype.useDefaults = function () {
+            return this.useRenderer(defaultRenderer)
+                .useCSS(defaultCSSText)
+                .useStandardResources();
+        };
+        /**
+         * Exports the standard set of dialog behaviors to Aurelia's global resources.
+         * @return This instance.
+         */
+        DialogConfiguration.prototype.useStandardResources = function () {
+            return this.useResource('ux-dialog')
+                .useResource('ux-dialog-header')
+                .useResource('ux-dialog-body')
+                .useResource('ux-dialog-footer')
+                .useResource('attach-focus');
+        };
+        /**
+         * Exports the chosen dialog element or view to Aurelia's global resources.
+         * @param resourceName The name of the dialog resource to export.
+         * @return This instance.
+         */
+        DialogConfiguration.prototype.useResource = function (resourceName) {
+            this.resources.push(resourceName);
+            return this;
+        };
+        /**
+         * Configures the plugin to use a specific dialog renderer.
+         * @param renderer A type that implements the Renderer interface.
+         * @param settings Global settings for the renderer.
+         * @return This instance.
+         */
+        DialogConfiguration.prototype.useRenderer = function (renderer, settings) {
+            this.renderer = renderer;
+            if (settings) {
+                Object.assign(this.settings, settings);
+            }
+            return this;
+        };
+        /**
+         * Configures the plugin to use specific css.
+         * @param cssText The css to use in place of the default styles.
+         * @return This instance.
+         */
+        DialogConfiguration.prototype.useCSS = function (cssText) {
+            this.cssText = cssText;
+            return this;
+        };
+        return DialogConfiguration;
+    }());
+    exports.DialogConfiguration = DialogConfiguration;
 });
-define('aurelia-dialog/lifecycle',['exports'], function (exports) {
-  'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.invokeLifecycle = invokeLifecycle;
-  function invokeLifecycle(instance, name, model) {
-    if (typeof instance[name] === 'function') {
-      var result = instance[name](model);
-
-      if (result instanceof Promise) {
-        return result;
-      }
-
-      if (result !== null && result !== undefined) {
-        return Promise.resolve(result);
-      }
-
-      return Promise.resolve(true);
-    }
-
-    return Promise.resolve(true);
-  }
-});
-define('aurelia-dialog/dialog-result',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  
-
-  var DialogResult = exports.DialogResult = function DialogResult(cancelled, output) {
-    
-
-    this.wasCancelled = false;
-
-    this.wasCancelled = cancelled;
-    this.output = output;
-  };
-});
-define('aurelia-dialog/ai-dialog-body',['exports', 'aurelia-templating'], function (exports, _aureliaTemplating) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.AiDialogBody = undefined;
-
-  
-
-  var _dec, _dec2, _class;
-
-  var AiDialogBody = exports.AiDialogBody = (_dec = (0, _aureliaTemplating.customElement)('ai-dialog-body'), _dec2 = (0, _aureliaTemplating.inlineView)('\n  <template>\n    <slot></slot>\n  </template>\n'), _dec(_class = _dec2(_class = function AiDialogBody() {
-    
-  }) || _class) || _class);
-});
-define('aurelia-dialog/ai-dialog-footer',['exports', 'aurelia-templating', './dialog-controller'], function (exports, _aureliaTemplating, _dialogController) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.AiDialogFooter = undefined;
-
-  function _initDefineProp(target, property, descriptor, context) {
-    if (!descriptor) return;
-    Object.defineProperty(target, property, {
-      enumerable: descriptor.enumerable,
-      configurable: descriptor.configurable,
-      writable: descriptor.writable,
-      value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
-    });
-  }
-
-  
-
-  function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
-    var desc = {};
-    Object['ke' + 'ys'](descriptor).forEach(function (key) {
-      desc[key] = descriptor[key];
-    });
-    desc.enumerable = !!desc.enumerable;
-    desc.configurable = !!desc.configurable;
-
-    if ('value' in desc || desc.initializer) {
-      desc.writable = true;
-    }
-
-    desc = decorators.slice().reverse().reduce(function (desc, decorator) {
-      return decorator(target, property, desc) || desc;
-    }, desc);
-
-    if (context && desc.initializer !== void 0) {
-      desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
-      desc.initializer = undefined;
-    }
-
-    if (desc.initializer === void 0) {
-      Object['define' + 'Property'](target, property, desc);
-      desc = null;
-    }
-
-    return desc;
-  }
-
-  function _initializerWarningHelper(descriptor, context) {
-    throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
-  }
-
-  var _dec, _dec2, _class, _desc, _value, _class2, _descriptor, _descriptor2, _class3, _temp;
-
-  var AiDialogFooter = exports.AiDialogFooter = (_dec = (0, _aureliaTemplating.customElement)('ai-dialog-footer'), _dec2 = (0, _aureliaTemplating.inlineView)('\n  <template>\n    <slot></slot>\n\n    <template if.bind="buttons.length > 0">\n      <button type="button" class="btn btn-default" repeat.for="button of buttons" click.trigger="close(button)">${button}</button>\n    </template>\n  </template>\n'), _dec(_class = _dec2(_class = (_class2 = (_temp = _class3 = function () {
-    function AiDialogFooter(controller) {
-      
-
-      _initDefineProp(this, 'buttons', _descriptor, this);
-
-      _initDefineProp(this, 'useDefaultButtons', _descriptor2, this);
-
-      this.controller = controller;
-    }
-
-    AiDialogFooter.prototype.close = function close(buttonValue) {
-      if (AiDialogFooter.isCancelButton(buttonValue)) {
-        this.controller.cancel(buttonValue);
-      } else {
-        this.controller.ok(buttonValue);
-      }
-    };
-
-    AiDialogFooter.prototype.useDefaultButtonsChanged = function useDefaultButtonsChanged(newValue) {
-      if (newValue) {
-        this.buttons = ['Cancel', 'Ok'];
-      }
-    };
-
-    AiDialogFooter.isCancelButton = function isCancelButton(value) {
-      return value === 'Cancel';
-    };
-
-    return AiDialogFooter;
-  }(), _class3.inject = [_dialogController.DialogController], _temp), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'buttons', [_aureliaTemplating.bindable], {
-    enumerable: true,
-    initializer: function initializer() {
-      return [];
-    }
-  }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'useDefaultButtons', [_aureliaTemplating.bindable], {
-    enumerable: true,
-    initializer: function initializer() {
-      return false;
-    }
-  })), _class2)) || _class) || _class);
-});
-define('aurelia-dialog/attach-focus',['exports', 'aurelia-templating'], function (exports, _aureliaTemplating) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.AttachFocus = undefined;
-
-  
-
-  var _dec, _class, _class2, _temp;
-
-  var AttachFocus = exports.AttachFocus = (_dec = (0, _aureliaTemplating.customAttribute)('attach-focus'), _dec(_class = (_temp = _class2 = function () {
-    function AttachFocus(element) {
-      
-
-      this.value = true;
-
-      this.element = element;
-    }
-
-    AttachFocus.prototype.attached = function attached() {
-      if (this.value && this.value !== 'false') {
-        this.element.focus();
-      }
-    };
-
-    AttachFocus.prototype.valueChanged = function valueChanged(newValue) {
-      this.value = newValue;
-    };
-
-    return AttachFocus;
-  }(), _class2.inject = [Element], _temp)) || _class);
-});
-define('aurelia-dialog/dialog-configuration',['exports', './renderer', './dialog-renderer', './dialog-options', 'aurelia-pal'], function (exports, _renderer, _dialogRenderer, _dialogOptions, _aureliaPal) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.DialogConfiguration = undefined;
-
-  
-
-  var defaultRenderer = _dialogRenderer.DialogRenderer;
-
-  var resources = {
-    'ai-dialog': './ai-dialog',
-    'ai-dialog-header': './ai-dialog-header',
-    'ai-dialog-body': './ai-dialog-body',
-    'ai-dialog-footer': './ai-dialog-footer',
-    'attach-focus': './attach-focus'
-  };
-
-  var defaultCSSText = 'ai-dialog-container,ai-dialog-overlay{position:fixed;top:0;right:0;bottom:0;left:0}ai-dialog-overlay{opacity:0}ai-dialog-overlay.active{opacity:1}ai-dialog-container{display:block;transition:opacity .2s linear;opacity:0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}ai-dialog-container.active{opacity:1}ai-dialog-container>div{padding:30px}ai-dialog-container>div>div{display:block;min-width:300px;width:-moz-fit-content;width:-webkit-fit-content;width:fit-content;height:-moz-fit-content;height:-webkit-fit-content;height:fit-content;margin:auto}ai-dialog-container,ai-dialog-container>div,ai-dialog-container>div>div{outline:0}ai-dialog{display:table;box-shadow:0 5px 15px rgba(0,0,0,.5);border:1px solid rgba(0,0,0,.2);border-radius:5px;padding:3;min-width:300px;width:-moz-fit-content;width:-webkit-fit-content;width:fit-content;height:-moz-fit-content;height:-webkit-fit-content;height:fit-content;margin:auto;border-image-source:initial;border-image-slice:initial;border-image-width:initial;border-image-outset:initial;border-image-repeat:initial;background:#fff}ai-dialog>ai-dialog-header{display:block;padding:16px;border-bottom:1px solid #e5e5e5}ai-dialog>ai-dialog-header>button{float:right;border:none;display:block;width:32px;height:32px;background:0 0;font-size:22px;line-height:16px;margin:-14px -16px 0 0;padding:0;cursor:pointer}ai-dialog>ai-dialog-body{display:block;padding:16px}ai-dialog>ai-dialog-footer{display:block;padding:6px;border-top:1px solid #e5e5e5;text-align:right}ai-dialog>ai-dialog-footer button{color:#333;background-color:#fff;padding:6px 12px;font-size:14px;text-align:center;white-space:nowrap;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;background-image:none;border:1px solid #ccc;border-radius:4px;margin:5px 0 5px 5px}ai-dialog>ai-dialog-footer button:disabled{cursor:default;opacity:.45}ai-dialog>ai-dialog-footer button:hover:enabled{color:#333;background-color:#e6e6e6;border-color:#adadad}.ai-dialog-open{overflow:hidden}';
-
-  var DialogConfiguration = exports.DialogConfiguration = function () {
-    function DialogConfiguration(aurelia) {
-      
-
-      this.aurelia = aurelia;
-      this.settings = _dialogOptions.dialogOptions;
-      this.resources = [];
-      this.cssText = defaultCSSText;
-      this.renderer = defaultRenderer;
-    }
-
-    DialogConfiguration.prototype.useDefaults = function useDefaults() {
-      return this.useRenderer(defaultRenderer).useCSS(defaultCSSText).useStandardResources();
-    };
-
-    DialogConfiguration.prototype.useStandardResources = function useStandardResources() {
-      return this.useResource('ai-dialog').useResource('ai-dialog-header').useResource('ai-dialog-body').useResource('ai-dialog-footer').useResource('attach-focus');
-    };
-
-    DialogConfiguration.prototype.useResource = function useResource(resourceName) {
-      this.resources.push(resourceName);
-      return this;
-    };
-
-    DialogConfiguration.prototype.useRenderer = function useRenderer(renderer, settings) {
-      this.renderer = renderer;
-      this.settings = Object.assign(this.settings, settings || {});
-      return this;
-    };
-
-    DialogConfiguration.prototype.useCSS = function useCSS(cssText) {
-      this.cssText = cssText;
-      return this;
-    };
-
-    DialogConfiguration.prototype._apply = function _apply() {
-      var _this = this;
-
-      this.aurelia.transient(_renderer.Renderer, this.renderer);
-      this.resources.forEach(function (resourceName) {
-        return _this.aurelia.globalResources(resources[resourceName]);
-      });
-
-      if (this.cssText) {
-        _aureliaPal.DOM.injectStyles(this.cssText);
-      }
-    };
-
-    return DialogConfiguration;
-  }();
-});
-define('aurelia-dialog/renderer',['exports'], function (exports) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  
-
-  var Renderer = exports.Renderer = function () {
-    function Renderer() {
-      
-    }
-
-    Renderer.prototype.getDialogContainer = function getDialogContainer() {
-      throw new Error('DialogRenderer must implement getDialogContainer().');
-    };
-
-    Renderer.prototype.showDialog = function showDialog(dialogController) {
-      throw new Error('DialogRenderer must implement showDialog().');
-    };
-
-    Renderer.prototype.hideDialog = function hideDialog(dialogController) {
-      throw new Error('DialogRenderer must implement hideDialog().');
-    };
-
-    return Renderer;
-  }();
-});
-define('aurelia-dialog/dialog-renderer',['exports', 'aurelia-pal', 'aurelia-dependency-injection'], function (exports, _aureliaPal, _aureliaDependencyInjection) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.DialogRenderer = undefined;
-
-  
-
-  var _dec, _class;
-
-  var containerTagName = 'ai-dialog-container';
-  var overlayTagName = 'ai-dialog-overlay';
-  var transitionEvent = function () {
-    var transition = null;
-
-    return function () {
-      if (transition) return transition;
-
-      var t = void 0;
-      var el = _aureliaPal.DOM.createElement('fakeelement');
-      var transitions = {
-        'transition': 'transitionend',
-        'OTransition': 'oTransitionEnd',
-        'MozTransition': 'transitionend',
-        'WebkitTransition': 'webkitTransitionEnd'
-      };
-      for (t in transitions) {
-        if (el.style[t] !== undefined) {
-          transition = transitions[t];
-          return transition;
+define('aurelia-dialog/renderer',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * An abstract base class for implementors of the basic Renderer API.
+     */
+    var Renderer = (function () {
+        function Renderer() {
         }
-      }
-    };
-  }();
-
-  var DialogRenderer = exports.DialogRenderer = (_dec = (0, _aureliaDependencyInjection.transient)(), _dec(_class = function () {
-    function DialogRenderer() {
-      var _this = this;
-
-      
-
-      this._escapeKeyEventHandler = function (e) {
-        if (e.keyCode === 27) {
-          var top = _this._dialogControllers[_this._dialogControllers.length - 1];
-          if (top && top.settings.lock !== true) {
-            top.cancel();
-          }
-        }
-      };
-    }
-
-    DialogRenderer.prototype.getDialogContainer = function getDialogContainer() {
-      return _aureliaPal.DOM.createElement('div');
-    };
-
-    DialogRenderer.prototype.showDialog = function showDialog(dialogController) {
-      var _this2 = this;
-
-      var settings = dialogController.settings;
-      var body = _aureliaPal.DOM.querySelectorAll('body')[0];
-      var wrapper = document.createElement('div');
-
-      this.modalOverlay = _aureliaPal.DOM.createElement(overlayTagName);
-      this.modalContainer = _aureliaPal.DOM.createElement(containerTagName);
-      this.anchor = dialogController.slot.anchor;
-      wrapper.appendChild(this.anchor);
-      this.modalContainer.appendChild(wrapper);
-
-      this.stopPropagation = function (e) {
-        e._aureliaDialogHostClicked = true;
-      };
-      this.closeModalClick = function (e) {
-        if (!settings.lock && !e._aureliaDialogHostClicked) {
-          dialogController.cancel();
-        } else {
-          return false;
-        }
-      };
-
-      dialogController.centerDialog = function () {
-        if (settings.centerHorizontalOnly) return;
-        centerDialog(_this2.modalContainer);
-      };
-
-      this.modalOverlay.style.zIndex = settings.startingZIndex;
-      this.modalContainer.style.zIndex = settings.startingZIndex;
-
-      var lastContainer = Array.from(body.querySelectorAll(containerTagName)).pop();
-
-      if (lastContainer) {
-        lastContainer.parentNode.insertBefore(this.modalContainer, lastContainer.nextSibling);
-        lastContainer.parentNode.insertBefore(this.modalOverlay, lastContainer.nextSibling);
-      } else {
-        body.insertBefore(this.modalContainer, body.firstChild);
-        body.insertBefore(this.modalOverlay, body.firstChild);
-      }
-
-      if (!this._dialogControllers.length) {
-        _aureliaPal.DOM.addEventListener('keyup', this._escapeKeyEventHandler);
-      }
-
-      this._dialogControllers.push(dialogController);
-
-      dialogController.slot.attached();
-
-      if (typeof settings.position === 'function') {
-        settings.position(this.modalContainer, this.modalOverlay);
-      } else {
-        dialogController.centerDialog();
-      }
-
-      this.modalContainer.addEventListener('click', this.closeModalClick);
-      this.anchor.addEventListener('click', this.stopPropagation);
-
-      return new Promise(function (resolve) {
-        var renderer = _this2;
-        if (settings.ignoreTransitions) {
-          resolve();
-        } else {
-          _this2.modalContainer.addEventListener(transitionEvent(), onTransitionEnd);
-        }
-
-        _this2.modalOverlay.classList.add('active');
-        _this2.modalContainer.classList.add('active');
-        body.classList.add('ai-dialog-open');
-
-        function onTransitionEnd(e) {
-          if (e.target !== renderer.modalContainer) {
-            return;
-          }
-          renderer.modalContainer.removeEventListener(transitionEvent(), onTransitionEnd);
-          resolve();
-        }
-      });
-    };
-
-    DialogRenderer.prototype.hideDialog = function hideDialog(dialogController) {
-      var _this3 = this;
-
-      var settings = dialogController.settings;
-      var body = _aureliaPal.DOM.querySelectorAll('body')[0];
-
-      this.modalContainer.removeEventListener('click', this.closeModalClick);
-      this.anchor.removeEventListener('click', this.stopPropagation);
-
-      var i = this._dialogControllers.indexOf(dialogController);
-      if (i !== -1) {
-        this._dialogControllers.splice(i, 1);
-      }
-
-      if (!this._dialogControllers.length) {
-        _aureliaPal.DOM.removeEventListener('keyup', this._escapeKeyEventHandler);
-      }
-
-      return new Promise(function (resolve) {
-        var renderer = _this3;
-        if (settings.ignoreTransitions) {
-          resolve();
-        } else {
-          _this3.modalContainer.addEventListener(transitionEvent(), onTransitionEnd);
-        }
-
-        _this3.modalOverlay.classList.remove('active');
-        _this3.modalContainer.classList.remove('active');
-
-        function onTransitionEnd() {
-          renderer.modalContainer.removeEventListener(transitionEvent(), onTransitionEnd);
-          resolve();
-        }
-      }).then(function () {
-        body.removeChild(_this3.modalOverlay);
-        body.removeChild(_this3.modalContainer);
-        dialogController.slot.detached();
-
-        if (!_this3._dialogControllers.length) {
-          body.classList.remove('ai-dialog-open');
-        }
-
-        return Promise.resolve();
-      });
-    };
-
-    return DialogRenderer;
-  }()) || _class);
-
-
-  DialogRenderer.prototype._dialogControllers = [];
-
-  function centerDialog(modalContainer) {
-    var child = modalContainer.children[0];
-    var vh = Math.max(_aureliaPal.DOM.querySelectorAll('html')[0].clientHeight, window.innerHeight || 0);
-
-    child.style.marginTop = Math.max((vh - child.offsetHeight) / 2, 30) + 'px';
-    child.style.marginBottom = Math.max((vh - child.offsetHeight) / 2, 30) + 'px';
-  }
+        /**
+         * Gets an anchor for the ViewSlot to insert a view into.
+         * @returns A DOM element.
+         */
+        Renderer.prototype.getDialogContainer = function () {
+            throw new Error('DialogRenderer must implement getDialogContainer().');
+        };
+        /**
+         * Displays the dialog.
+         * @returns Promise A promise that resolves when the dialog has been displayed.
+         */
+        Renderer.prototype.showDialog = function (dialogController) {
+            throw new Error('DialogRenderer must implement showDialog().');
+        };
+        /**
+         * Hides the dialog.
+         * @returns Promise A promise that resolves when the dialog has been hidden.
+         */
+        Renderer.prototype.hideDialog = function (dialogController) {
+            throw new Error('DialogRenderer must implement hideDialog().');
+        };
+        return Renderer;
+    }());
+    exports.Renderer = Renderer;
 });
-define('aurelia-dialog/dialog-options',["exports"], function (exports) {
-  "use strict";
 
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  var dialogOptions = exports.dialogOptions = {
-    lock: true,
-    centerHorizontalOnly: false,
-    startingZIndex: 1000,
-    ignoreTransitions: false
-  };
-});
-define('aurelia-dialog/dialog-service',['exports', 'aurelia-metadata', 'aurelia-dependency-injection', 'aurelia-templating', './dialog-controller', './renderer', './lifecycle', './dialog-result', './dialog-options'], function (exports, _aureliaMetadata, _aureliaDependencyInjection, _aureliaTemplating, _dialogController, _renderer, _lifecycle, _dialogResult, _dialogOptions) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.DialogService = undefined;
-
-  
-
-  var _class, _temp;
-
-  var DialogService = exports.DialogService = (_temp = _class = function () {
-    function DialogService(container, compositionEngine) {
-      
-
-      this.container = container;
-      this.compositionEngine = compositionEngine;
-      this.controllers = [];
-      this.hasActiveDialog = false;
-    }
-
-    DialogService.prototype.open = function open(settings) {
-      return this.openAndYieldController(settings).then(function (controller) {
-        return controller.result;
-      });
-    };
-
-    DialogService.prototype.openAndYieldController = function openAndYieldController(settings) {
-      var _this = this;
-
-      var childContainer = this.container.createChild();
-      var dialogController = void 0;
-      var promise = new Promise(function (resolve, reject) {
-        dialogController = new _dialogController.DialogController(childContainer.get(_renderer.Renderer), _createSettings(settings), resolve, reject);
-      });
-      childContainer.registerInstance(_dialogController.DialogController, dialogController);
-      dialogController.result = promise;
-      dialogController.result.then(function () {
-        _removeController(_this, dialogController);
-      }, function () {
-        _removeController(_this, dialogController);
-      });
-      return _openDialog(this, childContainer, dialogController).then(function () {
-        return dialogController;
-      });
-    };
-
-    return DialogService;
-  }(), _class.inject = [_aureliaDependencyInjection.Container, _aureliaTemplating.CompositionEngine], _temp);
-
-
-  function _createSettings(settings) {
-    settings = Object.assign({}, _dialogOptions.dialogOptions, settings);
-    settings.startingZIndex = _dialogOptions.dialogOptions.startingZIndex;
-    return settings;
-  }
-
-  function _openDialog(service, childContainer, dialogController) {
-    var host = dialogController.renderer.getDialogContainer();
-    var instruction = {
-      container: service.container,
-      childContainer: childContainer,
-      model: dialogController.settings.model,
-      view: dialogController.settings.view,
-      viewModel: dialogController.settings.viewModel,
-      viewSlot: new _aureliaTemplating.ViewSlot(host, true),
-      host: host
-    };
-
-    return _getViewModel(instruction, service.compositionEngine).then(function (returnedInstruction) {
-      dialogController.viewModel = returnedInstruction.viewModel;
-      dialogController.slot = returnedInstruction.viewSlot;
-
-      return (0, _lifecycle.invokeLifecycle)(dialogController.viewModel, 'canActivate', dialogController.settings.model).then(function (canActivate) {
-        if (canActivate) {
-          return service.compositionEngine.compose(returnedInstruction).then(function (controller) {
-            service.controllers.push(dialogController);
-            service.hasActiveDialog = !!service.controllers.length;
-            dialogController.controller = controller;
-            dialogController.view = controller.view;
-
-            return dialogController.renderer.showDialog(dialogController);
-          });
+define('aurelia-dialog/dialog-settings',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * @internal
+     */
+    var DefaultDialogSettings = (function () {
+        function DefaultDialogSettings() {
+            this.lock = true;
+            this.startingZIndex = 1000;
+            this.centerHorizontalOnly = false;
+            this.rejectOnCancel = false;
+            this.ignoreTransitions = false;
         }
-      });
-    });
-  }
-
-  function _getViewModel(instruction, compositionEngine) {
-    if (typeof instruction.viewModel === 'function') {
-      instruction.viewModel = _aureliaMetadata.Origin.get(instruction.viewModel).moduleId;
-    }
-
-    if (typeof instruction.viewModel === 'string') {
-      return compositionEngine.ensureViewModel(instruction);
-    }
-
-    return Promise.resolve(instruction);
-  }
-
-  function _removeController(service, controller) {
-    var i = service.controllers.indexOf(controller);
-    if (i !== -1) {
-      service.controllers.splice(i, 1);
-      service.hasActiveDialog = !!service.controllers.length;
-    }
-  }
+        return DefaultDialogSettings;
+    }());
+    exports.DefaultDialogSettings = DefaultDialogSettings;
 });
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+define('aurelia-dialog/dialog-renderer',["require", "exports", "aurelia-pal", "aurelia-dependency-injection"], function (require, exports, aurelia_pal_1, aurelia_dependency_injection_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var containerTagName = 'ux-dialog-container';
+    var overlayTagName = 'ux-dialog-overlay';
+    exports.transitionEvent = (function () {
+        var transition;
+        return function () {
+            if (transition) {
+                return transition;
+            }
+            var el = aurelia_pal_1.DOM.createElement('fakeelement');
+            var transitions = {
+                transition: 'transitionend',
+                OTransition: 'oTransitionEnd',
+                MozTransition: 'transitionend',
+                WebkitTransition: 'webkitTransitionEnd'
+            };
+            for (var t in transitions) {
+                if (el.style[t] !== undefined) {
+                    transition = transitions[t];
+                    return transition;
+                }
+            }
+            return '';
+        };
+    })();
+    exports.hasTransition = (function () {
+        var unprefixedName = 'transitionDuration';
+        var el = aurelia_pal_1.DOM.createElement('fakeelement');
+        var prefixedNames = ['webkitTransitionDuration', 'oTransitionDuration'];
+        var transitionDurationName;
+        if (unprefixedName in el.style) {
+            transitionDurationName = unprefixedName;
+        }
+        else {
+            transitionDurationName = prefixedNames.find(function (prefixed) { return (prefixed in el.style); });
+        }
+        return function (element) {
+            return !!transitionDurationName && !!(aurelia_pal_1.DOM.getComputedStyle(element)[transitionDurationName]
+                .split(',')
+                .find(function (duration) { return !!parseFloat(duration); }));
+        };
+    })();
+    var body = aurelia_pal_1.DOM.querySelectorAll('body')[0];
+    function getActionKey(e) {
+        if ((e.code || e.key) === 'Escape' || e.keyCode === 27) {
+            return 'Escape';
+        }
+        if ((e.code || e.key) === 'Enter' || e.keyCode === 13) {
+            return 'Enter';
+        }
+        return undefined;
+    }
+    var DialogRenderer = DialogRenderer_1 = (function () {
+        function DialogRenderer() {
+        }
+        DialogRenderer.keyboardEventHandler = function (e) {
+            var key = getActionKey(e);
+            if (!key) {
+                return;
+            }
+            var top = DialogRenderer_1.dialogControllers[DialogRenderer_1.dialogControllers.length - 1];
+            if (!top || !top.settings.keyboard) {
+                return;
+            }
+            var keyboard = top.settings.keyboard;
+            if (key === 'Escape'
+                && (keyboard === true || keyboard === key || (Array.isArray(keyboard) && keyboard.indexOf(key) > -1))) {
+                top.cancel();
+            }
+            else if (key === 'Enter' && (keyboard === key || (Array.isArray(keyboard) && keyboard.indexOf(key) > -1))) {
+                top.ok();
+            }
+        };
+        DialogRenderer.trackController = function (dialogController) {
+            if (!DialogRenderer_1.dialogControllers.length) {
+                aurelia_pal_1.DOM.addEventListener('keyup', DialogRenderer_1.keyboardEventHandler, false);
+            }
+            DialogRenderer_1.dialogControllers.push(dialogController);
+        };
+        DialogRenderer.untrackController = function (dialogController) {
+            var i = DialogRenderer_1.dialogControllers.indexOf(dialogController);
+            if (i !== -1) {
+                DialogRenderer_1.dialogControllers.splice(i, 1);
+            }
+            if (!DialogRenderer_1.dialogControllers.length) {
+                aurelia_pal_1.DOM.removeEventListener('keyup', DialogRenderer_1.keyboardEventHandler, false);
+            }
+        };
+        DialogRenderer.prototype.getOwnElements = function (parent, selector) {
+            var elements = parent.querySelectorAll(selector);
+            var own = [];
+            for (var i = 0; i < elements.length; i++) {
+                if (elements[i].parentElement === parent) {
+                    own.push(elements[i]);
+                }
+            }
+            return own;
+        };
+        DialogRenderer.prototype.attach = function (dialogController) {
+            var spacingWrapper = aurelia_pal_1.DOM.createElement('div'); // TODO: check if redundant
+            spacingWrapper.appendChild(this.anchor);
+            this.dialogContainer = aurelia_pal_1.DOM.createElement(containerTagName);
+            this.dialogContainer.appendChild(spacingWrapper);
+            this.dialogOverlay = aurelia_pal_1.DOM.createElement(overlayTagName);
+            var zIndex = typeof dialogController.settings.startingZIndex === 'number'
+                ? dialogController.settings.startingZIndex + ''
+                : null;
+            this.dialogOverlay.style.zIndex = zIndex;
+            this.dialogContainer.style.zIndex = zIndex;
+            var lastContainer = this.getOwnElements(this.host, containerTagName).pop();
+            if (lastContainer && lastContainer.parentElement) {
+                this.host.insertBefore(this.dialogContainer, lastContainer.nextSibling);
+                this.host.insertBefore(this.dialogOverlay, lastContainer.nextSibling);
+            }
+            else {
+                this.host.insertBefore(this.dialogContainer, this.host.firstChild);
+                this.host.insertBefore(this.dialogOverlay, this.host.firstChild);
+            }
+            dialogController.controller.attached();
+            this.host.classList.add('ux-dialog-open');
+        };
+        DialogRenderer.prototype.detach = function (dialogController) {
+            this.host.removeChild(this.dialogOverlay);
+            this.host.removeChild(this.dialogContainer);
+            dialogController.controller.detached();
+            if (!DialogRenderer_1.dialogControllers.length) {
+                this.host.classList.remove('ux-dialog-open');
+            }
+        };
+        DialogRenderer.prototype.setAsActive = function () {
+            this.dialogOverlay.classList.add('active');
+            this.dialogContainer.classList.add('active');
+        };
+        DialogRenderer.prototype.setAsInactive = function () {
+            this.dialogOverlay.classList.remove('active');
+            this.dialogContainer.classList.remove('active');
+        };
+        DialogRenderer.prototype.setupClickHandling = function (dialogController) {
+            this.stopPropagation = function (e) { e._aureliaDialogHostClicked = true; };
+            this.closeDialogClick = function (e) {
+                if (dialogController.settings.overlayDismiss && !e._aureliaDialogHostClicked) {
+                    dialogController.cancel();
+                    return;
+                }
+                if (e && typeof e.preventDefault === 'function') {
+                    e.preventDefault();
+                }
+                return false;
+            };
+            this.dialogContainer.addEventListener('click', this.closeDialogClick);
+            this.anchor.addEventListener('click', this.stopPropagation);
+        };
+        DialogRenderer.prototype.clearClickHandling = function () {
+            this.dialogContainer.removeEventListener('click', this.closeDialogClick);
+            this.anchor.removeEventListener('click', this.stopPropagation);
+        };
+        DialogRenderer.prototype.centerDialog = function () {
+            var child = this.dialogContainer.children[0];
+            var vh = Math.max(aurelia_pal_1.DOM.querySelectorAll('html')[0].clientHeight, window.innerHeight || 0);
+            child.style.marginTop = Math.max((vh - child.offsetHeight) / 2, 30) + 'px';
+            child.style.marginBottom = Math.max((vh - child.offsetHeight) / 2, 30) + 'px';
+        };
+        DialogRenderer.prototype.awaitTransition = function (setActiveInactive, ignore) {
+            var _this = this;
+            return new Promise(function (resolve) {
+                var renderer = _this;
+                var eventName = exports.transitionEvent();
+                function onTransitionEnd(e) {
+                    if (e.target !== renderer.dialogContainer) {
+                        return;
+                    }
+                    renderer.dialogContainer.removeEventListener(eventName, onTransitionEnd);
+                    resolve();
+                }
+                if (ignore || !exports.hasTransition(_this.dialogContainer)) {
+                    resolve();
+                }
+                else {
+                    _this.dialogContainer.addEventListener(eventName, onTransitionEnd);
+                }
+                setActiveInactive();
+            });
+        };
+        DialogRenderer.prototype.getDialogContainer = function () {
+            return this.anchor || (this.anchor = aurelia_pal_1.DOM.createElement('div'));
+        };
+        DialogRenderer.prototype.showDialog = function (dialogController) {
+            var _this = this;
+            if (dialogController.settings.host) {
+                this.host = dialogController.settings.host;
+            }
+            else {
+                this.host = body;
+            }
+            var settings = dialogController.settings;
+            this.attach(dialogController);
+            if (typeof settings.position === 'function') {
+                settings.position(this.dialogContainer, this.dialogOverlay);
+            }
+            else if (!settings.centerHorizontalOnly) {
+                this.centerDialog();
+            }
+            DialogRenderer_1.trackController(dialogController);
+            this.setupClickHandling(dialogController);
+            return this.awaitTransition(function () { return _this.setAsActive(); }, dialogController.settings.ignoreTransitions);
+        };
+        DialogRenderer.prototype.hideDialog = function (dialogController) {
+            var _this = this;
+            this.clearClickHandling();
+            DialogRenderer_1.untrackController(dialogController);
+            return this.awaitTransition(function () { return _this.setAsInactive(); }, dialogController.settings.ignoreTransitions)
+                .then(function () { _this.detach(dialogController); });
+        };
+        return DialogRenderer;
+    }());
+    DialogRenderer.dialogControllers = [];
+    DialogRenderer = DialogRenderer_1 = __decorate([
+        aurelia_dependency_injection_1.transient()
+    ], DialogRenderer);
+    exports.DialogRenderer = DialogRenderer;
+    var DialogRenderer_1;
+});
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+define('aurelia-dialog/ux-dialog',["require", "exports", "aurelia-templating"], function (require, exports, aurelia_templating_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var UxDialog = (function () {
+        function UxDialog() {
+        }
+        return UxDialog;
+    }());
+    UxDialog = __decorate([
+        aurelia_templating_1.customElement('ux-dialog'),
+        aurelia_templating_1.inlineView("\n  <template>\n    <slot></slot>\n  </template>\n")
+    ], UxDialog);
+    exports.UxDialog = UxDialog;
+});
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+define('aurelia-dialog/ux-dialog-header',["require", "exports", "aurelia-templating", "./dialog-controller"], function (require, exports, aurelia_templating_1, dialog_controller_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var UxDialogHeader = (function () {
+        function UxDialogHeader(controller) {
+            this.controller = controller;
+        }
+        UxDialogHeader.prototype.bind = function () {
+            if (typeof this.showCloseButton !== 'boolean') {
+                this.showCloseButton = !this.controller.settings.lock;
+            }
+        };
+        return UxDialogHeader;
+    }());
+    /**
+     * @internal
+     */
+    UxDialogHeader.inject = [dialog_controller_1.DialogController];
+    __decorate([
+        aurelia_templating_1.bindable()
+    ], UxDialogHeader.prototype, "showCloseButton", void 0);
+    UxDialogHeader = __decorate([
+        aurelia_templating_1.customElement('ux-dialog-header'),
+        aurelia_templating_1.inlineView("\n  <template>\n    <button\n      type=\"button\"\n      class=\"dialog-close\"\n      aria-label=\"Close\"\n      if.bind=\"showCloseButton\"\n      click.trigger=\"controller.cancel()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n\n    <div class=\"dialog-header-content\">\n      <slot></slot>\n    </div>\n  </template>\n")
+    ], UxDialogHeader);
+    exports.UxDialogHeader = UxDialogHeader;
+});
+
+define('aurelia-dialog/dialog-controller',["require", "exports", "./renderer", "./lifecycle", "./dialog-cancel-error"], function (require, exports, renderer_1, lifecycle_1, dialog_cancel_error_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * A controller object for a Dialog instance.
+     */
+    var DialogController = (function () {
+        /**
+         * Creates an instance of DialogController.
+         */
+        function DialogController(renderer, settings, resolve, reject) {
+            this.resolve = resolve;
+            this.reject = reject;
+            this.settings = settings;
+            this.renderer = renderer;
+        }
+        /**
+         * @internal
+         */
+        DialogController.prototype.releaseResources = function () {
+            var _this = this;
+            return lifecycle_1.invokeLifecycle(this.controller.viewModel || {}, 'deactivate')
+                .then(function () { return _this.renderer.hideDialog(_this); })
+                .then(function () { _this.controller.unbind(); });
+        };
+        /**
+         * @internal
+         */
+        DialogController.prototype.cancelOperation = function () {
+            if (!this.settings.rejectOnCancel) {
+                return { wasCancelled: true };
+            }
+            throw dialog_cancel_error_1.createDialogCancelError();
+        };
+        /**
+         * Closes the dialog with a successful output.
+         * @param output The returned success output.
+         */
+        DialogController.prototype.ok = function (output) {
+            return this.close(true, output);
+        };
+        /**
+         * Closes the dialog with a cancel output.
+         * @param output The returned cancel output.
+         */
+        DialogController.prototype.cancel = function (output) {
+            return this.close(false, output);
+        };
+        /**
+         * Closes the dialog with an error result.
+         * @param message An error message.
+         * @returns Promise An empty promise object.
+         */
+        DialogController.prototype.error = function (message) {
+            var _this = this;
+            return this.releaseResources().then(function () { _this.reject(message); });
+        };
+        /**
+         * Closes the dialog.
+         * @param ok Whether or not the user input signified success.
+         * @param output The specified output.
+         * @returns Promise An empty promise object.
+         */
+        DialogController.prototype.close = function (ok, output) {
+            var _this = this;
+            if (this.closePromise) {
+                return this.closePromise;
+            }
+            return this.closePromise = lifecycle_1.invokeLifecycle(this.controller.viewModel || {}, 'canDeactivate').catch(function (reason) {
+                _this.closePromise = undefined;
+                return Promise.reject(reason);
+            }).then(function (canDeactivate) {
+                if (!canDeactivate) {
+                    _this.closePromise = undefined; // we are done, do not block consecutive calls
+                    return _this.cancelOperation();
+                }
+                return _this.releaseResources().then(function () {
+                    if (!_this.settings.rejectOnCancel || ok) {
+                        _this.resolve({ wasCancelled: !ok, output: output });
+                    }
+                    else {
+                        _this.reject(dialog_cancel_error_1.createDialogCancelError(output));
+                    }
+                    return { wasCancelled: false };
+                }).catch(function (reason) {
+                    _this.closePromise = undefined;
+                    return Promise.reject(reason);
+                });
+            });
+        };
+        return DialogController;
+    }());
+    /**
+     * @internal
+     */
+    DialogController.inject = [renderer_1.Renderer];
+    exports.DialogController = DialogController;
+});
+
+define('aurelia-dialog/lifecycle',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * Call a lifecycle method on a viewModel if it exists.
+     * @function
+     * @param instance The viewModel instance.
+     * @param name The lifecycle method name.
+     * @param model The model to pass to the lifecycle method.
+     * @returns Promise The result of the lifecycle method.
+     */
+    function invokeLifecycle(instance, name, model) {
+        if (typeof instance[name] === 'function') {
+            return new Promise(function (resolve) {
+                resolve(instance[name](model));
+            }).then(function (result) {
+                if (result !== null && result !== undefined) {
+                    return result;
+                }
+                return true;
+            });
+        }
+        return Promise.resolve(true);
+    }
+    exports.invokeLifecycle = invokeLifecycle;
+});
+
+define('aurelia-dialog/dialog-cancel-error',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * @internal
+     */
+    function createDialogCancelError(output) {
+        var error = new Error('Operation cancelled.');
+        error.wasCancelled = true;
+        error.output = output;
+        return error;
+    }
+    exports.createDialogCancelError = createDialogCancelError;
+});
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+define('aurelia-dialog/ux-dialog-body',["require", "exports", "aurelia-templating"], function (require, exports, aurelia_templating_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var UxDialogBody = (function () {
+        function UxDialogBody() {
+        }
+        return UxDialogBody;
+    }());
+    UxDialogBody = __decorate([
+        aurelia_templating_1.customElement('ux-dialog-body'),
+        aurelia_templating_1.inlineView("\n  <template>\n    <slot></slot>\n  </template>\n")
+    ], UxDialogBody);
+    exports.UxDialogBody = UxDialogBody;
+});
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+define('aurelia-dialog/ux-dialog-footer',["require", "exports", "aurelia-templating", "./dialog-controller"], function (require, exports, aurelia_templating_1, dialog_controller_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * View-model for footer of Dialog.
+     */
+    var UxDialogFooter = UxDialogFooter_1 = (function () {
+        function UxDialogFooter(controller) {
+            this.controller = controller;
+            this.buttons = [];
+            this.useDefaultButtons = false;
+        }
+        UxDialogFooter.isCancelButton = function (value) {
+            return value === 'Cancel';
+        };
+        UxDialogFooter.prototype.close = function (buttonValue) {
+            if (UxDialogFooter_1.isCancelButton(buttonValue)) {
+                this.controller.cancel(buttonValue);
+            }
+            else {
+                this.controller.ok(buttonValue);
+            }
+        };
+        UxDialogFooter.prototype.useDefaultButtonsChanged = function (newValue) {
+            if (newValue) {
+                this.buttons = ['Cancel', 'Ok'];
+            }
+        };
+        return UxDialogFooter;
+    }());
+    /**
+     * @internal
+     */
+    UxDialogFooter.inject = [dialog_controller_1.DialogController];
+    __decorate([
+        aurelia_templating_1.bindable
+    ], UxDialogFooter.prototype, "buttons", void 0);
+    __decorate([
+        aurelia_templating_1.bindable
+    ], UxDialogFooter.prototype, "useDefaultButtons", void 0);
+    UxDialogFooter = UxDialogFooter_1 = __decorate([
+        aurelia_templating_1.customElement('ux-dialog-footer'),
+        aurelia_templating_1.inlineView("\n  <template>\n    <slot></slot>\n    <template if.bind=\"buttons.length > 0\">\n      <button type=\"button\"\n        class=\"btn btn-default\"\n        repeat.for=\"button of buttons\"\n        click.trigger=\"close(button)\">\n        ${button}\n      </button>\n    </template>\n  </template>\n")
+    ], UxDialogFooter);
+    exports.UxDialogFooter = UxDialogFooter;
+    var UxDialogFooter_1;
+});
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+define('aurelia-dialog/attach-focus',["require", "exports", "aurelia-templating", "aurelia-pal"], function (require, exports, aurelia_templating_1, aurelia_pal_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var AttachFocus = (function () {
+        function AttachFocus(element) {
+            this.element = element;
+            this.value = true;
+        }
+        AttachFocus.prototype.attached = function () {
+            if (this.value && this.value !== 'false') {
+                this.element.focus();
+            }
+        };
+        AttachFocus.prototype.valueChanged = function (newValue) {
+            this.value = newValue;
+        };
+        return AttachFocus;
+    }());
+    /**
+     * @internal
+     */
+    AttachFocus.inject = [aurelia_pal_1.DOM.Element];
+    AttachFocus = __decorate([
+        aurelia_templating_1.customAttribute('attach-focus')
+    ], AttachFocus);
+    exports.AttachFocus = AttachFocus;
+});
+
+define('aurelia-dialog/dialog-service',["require", "exports", "aurelia-dependency-injection", "aurelia-metadata", "aurelia-templating", "./dialog-settings", "./dialog-cancel-error", "./lifecycle", "./dialog-controller"], function (require, exports, aurelia_dependency_injection_1, aurelia_metadata_1, aurelia_templating_1, dialog_settings_1, dialog_cancel_error_1, lifecycle_1, dialog_controller_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /* tslint:enable:max-line-length */
+    function whenClosed(onfulfilled, onrejected) {
+        return this.then(function (r) { return r.wasCancelled ? r : r.closeResult; }).then(onfulfilled, onrejected);
+    }
+    function asDialogOpenPromise(promise) {
+        promise.whenClosed = whenClosed;
+        return promise;
+    }
+    /**
+     * A service allowing for the creation of dialogs.
+     */
+    var DialogService = (function () {
+        function DialogService(container, compositionEngine, defaultSettings) {
+            /**
+             * The current dialog controllers
+             */
+            this.controllers = [];
+            /**
+             * Is there an open dialog
+             */
+            this.hasOpenDialog = false;
+            this.hasActiveDialog = false;
+            this.container = container;
+            this.compositionEngine = compositionEngine;
+            this.defaultSettings = defaultSettings;
+        }
+        DialogService.prototype.validateSettings = function (settings) {
+            if (!settings.viewModel && !settings.view) {
+                throw new Error('Invalid Dialog Settings. You must provide "viewModel", "view" or both.');
+            }
+        };
+        // tslint:disable-next-line:max-line-length
+        DialogService.prototype.createCompositionContext = function (childContainer, host, settings) {
+            return {
+                container: childContainer.parent,
+                childContainer: childContainer,
+                bindingContext: null,
+                viewResources: null,
+                model: settings.model,
+                view: settings.view,
+                viewModel: settings.viewModel,
+                viewSlot: new aurelia_templating_1.ViewSlot(host, true),
+                host: host
+            };
+        };
+        DialogService.prototype.ensureViewModel = function (compositionContext) {
+            if (typeof compositionContext.viewModel === 'function') {
+                compositionContext.viewModel = aurelia_metadata_1.Origin.get(compositionContext.viewModel).moduleId;
+            }
+            if (typeof compositionContext.viewModel === 'string') {
+                return this.compositionEngine.ensureViewModel(compositionContext);
+            }
+            return Promise.resolve(compositionContext);
+        };
+        DialogService.prototype._cancelOperation = function (rejectOnCancel) {
+            if (!rejectOnCancel) {
+                return { wasCancelled: true };
+            }
+            throw dialog_cancel_error_1.createDialogCancelError();
+        };
+        // tslint:disable-next-line:max-line-length
+        DialogService.prototype.composeAndShowDialog = function (compositionContext, dialogController) {
+            var _this = this;
+            if (!compositionContext.viewModel) {
+                // provide access to the dialog controller for view only dialogs
+                compositionContext.bindingContext = { controller: dialogController };
+            }
+            return this.compositionEngine.compose(compositionContext).then(function (controller) {
+                dialogController.controller = controller;
+                return dialogController.renderer.showDialog(dialogController).then(function () {
+                    _this.controllers.push(dialogController);
+                    _this.hasActiveDialog = _this.hasOpenDialog = !!_this.controllers.length;
+                }, function (reason) {
+                    if (controller.viewModel) {
+                        lifecycle_1.invokeLifecycle(controller.viewModel, 'deactivate');
+                    }
+                    return Promise.reject(reason);
+                });
+            });
+        };
+        /**
+         * @internal
+         */
+        DialogService.prototype.createSettings = function (settings) {
+            settings = Object.assign({}, this.defaultSettings, settings);
+            if (typeof settings.keyboard !== 'boolean' && !settings.keyboard) {
+                settings.keyboard = !settings.lock;
+            }
+            if (typeof settings.overlayDismiss !== 'boolean') {
+                settings.overlayDismiss = !settings.lock;
+            }
+            Object.defineProperty(settings, 'rejectOnCancel', {
+                writable: false,
+                configurable: true,
+                enumerable: true
+            });
+            this.validateSettings(settings);
+            return settings;
+        };
+        DialogService.prototype.open = function (settings) {
+            var _this = this;
+            if (settings === void 0) { settings = {}; }
+            // tslint:enable:max-line-length
+            settings = this.createSettings(settings);
+            var childContainer = settings.childContainer || this.container.createChild();
+            var resolveCloseResult;
+            var rejectCloseResult;
+            var closeResult = new Promise(function (resolve, reject) {
+                resolveCloseResult = resolve;
+                rejectCloseResult = reject;
+            });
+            var dialogController = childContainer.invoke(dialog_controller_1.DialogController, [settings, resolveCloseResult, rejectCloseResult]);
+            childContainer.registerInstance(dialog_controller_1.DialogController, dialogController);
+            closeResult.then(function () {
+                removeController(_this, dialogController);
+            }, function () {
+                removeController(_this, dialogController);
+            });
+            var compositionContext = this.createCompositionContext(childContainer, dialogController.renderer.getDialogContainer(), dialogController.settings);
+            var openResult = this.ensureViewModel(compositionContext).then(function (compositionContext) {
+                if (!compositionContext.viewModel) {
+                    return true;
+                }
+                return lifecycle_1.invokeLifecycle(compositionContext.viewModel, 'canActivate', dialogController.settings.model);
+            }).then(function (canActivate) {
+                if (!canActivate) {
+                    return _this._cancelOperation(dialogController.settings.rejectOnCancel);
+                }
+                // if activation granted, compose and show
+                return _this.composeAndShowDialog(compositionContext, dialogController)
+                    .then(function () { return ({ controller: dialogController, closeResult: closeResult, wasCancelled: false }); });
+            });
+            return asDialogOpenPromise(openResult);
+        };
+        /**
+         * Closes all open dialogs at the time of invocation.
+         * @return Promise<DialogController[]> All controllers whose close operation was cancelled.
+         */
+        DialogService.prototype.closeAll = function () {
+            return Promise.all(this.controllers.slice(0).map(function (controller) {
+                if (!controller.settings.rejectOnCancel) {
+                    return controller.cancel().then(function (result) {
+                        if (result.wasCancelled) {
+                            return controller;
+                        }
+                        return;
+                    });
+                }
+                return controller.cancel().then(function () { return; }).catch(function (reason) {
+                    if (reason.wasCancelled) {
+                        return controller;
+                    }
+                    return Promise.reject(reason);
+                });
+            })).then(function (unclosedControllers) { return unclosedControllers.filter(function (unclosed) { return !!unclosed; }); });
+        };
+        return DialogService;
+    }());
+    /**
+     * @internal
+     */
+    DialogService.inject = [aurelia_dependency_injection_1.Container, aurelia_templating_1.CompositionEngine, dialog_settings_1.DefaultDialogSettings];
+    exports.DialogService = DialogService;
+    function removeController(service, dialogController) {
+        var i = service.controllers.indexOf(dialogController);
+        if (i !== -1) {
+            service.controllers.splice(i, 1);
+            service.hasActiveDialog = service.hasOpenDialog = !!service.controllers.length;
+        }
+    }
+});
+
 define('text!app/app.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <nav-bar router.bind=\"router\" username.bind=\"username\"></nav-bar>\n        <div class=\"page-margins\">\n            <router-view></router-view>\n        </div>\n        <site-footer router.bind=\"router\" languages.bind=\"languages\"></site-footer>\n    </div>\n</template>\n"; });
-define('text!components/enrollment-nav-bar/enrollment-nav-bar.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row c-wizard\" if.bind=\"vm.showNavBar\">\n        <div class=\"small-12 columns\">\n            <div class=\"button-group expanded\">\n                <div class=\"button-group expanded\">\n                    <button class=\"button button--full\" click.trigger=\"goToChallengeQuestionAnswers($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]challenge-questions_icon\"></i>\n                    </span>\n                        <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-challenge-questions_button\"></span>\n                    </span>\n                    </button>\n                    <button class=\"button button--full\" click.trigger=\"goToPhoneInfos($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]phone-infos_icon\"></i>\n                    </span>\n                        <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-phone-infos_button\"></span>\n                    </span>\n                    </button>\n                    <button class=\"button button--full\" click.trigger=\"goToEmailInfos($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]email-infos_icon\"></i>\n                    </span>\n                        <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-email-infos_button\"></span>\n                    </span>\n                    </button>\n                </div>\n            </div>\n        </div>\n    </div>\n</template>\n"; });
 define('text!components/nav-bar/nav-bar.html', ['module'], function(module) { module.exports = "<template bindable=\"router\">\n    <div class=\"top-bar c-topbar\">\n        <div class=\"top-bar-title o-flex\">\n            <span data-responsive-toggle=\"responsive-menu\" data-hide-for=\"medium\" class=\"o-flex__cell\">\n                <button type=\"button\" data-toggle class=\"c-topbar-menu u-gutt-sm-2\">\n                    <i t=\"[class]menu_icon\"></i>\n                </button>\n            </span>\n            <div class=\"o-flex__cell\">\n                <img data-src=\"images/logo-small.png\" class=\"c-topbar-logo u-gutt-sm-2\" t=\"logo-small_src;[alt]logo_alt\"/>\n            </div>\n            <div class=\"o-flex__cell\">\n                <span t=\"app_title\" class=\"c-topbar-title u-dis-b u-gutt-sm-2\">\n                </span>\n            </div>\n        </div>\n        <div id=\"responsive-menu\">\n            <div class=\"top-bar-right\">\n                <ul class=\"menu vertical\">\n                    <li repeat.for=\"row of router.navigation | authFilter: isAuthenticated\" class=\"${row.isActive ? 'active' : ''}\">\n                        <a href.bind=\"row.href\" t.bind=\"row.settings.t\">\n                            ${row.title}\n                        </a>\n                    </li>\n                    <li>\n                        <a class=\"top\" click.trigger=\"goToLogout($event)\" if.bind=\"isAuthenticated\">\n                            <span t=\"go-to-logout_button\"></span>\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </div>\n    <loading-indicator loading.bind=\"router.isNavigating || api.isRequesting\"></loading-indicator>\n</template>\n"; });
 define('text!components/site-footer/site-footer.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <span class=\"text-center copyright\">\n                <i t=\"[class]copyright_icon\"></i><span t=\"copyright_message\"></span>\n            </span>\n        </div>\n    </div>\n</template>\n"; });
 define('text!components/validation-summary/validation-summary.html', ['module'], function(module) { module.exports = "<template bindable=\"errors, autofocus\">\n    <div class=\"alert callout\" show.bind=\"errors.length\" focus.one-way=\"autofocus && errors.length > 0\">\n        <ul class=\"no-bullet\">\n            <li repeat.for=\"errorInfo of errors\">\n                <a class=\"c-cta c-cta--alert\" href=\"#\" click.delegate=\"errorInfo.targets[0].focus()\">${errorInfo.error.message}</a>\n            </li>\n        </ul>\n    </div>\n</template>\n"; });
-define('text!components/views/change-password/change-password.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]service_icon\"></i>\n                <span t=\"change-password_header\"></span>\n            </h3>\n            <h2>\n                <span t=\"signed-in-as_label\" t-params.bind=\"vm.user\"></span>\n            </h2>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]change-password_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <div class=\"button-group expanded\">\n                <button class=\"button button--full\" click.trigger=\"goToChangePassword($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]change-password_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-change-password_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToEditProfile($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]profile_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-edit-profile_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToUnlockAccount($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]unlock_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-unlock-account_button\"></span>\n                    </span>\n                </button>\n            </div>\n        </div>\n    </div>\n</template>\n"; });
-define('text!components/views/confirm-dialog/confirm-dialog.html', ['module'], function(module) { module.exports = "<template>\n    <ai-dialog>\n        <ai-dialog-header>\n            <h4>\n                <i t=\"[class]${vm.headerIcon}\"></i>\n                <span t=\"${vm.headerText}\">${vm.headerText}</span>\n            </h4>\n        </ai-dialog-header>\n        <ai-dialog-body>\n            <div t=\"[html]${vm.message}\" t-params.bind=\"vm.messageParams\">${vm.message}</div>\n        </ai-dialog-body>\n        <ai-dialog-footer>\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"${vm.cancelButtonText}\">${vm.cancelButtonText}</span>\n            </button>\n            <button type=\"button\" class=\"button\" click.trigger=\"confirm($event)\">\n                <span t=\"${vm.confirmButtonText}\">${vm.confirmButtonText}</span>\n            </button>\n        </ai-dialog-footer>\n    </ai-dialog>\n</template>\n"; });
-define('text!components/views/login/challenge-with-challenge-questions.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]challenge-questions_icon\"></i>\n                <span t=\"challenge-with-challenge-questions_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]challenge-with-challenge-questions_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset\">\n                    <validation-summary errors.bind=\"errors\" autofocus.bind=\"controller.validateTrigger === 'manual'\">\n                    </validation-summary>\n                    <div class=\"u-gutt-3\" repeat.for=\"challengeQuestion of vm.user.challengeQuestions\">\n                        <div class=\"form-row\">\n                            <label for=\"challenge-question-input-${$index}\" t=\"challenge-question_label\"></label>\n                            <select change.delegate=\"onSelectedAvailableChallengeQuestionAnswerChanged($event, $this, challengeQuestion.selectedAvailableChallengeQuestion)\" id=\"challenge-question-input-${$index}\" value.bind=\"challengeQuestion.selectedAvailableChallengeQuestion\">\n                                <option model.bind=\"null\" value=\"\" t=\"challenge-question_option-default\"></option>\n                                <option repeat.for=\"availableChallengeQuestion of challengeQuestion.availableChallengeQuestions\" model.bind=\"availableChallengeQuestion\">${availableChallengeQuestion.challengeQuestionText}</option>\n                            </select>\n                        </div>\n                        <div class=\"form-row\">\n                            <label for=\"challenge-question-answer-input-${$index}\" t=\"challenge-question-answer_label\"></label>\n                            <input type=\"${challengeQuestion.showActualAnswer ? 'text' : 'password'}\" id=\"challenge-question-answer-input-${$index}\" placeholder=\"challenge question answer\" value.bind=\"challengeQuestion.userAnswerText & validate\" t=\"[placeholder]challenge-question-answer_placeholder\">\n                        </div>\n                        <div class=\"form-row\">\n                            <input type=\"checkbox\" checked.bind=\"challengeQuestion.showActualAnswer\" id=\"show-actual-answer-input-${$index}\"/>\n                            <label for=\"show-actual-answer-input-${$index}\" t=\"show-actual-answer_label\"></label>\n                        </div>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-4 columns\">\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"cancel_button\"></span>\n            </button>\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/challenge-with-challenge-questions/challenge-with-challenge-questions.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]challenge-questions_icon\"></i>\n                <span t=\"challenge-with-challenge-questions_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]challenge-with-challenge-questions_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset\">\n                    <validation-summary errors.bind=\"errors\" autofocus.bind=\"controller.validateTrigger === 'manual'\">\n                    </validation-summary>\n                    <div class=\"u-gutt-3\" repeat.for=\"challengeQuestion of vm.user.challengeQuestions\">\n                        <div class=\"form-row\">\n                            <label for=\"challenge-question-input-${$index}\" t=\"challenge-question_label\"></label>\n                            <select change.delegate=\"onSelectedAvailableChallengeQuestionAnswerChanged($event, $this, challengeQuestion.selectedAvailableChallengeQuestion)\" id=\"challenge-question-input-${$index}\" value.bind=\"challengeQuestion.selectedAvailableChallengeQuestion\" disabled=\"disabled\">\n                                <option model.bind=\"null\" value=\"\" t=\"challenge-question_option-default\"></option>\n                                <option repeat.for=\"availableChallengeQuestion of challengeQuestion.availableChallengeQuestions\" model.bind=\"availableChallengeQuestion\">${availableChallengeQuestion.challengeQuestionText}</option>\n                            </select>\n                        </div>\n                        <div class=\"form-row\">\n                            <label for=\"challenge-question-answer-input-${$index}\" t=\"challenge-question-answer_label\"></label>\n                            <input type=\"${challengeQuestion.showActualAnswer ? 'text' : 'password'}\" id=\"challenge-question-answer-input-${$index}\" placeholder=\"challenge question answer\" value.bind=\"challengeQuestion.userAnswerText & validate\" t=\"[placeholder]challenge-question-answer_placeholder\">\n                        </div>\n                        <div class=\"form-row\">\n                            <input type=\"checkbox\" checked.bind=\"challengeQuestion.showActualAnswer\" id=\"show-actual-answer-input-${$index}\"/>\n                            <label for=\"show-actual-answer-input-${$index}\" t=\"show-actual-answer_label\"></label>\n                        </div>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-4 columns\">\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"cancel_button\"></span>\n            </button>\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/challenge-with-email-info/challenge-with-email-info.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]challenge-questions_icon\"></i>\n                <span t=\"challenge-with-challenge-questions_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]challenge-with-challenge-questions_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset u-gutt-3\">\n                    <div class=\"u-gutt-3\" repeat.for=\"emailInfo of vm.user.emailInfos\">\n                        <div class=\"form-row\">\n                            <label for=\"challenge-with-${emailInfo.label}-input\">${emailInfo.label}</label>\n                            <input type=\"radio\" id=\"challenge-with-${emailInfo.label}-input\" model.bind=\"emailInfo\" checked.bind=\"vm.selectedEmailAddress & validate\"/>\n                        </div>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-4 columns\">\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"cancel_button\"></span>\n            </button>\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/challenge-with-rsa-token/challenge-with-rsa-token.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]challenge-questions_icon\"></i>\n                <span t=\"challenge-with-challenge-questions_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]challenge-with-challenge-questions_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset\">\n                    <validation-summary errors.bind=\"errors\" autofocus.bind=\"controller.validateTrigger === 'manual'\">\n                    </validation-summary>\n                    <div class=\"u-gutt-3\" repeat.for=\"challengeQuestion of vm.user.challengeQuestions\">\n                        <div class=\"form-row\">\n                            <label for=\"challenge-question-input-${$index}\" t=\"challenge-question_label\"></label>\n                            <select change.delegate=\"onSelectedAvailableChallengeQuestionAnswerChanged($event, $this, challengeQuestion.selectedAvailableChallengeQuestion)\" id=\"challenge-question-input-${$index}\" value.bind=\"challengeQuestion.selectedAvailableChallengeQuestion\">\n                                <option model.bind=\"null\" value=\"\" t=\"challenge-question_option-default\"></option>\n                                <option repeat.for=\"availableChallengeQuestion of challengeQuestion.availableChallengeQuestions\" model.bind=\"availableChallengeQuestion\">${availableChallengeQuestion.challengeQuestionText}</option>\n                            </select>\n                        </div>\n                        <div class=\"form-row\">\n                            <label for=\"challenge-question-answer-input-${$index}\" t=\"challenge-question-answer_label\"></label>\n                            <input type=\"${challengeQuestion.showActualAnswer ? 'text' : 'password'}\" id=\"challenge-question-answer-input-${$index}\" placeholder=\"challenge question answer\" value.bind=\"challengeQuestion.userAnswerText & validate\" t=\"[placeholder]challenge-question-answer_placeholder\">\n                        </div>\n                        <div class=\"form-row\">\n                            <input type=\"checkbox\" checked.bind=\"challengeQuestion.showActualAnswer\" id=\"show-actual-answer-input-${$index}\"/>\n                            <label for=\"show-actual-answer-input-${$index}\" t=\"show-actual-answer_label\"></label>\n                        </div>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-4 columns\">\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"cancel_button\"></span>\n            </button>\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/challenge-with-phone-info/challenge-with-phone-info.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]challenge-questions_icon\"></i>\n                <span t=\"challenge-with-phone-infos_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]challenge-with-phone-infos_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset login-fieldset\">\n                    <div repeat.for=\"smsInfo of vm.user.smsInfos\" class=\"form-row\">\n                        <label for=\"challenge-with-${smsInfo.label}-input\">${smsInfo.label}</label>\n                        <input type=\"radio\" id=\"challenge-with-${smsInfo.label}-input\" model.bind=\"smsInfo\" checked.bind=\"vm.selectedSmsInfo & validate\"/>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-4 columns\">\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"cancel_button\"></span>\n            </button>\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/change-password/change-password.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]service_icon\"></i>\n                <span t=\"change-password_header\"></span>\n            </h3>\n            <h2>\n                <span t=\"signed-in-as_label\" t-params.bind=\"vm.user\"></span>\n            </h2>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]change-password_message\">\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/confirm-dialog/confirm-dialog.html', ['module'], function(module) { module.exports = "<template>\n    <ux-dialog>\n        <ux-dialog-header>\n            <h4>\n                <i t=\"[class]${vm.headerIcon}\"></i>\n                <span t=\"${vm.headerText}\">${vm.headerText}</span>\n            </h4>\n        </ux-dialog-header>\n        <ux-dialog-body>\n            <div t=\"[html]${vm.message}\" t-params.bind=\"vm.messageParams\">${vm.message}</div>\n        </ux-dialog-body>\n        <ux-dialog-footer>\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"${vm.cancelButtonText}\">${vm.cancelButtonText}</span>\n            </button>\n            <button type=\"button\" class=\"button\" click.trigger=\"confirm($event)\">\n                <span t=\"${vm.confirmButtonText}\">${vm.confirmButtonText}</span>\n            </button>\n        </ux-dialog-footer>\n    </ux-dialog>\n</template>\n"; });
+define('text!components/views/edit-credentials/edit-credentials.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <div class=\"button-group expanded\">\n                <button class=\"button\" click.trigger=\"goToEnrollChallengeQuestionAnswers($event)\">\n                    <span t=\"go-to-enroll-challenge-question-answers_button\"></span>\n                </button>\n                <button class=\"button\" click.trigger=\"goToEnrollPhoneInfos($event)\">\n                    <span t=\"go-to-enroll-phone-infos_button\"></span>\n                </button>\n                <button class=\"button\" click.trigger=\"goToEnrollEmailInfos($event)\">\n                    <span t=\"go-to-enroll-email-infos_button\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n    <compose view-model=\"${editCredentialsViewModel}\" model.bind=\"vm\"></compose>\n</template>\n"; });
+define('text!components/views/enroll-challenge-question-answers/enroll-challenge-question-answers.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]challenge-questions_icon\"></i>\n                <span t=\"enroll-challenge-question-answers_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]enroll-challenge-question-answers_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset\">\n                    <validation-summary errors.bind=\"errors\" autofocus.bind=\"controller.validateTrigger === 'manual'\">\n                    </validation-summary>\n                    <div class=\"u-gutt-3\" repeat.for=\"challengeQuestion of vm.user.challengeQuestions\">\n                        <div class=\"form-row\">\n                            <label for=\"challenge-question-input-${$index}\" t=\"challenge-question_label\"></label>\n                            <select change.delegate=\"onSelectedAvailableChallengeQuestionAnswerChanged($event, $this, challengeQuestion.selectedAvailableChallengeQuestion)\" id=\"challenge-question-input-${$index}\" value.bind=\"challengeQuestion.selectedAvailableChallengeQuestion\">\n                                <option model.bind=\"null\" value=\"\" t=\"challenge-question_option-default\"></option>\n                                <option repeat.for=\"availableChallengeQuestion of challengeQuestion.availableChallengeQuestions\" model.bind=\"availableChallengeQuestion\">${availableChallengeQuestion.challengeQuestionText}</option>\n                            </select>\n                        </div>\n                        <div class=\"form-row\">\n                            <label for=\"challenge-question-answer-input-${$index}\" t=\"challenge-question-answer_label\"></label>\n                            <input type=\"${challengeQuestion.showActualAnswer ? 'text' : 'password'}\" id=\"challenge-question-answer-input-${$index}\" placeholder=\"challenge question answer\" value.bind=\"challengeQuestion.userAnswerText & validate\" t=\"[placeholder]challenge-question-answer_placeholder\">\n                        </div>\n                        <div class=\"form-row\">\n                            <input type=\"checkbox\" checked.bind=\"challengeQuestion.showActualAnswer\" id=\"show-actual-answer-input-${$index}\"/>\n                            <label for=\"show-actual-answer-input-${$index}\" t=\"show-actual-answer_label\"></label>\n                        </div>\n                    </div>\n                    <div class=\"form-row\">\n                        <button type=\"button\" class=\"button expanded radius\" click.trigger=\"save($event)\">\n                            <span t=\"save_button\"></span>\n                        </button>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/enrollment/enroll-credentials.html', ['module'], function(module) { module.exports = "<template>\n    <compose view-model=\"${enrollCredentialsViewModel}\" model.bind=\"vm\"></compose>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-8 columns\">\n            <strong t=\"enrollment-step_header\"></strong>\n        </div>\n        <div class=\"small-12 medium-4 columns\">\n            <button type=\"button\" class=\"button\" click.trigger=\"skip($event)\" if.bind=\"!enrollCredentialsComplete\">\n                <span t=\"skip_button\"></span>\n            </button>\n        </div>\n        <div class=\"small-12 medium-4 columns\">\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\" if.bind=\"enrollCredentialsComplete\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/enrollment/enrollment-disclaimer.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <span t=\"enrollment-disclaimer_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <div t=\"[html]enrollment-disclaimer_message\">\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <div class=\"callout warning\">\n                <h4>\n                    <i t=\"[class]incomplete_icon\"></i>\n                    <span t=\"enrollment-incomplete_header\"></span>\n                </h4>\n                <span t=\"[html]enrollment-incomplete_message\"></span>\n            </div>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-10 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset disclaimer-fieldset\">\n                    <div class=\"form-row\">\n                        <input id=\"confirm-disclaimer-input\" type=\"checkbox\" value.bind=\"vm.confirmDisclaimerChecked & validate\" checked.bind=\"vm.confirmDisclaimerChecked\">\n                        <label for=\"confirm-disclaimer-input\" t=\"confirm-disclaimer_label\"></label>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n        <div class=\"small-12 medium-2 columns\">\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/enrollment/enrollment-intro.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <span t=\"enrollment-intro_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]enrollment-intro_message\">\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 columns\">\n            <button type=\"button\" class=\"button\" click.trigger=\"start($event)\">\n                <span t=\"start_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/enrollment/enrollment-review.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <span t=\"enrollment-review_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]enrollment-review_message\">\n        </div>\n    </div>\n    <div class=\"row\" if.bind=\"vm.enrollmentComplete\">\n        <div class=\"small-12 medium-8 columns end\">\n            <div class=\"callout success\">\n                <h4>\n                    <i t=\"[class]complete_icon\"></i>\n                    <span t=\"enrollment-complete_header\"></span>\n                </h4>\n                <span t=\"enrollment-complete_message\"></span>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\" if.bind=\"!vm.enrollmentComplete\">\n        <div class=\"small-12 medium-8 columns end\">\n            <div class=\"callout warning\">\n                <h4>\n                    <i t=\"[class]incomplete_icon\"></i>\n                    <span t=\"enrollment-incomplete_header\"></span>\n                </h4>\n                <div t=\"[html]enrollment-incomplete_message\"></div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 columns\">\n            <button type=\"button\" class=\"button\" click.trigger=\"done($event)\">\n                <span t=\"done_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/enrollment/enrollment.html', ['module'], function(module) { module.exports = "<template>\n    <compose view-model=\"${enrollmentViewModel}\" model.bind=\"vm\"></compose>\n</template>\n"; });
+define('text!components/views/enroll-email-infos/enroll-email-infos.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]email-infos_icon\"></i>\n                <span t=\"enroll-email-infos_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]enroll-email-infos_message\">\n        </div>\n    </div>\n    <div repeat.for=\"emailInfo of vm.user.emailInfos\" class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <span>${emailInfo.emailAddress}</span>\n            <i t=\"[class]complete_icon\"></i>\n            <button type=\"button\" class=\"button hollow alert\" click.trigger=\"removeEmailInfo($event, emailInfo)\">\n                <span t=\"delete_button\"></span>\n            </button>\n        </div>\n    </div>\n    <div if.bind=\"vm.showAddEmailInfoForm\" class=\"row\">\n        <div class=\"small-12 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset add-contact-info-fieldset\">\n                    <div class=\"form-row\">\n                        <label for=\"email-address-input\" t=\"email-address_label\"></label>\n                        <input id=\"email-address-input\" type=\"text\" value.bind=\"vm.emailAddress & validate\" focus.bind=\"vm.emailAddressHasFocus\" t=\"[placeholder]email-address_placeholder\">\n                    </div>\n                    <div class=\"form-row\">\n                        <button class=\"button\" click.trigger=\"addEmailInfo($event)\">\n                            <span t=\"add_button\"></span>\n                        </button>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div if.bind=\"!vm.showAddEmailInfoForm\" class=\"row\">\n        <div class=\"small-12 columns\">\n            <button type=\"button\" class=\"link\" click.delegate=\"showAddEmailInfoForm($event)\">\n                <i t=\"[class]add_icon\"></i>\n                <span t=\"show-add-email-info_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/enroll-phone-infos/enroll-phone-infos.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]phone-infos_icon\"></i>\n                <span t=\"enroll-phone-infos_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]enroll-phone-infos_message\">\n        </div>\n    </div>\n    <div repeat.for=\"smsInfo of vm.user.smsInfos\" class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <span>${smsInfo.phoneNumber | phoneFormatter}</span>\n            <i t=\"[class]complete_icon\"></i>\n            <button type=\"button\" class=\"button hollow alert\" click.trigger=\"removePhoneInfo($event, smsInfo)\">\n                <span t=\"delete_button\"></span>\n            </button>\n        </div>\n    </div>\n    <div if.bind=\"vm.showAddPhoneInfoForm\" class=\"row\">\n        <div class=\"small-12 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset add-contact-info-fieldset\">\n                    <div class=\"form-row\">\n                        <label for=\"phone-number-input\" t=\"phone-number_label\"></label>\n                        <input id=\"phone-number-input\" type=\"text\" value.bind=\"vm.phoneNumber | phoneFormatter & validate\" focus.bind=\"vm.phoneNumberHasFocus\" t=\"[placeholder]phone-number_placeholder\" maxlength=\"16\">\n                    </div>\n                    <div class=\"form-row\">\n                        <button class=\"button\" click.trigger=\"addPhoneInfo($event)\">\n                            <span t=\"add_button\"></span>\n                        </button>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div if.bind=\"!vm.showAddPhoneInfoForm\" class=\"row\">\n        <div class=\"small-12 columns\">\n            <button type=\"button\" class=\"link\" click.delegate=\"showAddPhoneInfoForm($event)\">\n                <i t=\"[class]add_icon\"></i>\n                <span t=\"show-add-phone-info_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
 define('text!components/views/login/challenge-with-credentials.html', ['module'], function(module) { module.exports = "<template>\n    <compose view-model=\"${challengeWithCredentialsViewModel}\" model.bind=\"vm\"></compose>\n</template>\n"; });
 define('text!components/views/login/challenge.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]security_icon\"></i>\n                <span t=\"challenge_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns end\" t=\"[html]challenge_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset u-gutt-3\">\n                    <div class=\"u-gutt-3\" repeat.for=\"credentialType of vm.user.availableChallengeCredentialTypes\">\n                        <div class=\"form-row\">\n                            <label for=\"challenge-with-${credentialType}-input\" t=\"challenge-with-${credentialType}_label\"></label>\n                            <input type=\"radio\" id=\"challenge-with-${credentialType}-input\" model.bind=\"credentialType\" checked.bind=\"vm.selectedCredentialType & validate\"/>\n                        </div>\n                    </div>\n                </fieldset>\n                <fieldset class=\"fieldset\">\n                    <legend t=\"bind-device_header\"></legend>\n                    <div class=\"u-gutt-3\" repeat.for=\"option of vm.bindDeviceOptions\">\n                        <div class=\"form-row\">\n                            <label for=\"bind-device-${option}-input\" t=\"bind-device-${option}_label\"></label>\n                            <input id=\"bind-device-${option}-input\" type=\"radio\" model.bind=\"option\" checked.bind=\"vm.bindDevice\"/>\n                        </div>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-8 columns end\">\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"cancel_button\"></span>\n            </button>\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
 define('text!components/views/login/deny.html', ['module'], function(module) { module.exports = "<template>\n</template>\n"; });
 define('text!components/views/login/login.html', ['module'], function(module) { module.exports = "<template>\n    <compose view-model=\"${loginViewModel}\" model.bind=\"vm\"></compose>\n</template>\n"; });
 define('text!components/views/login/network-credentials.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset login-fieldset\">\n                    <validation-summary errors.bind=\"errors\" autofocus.bind=\"controller.validateTrigger === 'manual'\">\n                    </validation-summary>\n                    <div class=\"form-row\">\n                        <label for=\"user-id-input\" t=\"user-id_label\"></label>\n                        <input id=\"user-id-input\" type=\"text\" value.bind=\"vm.user.userId & validate\" focus.bind=\"vm.userIdHasFocus\" t=\"[placeholder]user-id_placeholder\">\n                    </div>\n                    <div class=\"form-row\">\n                        <label for=\"credentials-input\" t=\"credentials_label\"></label>\n                        <input id=\"credentials-input\" type=\"password\" value.bind=\"vm.user.credentials & validate\" focus.bind=\"vm.credentialsHasFocus\" keypressInput.bind=\"keypressInput($event)\" t=\"[placeholder]credentials_placeholder\">\n                    </div>\n                    <div class=\"form-row\">\n                        <button type=\"button\" class=\"button expanded radius\" click.trigger=\"signin($event)\">\n                            <span t=\"signin_button\"></span>\n                        </button>\n                    </div>\n                    <div class=\"form-row\">\n                        <button type=\"button\" class=\"button expanded hollow\" click.trigger=\"goToForgotPassword($event)\">\n                            <span t=\"go-to-forgot-password_button\"></span>\n                        </button>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <span class=\"text-center disclaimer\" t=\"disclaimer_message\">\n            </span>\n        </div>\n    </div>\n</template>\n"; });
-define('text!components/views/enrollment/enroll-challenge-question-answers.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]challenge-questions_icon\"></i>\n                <span t=\"enroll-challenge-question-answers_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]enroll-challenge-question-answers_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset\">\n                    <validation-summary errors.bind=\"errors\" autofocus.bind=\"controller.validateTrigger === 'manual'\">\n                    </validation-summary>\n                    <div class=\"u-gutt-3\" repeat.for=\"challengeQuestion of vm.user.challengeQuestions\">\n                        <div class=\"form-row\">\n                            <label for=\"challenge-question-input-${$index}\" t=\"challenge-question_label\"></label>\n                            <select change.delegate=\"onSelectedAvailableChallengeQuestionAnswerChanged($event, $this, challengeQuestion.selectedAvailableChallengeQuestion)\" id=\"challenge-question-input-${$index}\" value.bind=\"challengeQuestion.selectedAvailableChallengeQuestion\">\n                                <option model.bind=\"null\" value=\"\" t=\"challenge-question_option-default\"></option>\n                                <option repeat.for=\"availableChallengeQuestion of challengeQuestion.availableChallengeQuestions\" model.bind=\"availableChallengeQuestion\">${availableChallengeQuestion.challengeQuestionText}</option>\n                            </select>\n                        </div>\n                        <div class=\"form-row\">\n                            <label for=\"challenge-question-answer-input-${$index}\" t=\"challenge-question-answer_label\"></label>\n                            <input type=\"${challengeQuestion.showActualAnswer ? 'text' : 'password'}\" id=\"challenge-question-answer-input-${$index}\" placeholder=\"challenge question answer\" value.bind=\"challengeQuestion.userAnswerText & validate\" t=\"[placeholder]challenge-question-answer_placeholder\">\n                        </div>\n                        <div class=\"form-row\">\n                            <input type=\"checkbox\" checked.bind=\"challengeQuestion.showActualAnswer\" id=\"show-actual-answer-input-${$index}\"/>\n                            <label for=\"show-actual-answer-input-${$index}\" t=\"show-actual-answer_label\"></label>\n                        </div>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-8 columns\">\n            <span t=\"enrollment-step-1_header\"></span>\n        </div>\n        <div class=\"small-12 medium-4 columns\">\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"cancel_button\"></span>\n            </button>\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
-define('text!components/views/enrollment/enroll-email-infos.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]email-infos_icon\"></i>\n                <span t=\"enroll-email-infos_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]enroll-email-infos_message\">\n        </div>\n    </div>\n    <div repeat.for=\"emailInfo of vm.user.emailInfos\" class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <span>${emailInfo.emailAddress}</span>\n            <i t=\"[class]complete_icon\"></i>\n            <button type=\"button\" class=\"button hollow alert\" click.trigger=\"removeEmailInfo($event, emailInfo)\">\n                <span t=\"delete_button\"></span>\n            </button>\n        </div>\n    </div>\n    <div if.bind=\"vm.showAddEmailInfoForm\" class=\"row\">\n        <div class=\"small-12 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset add-contact-info-fieldset\">\n                    <div class=\"form-row\">\n                        <label for=\"email-address-input\" t=\"email-address_label\"></label>\n                        <input id=\"email-address-input\" type=\"text\" value.bind=\"vm.emailAddress & validate\" focus.bind=\"vm.emailAddressHasFocus\" t=\"[placeholder]email-address_placeholder\">\n                    </div>\n                    <div class=\"form-row\">\n                        <button class=\"button\" click.trigger=\"addEmailInfo($event)\">\n                            <span t=\"add_button\"></span>\n                        </button>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div if.bind=\"!vm.showAddEmailInfoForm\" class=\"row\">\n        <div class=\"small-12 columns\">\n            <button type=\"button\" class=\"link\" click.delegate=\"showAddEmailInfoForm($event)\">\n                <i t=\"[class]add_icon\"></i>\n                <span t=\"show-add-email-info_button\"></span>\n            </button>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-8 columns\">\n            <strong t=\"enrollment-step-3_header\"></strong>\n        </div>\n        <div class=\"small-12 medium-4 columns\">\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"skip($event)\" if.bind=\"!isEmailInfosComplete\">\n                <span t=\"skip_button\"></span>\n            </button>\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\" if.bind=\"isEmailInfosComplete\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
-define('text!components/views/enrollment/enroll-phone-infos.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]phone-infos_icon\"></i>\n                <span t=\"enroll-phone-infos_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]enroll-phone-infos_message\">\n        </div>\n    </div>\n    <div repeat.for=\"smsInfo of vm.user.smsInfos\" class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <span>${smsInfo.phoneNumber | phoneFormatter}</span>\n            <i t=\"[class]complete_icon\"></i>\n            <button type=\"button\" class=\"button hollow alert\" click.trigger=\"removePhoneInfo($event, phoneInfo)\">\n                <span t=\"delete_button\"></span>\n            </button>\n        </div>\n    </div>\n    <div if.bind=\"vm.showAddPhoneInfoForm\" class=\"row\">\n        <div class=\"small-12 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset add-contact-info-fieldset\">\n                    <div class=\"form-row\">\n                        <label for=\"phone-number-input\" t=\"phone-number_label\"></label>\n                        <input id=\"phone-number-input\" type=\"text\" value.bind=\"vm.phoneNumber | phoneFormatter & validate\" focus.bind=\"vm.phoneNumberHasFocus\" t=\"[placeholder]phone-number_placeholder\" maxlength=\"16\">\n                    </div>\n                    <div class=\"form-row\">\n                        <button class=\"button\" click.trigger=\"addPhoneInfo($event)\">\n                            <span t=\"add_button\"></span>\n                        </button>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n    </div>\n    <div if.bind=\"!vm.showAddPhoneInfoForm\" class=\"row\">\n        <div class=\"small-12 columns\">\n            <button type=\"button\" class=\"link\" click.delegate=\"showAddPhoneInfoForm($event)\">\n                <i t=\"[class]add_icon\"></i>\n                <span t=\"show-add-phone-info_button\"></span>\n            </button>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-8 columns\">\n            <strong t=\"enrollment-step-2_header\"></strong>\n        </div>\n        <div class=\"small-12 medium-4 columns\">\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"skip($event)\" if.bind=\"!isPhoneInfosComplete\">\n                <span t=\"skip_button\"></span>\n            </button>\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\" if.bind=\"isPhoneInfosComplete\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
-define('text!components/views/enrollment/enrollment-disclaimer.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <span t=\"enrollment-disclaimer_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <div t=\"[html]enrollment-disclaimer_message\">\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <div class=\"callout warning\">\n                <h4>\n                    <i t=\"[class]incomplete_icon\"></i>\n                    <span t=\"enrollment-incomplete_header\"></span>\n                </h4>\n                <span t=\"[html]enrollment-incomplete_message\"></span>\n            </div>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 medium-10 columns\">\n            <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                <fieldset class=\"fieldset disclaimer-fieldset\">\n                    <div class=\"form-row\">\n                        <input id=\"confirm-disclaimer-input\" type=\"checkbox\" value.bind=\"vm.confirmDisclaimerChecked & validate\" checked.bind=\"vm.confirmDisclaimerChecked\">\n                        <label for=\"confirm-disclaimer-input\" t=\"confirm-disclaimer_label\"></label>\n                    </div>\n                </fieldset>\n            </form>\n        </div>\n        <div class=\"small-12 medium-2 columns\">\n            <button type=\"button\" class=\"button\" click.trigger=\"next($event)\">\n                <span t=\"next_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
-define('text!components/views/enrollment/enrollment-intro.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <span t=\"enrollment-intro_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]enrollment-intro_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <div class=\"button-group expanded\">\n                <button class=\"button button--full\" click.trigger=\"goToChallengeQuestionAnswers($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]challenge-questions_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-challenge-questions_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToPhoneInfos($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]phone-infos_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-phone-infos_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToEmailInfos($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]email-infos_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-email-infos_button\"></span>\n                    </span>\n                </button>\n            </div>\n        </div>\n    </div>\n</template>\n"; });
-define('text!components/views/enrollment/enrollment-review.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <span t=\"enrollment-review_header\"></span>\n            </h3>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]enrollment-review_message\">\n        </div>\n    </div>\n    <div class=\"row\" if.bind=\"vm.enrollmentComplete\">\n        <div class=\"small-12 medium-8 columns end\">\n            <div class=\"callout success\">\n                <h4>\n                    <i t=\"[class]complete_icon\"></i>\n                    <span t=\"enrollment-complete_header\"></span>\n                </h4>\n                <span t=\"enrollment-complete_message\"></span>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\" if.bind=\"!vm.enrollmentComplete\">\n        <div class=\"small-12 medium-8 columns end\">\n            <div class=\"callout warning\">\n                <h4>\n                    <i t=\"[class]incomplete_icon\"></i>\n                    <span t=\"enrollment-incomplete_header\"></span>\n                </h4>\n                <span t=\"enrollment-incomplete_message\"></span>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <div class=\"button-group expanded\">\n                <button class=\"button button--full\" click.trigger=\"goToChallengeQuestionAnswers($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]challenge-questions_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-challenge-questions_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToPhoneInfos($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]phone-infos_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-phone-infos_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToEmailInfos($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]email-infos_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-email-infos_button\"></span>\n                    </span>\n                </button>\n            </div>\n        </div>\n    </div>\n    <div class=\"row c-action-bar\">\n        <div class=\"small-12 columns\">\n            <button type=\"button\" class=\"button\" click.trigger=\"done($event)\">\n                <span t=\"done_button\"></span>\n            </button>\n        </div>\n    </div>\n</template>\n"; });
-define('text!components/views/enrollment/enrollment.html', ['module'], function(module) { module.exports = "<template>\n    <enrollment-nav-bar vm.bind=\"vm\"></enrollment-nav-bar>\n    <compose view-model=\"${enrollmentViewModel}\" model.bind=\"vm\"></compose>\n</template>\n"; });
 define('text!components/views/logout/logout.html', ['module'], function(module) { module.exports = "<template>\n</template>\n"; });
-define('text!components/views/self-service/self-service.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]service_icon\"></i>\n                <span t=\"self-service_header\"></span>\n            </h3>\n            <h2>\n                <span t=\"signed-in-as_label\" t-params.bind=\"vm.user\"></span>\n            </h2>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]self-service_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <div class=\"button-group expanded\">\n                <button class=\"button button--full\" click.trigger=\"goToChangePassword($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]change-password_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-change-password_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToEditProfile($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]profile_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-edit-profile_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToUnlockAccount($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]unlock_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-unlock-account_button\"></span>\n                    </span>\n                </button>\n            </div>\n        </div>\n    </div>\n</template>\n"; });
-define('text!components/views/unlock-account/unlock-account.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]service_icon\"></i>\n                <span t=\"unlock-account_header\"></span>\n            </h3>\n            <h2>\n                <span t=\"signed-in-as_label\" t-params.bind=\"vm.user\"></span>\n            </h2>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]unlock-account_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <div class=\"button-group expanded\">\n                <button class=\"button button--full\" click.trigger=\"goToChangePassword($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]change-password_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-change-password_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToEditProfile($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]profile_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-edit-profile_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToUnlockAccount($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]unlock_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-unlock-account_button\"></span>\n                    </span>\n                </button>\n            </div>\n        </div>\n    </div>\n</template>\n"; });
-define('text!components/views/verify-email-info-dialog/verify-email-info-dialog.html', ['module'], function(module) { module.exports = "<template>\n    <ai-dialog>\n        <ai-dialog-header>\n            <h3>\n                <i t=\"[class]verify-email-info_icon\"></i>\n                <span t=\"verify-email-info_header\"></span>\n            </h3>\n        </ai-dialog-header>\n        <ai-dialog-body>\n            <div class=\"row\">\n                <div class=\"small-12 columns\" t=\"[html]verify-email-info_message\" t-params.bind=\"vm.messageParams\">\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"small-12 columns\">\n                    <span t=\"remaining-time_label\"></span><span>${vm.remainingTime | timerFormatter}</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"small-12 columns\" t=\"[html]verification-code-expired_message\">\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"small-12 columns\">\n                    <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                        <fieldset class=\"fieldset\">\n                            <div class=\"form-row\">\n                                <label for=\"verification-code-input\" t=\"verification-code_label\"></label>\n                                <input id=\"verification-code-input\" type=\"text\" autocomplete=\"off\" value.bind=\"vm.verificationCode & validate\" attach-focus.bind=\"vm.verificationCodeHasFocus\" t=\"[placeholder]verification-code_placeholder\">\n                            </div>\n                        </fieldset>\n                    </form>\n                </div>\n            </div>\n        </ai-dialog-body>\n        <ai-dialog-footer>\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"cancel_button\"></span>\n            </button>\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"resend($event)\">\n                <span t=\"resend-code_button\"></span>\n            </button>\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"verify($event)\">\n                <span t=\"verify_button\"></span>\n            </button>\n        </ai-dialog-footer>\n    </ai-dialog>\n</template>\n"; });
-define('text!components/views/verify-phone-info-dialog/verify-phone-info-dialog.html', ['module'], function(module) { module.exports = "<template>\n    <ai-dialog>\n        <ai-dialog-header>\n            <h3>\n                <i t=\"[class]verify-phone-info_icon\"></i>\n                <span t=\"verify-phone-info_header\"></span>\n            </h3>\n        </ai-dialog-header>\n        <ai-dialog-body>\n            <div class=\"row\">\n                <div class=\"small-12 columns\" t=\"[html]verify-phone-info_message\" t-params.bind=\"vm.messageParams\">\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"small-12 columns\">\n                    <span t=\"remaining-time_label\"></span><span>${vm.remainingTime | timerFormatter}</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"small-12 columns\" t=\"[html]verification-code-expired_message\">\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"small-12 columns\">\n                    <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                        <fieldset class=\"fieldset\">\n                            <div class=\"form-row\">\n                                <label for=\"verification-code-input\" t=\"verification-code_label\"></label>\n                                <input id=\"verification-code-input\" type=\"text\" autocomplete=\"off\" value.bind=\"vm.verificationCode & validate\" attach-focus.bind=\"vm.verificationCodeHasFocus\" t=\"[placeholder]verification-code_placeholder\">\n                            </div>\n                        </fieldset>\n                    </form>\n                </div>\n            </div>\n        </ai-dialog-body>\n        <ai-dialog-footer>\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"cancel_button\"></span>\n            </button>\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"resend($event)\">\n                <span t=\"resend-code_button\"></span>\n            </button>\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"verify($event)\">\n                <span t=\"verify_button\"></span>\n            </button>\n        </ai-dialog-footer>\n    </ai-dialog>\n</template>\n"; });
+define('text!components/views/self-service/self-service.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]service_icon\"></i>\n                <span t=\"self-service_header\"></span>\n            </h3>\n            <h2>\n                <span t=\"signed-in-as_label\"></span><span>${vm.user.userId}</span>\n            </h2>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]self-service_message\">\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 columns\">\n            <div class=\"button-group expanded\">\n                <button class=\"button button--full\" click.trigger=\"goToChangePassword($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]change-password_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-change-password_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToEditProfile($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]profile_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-edit-profile_button\"></span>\n                    </span>\n                </button>\n                <button class=\"button button--full\" click.trigger=\"goToUnlockAccount($event)\">\n                    <span class=\"u-dis-b text-center\">\n                        <i t=\"[class]unlock_icon\"></i>\n                    </span>\n                    <span class=\"u-lh-lg text-center\">\n                        <span t=\"go-to-unlock-account_button\"></span>\n                    </span>\n                </button>\n            </div>\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/unlock-account/unlock-account.html', ['module'], function(module) { module.exports = "<template>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\">\n            <h3>\n                <i t=\"[class]service_icon\"></i>\n                <span t=\"unlock-account_header\"></span>\n            </h3>\n            <h2>\n                <span t=\"signed-in-as_label\" t-params.bind=\"vm.user\"></span>\n            </h2>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"small-12 medium-8 columns end\" t=\"[html]unlock-account_message\">\n        </div>\n    </div>\n</template>\n"; });
+define('text!components/views/verify-email-info-dialog/verify-email-info-dialog.html', ['module'], function(module) { module.exports = "<template>\n    <ux-dialog>\n        <ux-dialog-header>\n            <h3>\n                <i t=\"[class]verify-email-info_icon\"></i>\n                <span t=\"verify-email-info_header\"></span>\n            </h3>\n        </ux-dialog-header>\n        <ux-dialog-body>\n            <div class=\"row\">\n                <div class=\"small-12 columns\" t=\"[html]verify-email-info_message\" t-params.bind=\"vm.messageParams\">\n                </div>\n            </div>\n            <div if.bind=\"!vm.eventTimerExpired\" class=\"row\">\n                <div class=\"small-12 columns\">\n                    <span t=\"remaining-time_label\"></span><span>${vm.remainingTime | timerFormatter}</span>\n                </div>\n            </div>\n            <div if.bind=\"vm.eventTimerExpired\" class=\"row\">\n                <div class=\"small-12 columns\" t=\"[html]verification-code-expired_message\">\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"small-12 columns\">\n                    <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                        <fieldset class=\"fieldset\">\n                            <div class=\"form-row\">\n                                <label for=\"verification-code-input\" t=\"verification-code_label\"></label>\n                                <input id=\"verification-code-input\" type=\"text\" autocomplete=\"off\" value.bind=\"vm.verificationCode & validate\" attach-focus.bind=\"vm.verificationCodeHasFocus\" t=\"[placeholder]verification-code_placeholder\">\n                            </div>\n                        </fieldset>\n                    </form>\n                </div>\n            </div>\n        </ux-dialog-body>\n        <ux-dialog-footer>\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"cancel_button\"></span>\n            </button>\n            <button if.bind=\"vm.eventTimerExpired\" type=\"button\" class=\"hollow button\" click.trigger=\"resend($event)\">\n                <span t=\"resend-code_button\"></span>\n            </button>\n            <button if.bind=\"!vm.eventTimerExpired\" type=\"button\" class=\"hollow button\" click.trigger=\"verify($event)\">\n                <span t=\"verify_button\"></span>\n            </button>\n        </ux-dialog-footer>\n    </ux-dialog>\n</template>\n"; });
+define('text!components/views/verify-phone-info-dialog/verify-phone-info-dialog.html', ['module'], function(module) { module.exports = "<template>\n    <ux-dialog>\n        <ux-dialog-header>\n            <h3>\n                <i t=\"[class]verify-phone-info_icon\"></i>\n                <span t=\"verify-phone-info_header\"></span>\n            </h3>\n        </ux-dialog-header>\n        <ux-dialog-body>\n            <div class=\"row\">\n                <div class=\"small-12 columns\" t=\"[html]verify-phone-info_message\" t-params.bind=\"vm.messageParams\">\n                </div>\n            </div>\n            <div if.bind=\"!vm.eventTimerExpired\" class=\"row\">\n                <div class=\"small-12 columns\">\n                    <span t=\"remaining-time_label\"></span><span>${vm.remainingTime | timerFormatter}</span>\n                </div>\n            </div>\n            <div if.bind=\"vm.eventTimerExpired\" class=\"row\">\n                <div class=\"small-12 columns\" t=\"[html]verification-code-expired_message\">\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"small-12 columns\">\n                    <form validation-renderer=\"foundation-form\" validation-errors.bind=\"errors\">\n                        <fieldset class=\"fieldset\">\n                            <div class=\"form-row\">\n                                <label for=\"verification-code-input\" t=\"verification-code_label\"></label>\n                                <input id=\"verification-code-input\" type=\"text\" autocomplete=\"off\" value.bind=\"vm.verificationCode & validate\" attach-focus.bind=\"vm.verificationCodeHasFocus\" t=\"[placeholder]verification-code_placeholder\">\n                            </div>\n                        </fieldset>\n                    </form>\n                </div>\n            </div>\n        </ux-dialog-body>\n        <ux-dialog-footer>\n            <button type=\"button\" class=\"hollow button\" click.trigger=\"cancel($event)\">\n                <span t=\"cancel_button\"></span>\n            </button>\n            <button if.bind=\"vm.eventTimerExpired\" type=\"button\" class=\"hollow button\" click.trigger=\"resend($event)\">\n                <span t=\"resend-code_button\"></span>\n            </button>\n            <button if.bind=\"!vm.eventTimerExpired\" type=\"button\" class=\"hollow button\" click.trigger=\"verify($event)\">\n                <span t=\"verify_button\"></span>\n            </button>\n        </ux-dialog-footer>\n    </ux-dialog>\n</template>\n"; });
 //# sourceMappingURL=app-bundle.js.map

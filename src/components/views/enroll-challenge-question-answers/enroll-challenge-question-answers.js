@@ -8,16 +8,13 @@ import {I18N} from 'aurelia-i18n';
 import {AuthService} from 'aurelia-authentication';
 import {UserService} from 'services/user-service';
 import {logger} from 'util/logger-helper';
-import {EnrollChallengeQuestionAnswersDone, GoToEnrollmentIntro} from 'resources/messages/enrollment-messages';
-import _ from 'lodash';
+import {
+    EnrollChallengeQuestionAnswersComplete
+} from 'resources/messages/enrollment-messages';
 
 @inject(Router, EventAggregator, ValidationControllerFactory, DialogService, Notification, I18N, AuthService, UserService)
 export class EnrollChallengeQuestionAnswers {
-    vm = {
-        user: {
-            challengeQuestions: [{}, {}, {}, {}, {}]
-        }
-    };
+    vm;
 
     constructor(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
         this.router = router;
@@ -32,7 +29,7 @@ export class EnrollChallengeQuestionAnswers {
 
     activate(viewModel) {
         return new Promise(resolve => {
-            this.vm.user = viewModel.user;
+            this.vm = viewModel;
             this.applyValidationRules();
             resolve();
         });
@@ -51,14 +48,7 @@ export class EnrollChallengeQuestionAnswers {
         this.vm.user.updateAvailableChallengeQuestions(bindingContext.challengeQuestion, selectedAvailableChallengeQuestion);
     }
 
-    cancel(event) {
-        return new Promise(resolve => {
-            this.eventAggregator.publish(new GoToEnrollmentIntro());
-            resolve();
-        });
-    }
-
-    next(event) {
+    save(event) {
         return new Promise((resolve, reject) => {
             this.controller.validate()
                 .then(controllerValidateResult => {
@@ -72,9 +62,8 @@ export class EnrollChallengeQuestionAnswers {
                         };
                         this.userService.addChallengeQuestionAnswers(request)
                             .then(response => {
-                                this.onAddChallengeQuestionAnswersSuccess();
                                 this.notification.success('add-challenge-question-answers_success');
-                                this.eventAggregator.publish(new EnrollChallengeQuestionAnswersDone());
+                                this.eventAggregator.publish(new EnrollChallengeQuestionAnswersComplete());
                                 resolve();
                             })
                             .catch(reason => {
@@ -94,21 +83,5 @@ export class EnrollChallengeQuestionAnswers {
                     reject(exception);
                 });
         });
-    }
-
-    onAddChallengeQuestionAnswersSuccess(message) {
-        let request = {
-            sessionId: this.vm.user.sessionId,
-            transactionId: this.vm.user.transactionId,
-            userId: this.vm.user.userId
-        };
-        return this.userService.getUser(request)
-            .then(response => {
-                logger.error('get-user_success');
-            })
-            .catch(reason => {
-                logger.error(reason);
-                this.notification.error('get-user_error');
-            });
     }
 }

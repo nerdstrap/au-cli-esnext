@@ -10,14 +10,16 @@ import {UserService} from 'services/user-service';
 import {logger} from 'util/logger-helper';
 import {
     ChallengeCancel,
+    ChallengeVerify,
     ChallengeSuccess,
-    ChallengeFail
+    ChallengeFail,
+    ChallengeComplete
 } from 'resources/messages/challenge-messages';
 import _ from 'lodash';
 
 @inject(Router, EventAggregator, ValidationControllerFactory, DialogService, Notification, I18N, AuthService, UserService)
 export class ChallengeWithChallengeQuestions {
-    vm = {};
+    vm;
 
     constructor(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
         this.router = router;
@@ -31,28 +33,9 @@ export class ChallengeWithChallengeQuestions {
     }
 
     activate(viewModel) {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             this.vm = viewModel;
-            let request = {
-                userId: this.vm.user.userId,
-                credentialType: 'Questions',
-                authToken: this.vm.authToken
-            };
-            this.userService.challengeUser(request)
-                .then(response => {
-                    if (response.challengeStatus !== 'Deny') {
-                        this.vm.user.fromJson(response);
-                        this.applyValidationRules();
-                    } else {
-                        this.notification.error('challenge-user_error');
-                    }
-                    resolve();
-                })
-                .catch(reason => {
-                    logger.error(reason);
-                    this.notification.error('challenge-user_error');
-                    reject(reason);
-                });
+            resolve();
         });
     }
 
@@ -90,36 +73,16 @@ export class ChallengeWithChallengeQuestions {
     next() {
         return new Promise((resolve, reject) => {
             this.controller.validate()
-                .then(controllerValidateResult => {
-                    if (controllerValidateResult.valid) {
+                .then(result => {
+                    if (result.valid) {
                         let credentials = this._getCredentials();
-                        let request = {
-                            sessionId: this.vm.user.sessionId,
-                            transactionId: this.vm.user.transactionId,
-                            userId: this.vm.user.userId,
-                            authToken: this.vm.user.authToken,
+                        let message = {
                             credentialType: 'Questions',
-                            credentials: credentials,
-                            bindDevice: this.vm.bindDevice
+                            credentials: credentials
                         };
-                        this.userService.authenticateUser(request)
-                            .then(response => {
-                                if (response.authStatusCode !== 'Deny') {
-                                    this.onChallengeSuccess(response);
-                                } else {
-                                    this.notification.error('challenge_error');
-                                    this.onChallengeFail(response);
-                                }
-                                resolve();
-                            })
-                            .catch(reason => {
-                                logger.error(reason);
-                                this.notification.error('challenge_error');
-                                reject(reason);
-                            });
-                    } else {
-                        resolve();
+                        this.eventAggregator.publish(new ChallengeVerify(message));
                     }
+                    resolve();
                 })
                 .catch(validateReason => {
                     logger.error(validateReason);
@@ -128,13 +91,5 @@ export class ChallengeWithChallengeQuestions {
                 });
         });
 
-    }
-
-    onChallengeSuccess(message) {
-        this.eventAggregator.publish(new ChallengeSuccess(message));
-    }
-
-    onChallengeFail(message) {
-        this.eventAggregator.publish(new ChallengeFail(message));
     }
 }

@@ -1,6 +1,6 @@
 ﻿import {inject, bindable, computedFrom} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {ValidationControllerFactory, ValidationController, ValidationRules} from 'aurelia-validation';
+import {ValidationControllerFactory, ValidationController, ValidationRules, validateTrigger} from 'aurelia-validation';
 import {DialogController} from 'aurelia-dialog';
 import {Notification} from 'aurelia-notification';
 import {I18N} from 'aurelia-i18n';
@@ -25,6 +25,7 @@ export class VerifyPhoneInfoDialog {
         this.dialogController = dialogController;
         this.eventAggregator = eventAggregator;
         this.controller = controllerFactory.createForCurrentScope();
+        this.controller.validateTrigger = validateTrigger.manual;
         this.notification = notification;
         this.i18n = i18n;
         this.authService = authService;
@@ -109,8 +110,8 @@ export class VerifyPhoneInfoDialog {
     verify(event) {
         return new Promise((resolve, reject) => {
             this.controller.validate()
-                .then(controllerValidateResult => {
-                    if (controllerValidateResult.valid) {
+                .then(result => {
+                    if (result.valid) {
                         let request = {
                             sessionId: this.vm.user.sessionId,
                             transactionId: this.vm.user.transactionId,
@@ -134,7 +135,13 @@ export class VerifyPhoneInfoDialog {
                                 this.notification.error('verify-phone-info_error');
                                 reject(reason);
                             });
+                    } else {
+                        resolve();
                     }
+                })
+                .catch(validateReason => {
+                    logger.error(validateReason);
+                    reject(validateReason);
                 });
         });
     }

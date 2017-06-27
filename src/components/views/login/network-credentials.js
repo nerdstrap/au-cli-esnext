@@ -16,7 +16,7 @@ import {logger} from 'util/logger-helper';
 
 @inject(Router, EventAggregator, ValidationControllerFactory, DialogService, Notification, I18N, AuthService, UserService, WindowHelper)
 export class NetworkCredentials {
-    vm = {};
+    vm;
     onKeypressInputCallback;
 
     constructor(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService, windowHelper) {
@@ -70,8 +70,8 @@ export class NetworkCredentials {
     signin(event) {
         return new Promise((resolve, reject) => {
             this.controller.validate()
-                .then(controllerValidateResult => {
-                    if (controllerValidateResult.valid) {
+                .then(result => {
+                    if (result.valid) {
                         let request = {
                             sessionId: this.vm.user.sessionId,
                             transactionId: this.vm.user.transactionId,

@@ -45,17 +45,4 @@
             </button>
         </div>
     </div>
-    <div class="row c-action-bar">
-        <div class="small-12 medium-8 columns">
-            <strong t="enrollment-step-3_header"></strong>
-        </div>
-        <div class="small-12 medium-4 columns">
-            <button type="button" class="hollow button" click.trigger="skip($event)" if.bind="!isEmailInfosComplete">
-                <span t="skip_button"></span>
-            </button>
-            <button type="button" class="button" click.trigger="next($event)" if.bind="isEmailInfosComplete">
-                <span t="next_button"></span>
-            </button>
-        </div>
-    </div>
 </template>

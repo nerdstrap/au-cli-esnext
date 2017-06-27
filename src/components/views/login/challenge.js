@@ -8,14 +8,14 @@ import {I18N} from 'aurelia-i18n';
 import {AuthService} from 'aurelia-authentication';
 import {UserService} from 'services/user-service';
 import {
-    ChallengeCancel,
-    GoToChallengeWithCredentials
-} from 'resources/messages/challenge-messages';
+    GoToLogout,
+    ChallengeWithCredentials
+} from 'resources/messages/login-messages';
 import {logger} from 'util/logger-helper';
 
 @inject(Router, EventAggregator, ValidationControllerFactory, DialogService, Notification, I18N, AuthService, UserService)
 export class Challenge {
-    vm = {};
+    vm;
 
     constructor(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService) {
         this.router = router;
@@ -46,7 +46,7 @@ export class Challenge {
 
     cancel(event) {
         return new Promise(resolve => {
-            this.eventAggregator.publish(new ChallengeCancel());
+            this.eventAggregator.publish(new GoToLogout());
             resolve();
         });
     }
@@ -56,7 +56,7 @@ export class Challenge {
             this.controller.validate()
                 .then(result => {
                     if (result.valid) {
-                        this.eventAggregator.publish(new GoToChallengeWithCredentials());
+                        this.eventAggregator.publish(new ChallengeWithCredentials());
                     }
                     resolve();
                 })

@@ -13,7 +13,7 @@
         "aurelia-authentication": "^3.1.0",
         "aurelia-bootstrapper": "*",
         "aurelia-config": "^0.1.1",
-        "aurelia-dialog": "^1.0.0-beta.3.0.1",
+        "aurelia-dialog": "1.0.0-rc.1.0.1",
         "aurelia-event-aggregator": "*",
         "aurelia-fetch-client": "*",
         "aurelia-i18n": "*",
@@ -38,7 +38,8 @@
         "requirejs": "*",
         "text": "github:requirejs/text",
         "whatwg-fetch": "*",
-        "zxcvbn": "^4.4.1"
+        "zxcvbn": "^4.4.1",
+        "nprogress": "*"
     },
     "devDependencies": {
         "aurelia-cli": "*",

@@ -11,13 +11,13 @@ import {logger} from 'util/logger-helper';
 import EventTimer from 'util/event-timer';
 import appConfig from 'config/app';
 import {
-    GoToEnrollmentIntro
+    EnrollmentDisclaimerConfirmed
 } from 'resources/messages/enrollment-messages';
 import _ from 'lodash';
 
 @inject(Router, EventAggregator, ValidationControllerFactory, DialogService, Notification, I18N, AuthService, UserService)
 export class EnrollmentDisclaimer {
-    vm = {};
+    vm;
     eventTimerStartTime = appConfig.enrollment.confirmDisclaimerEventTimerStartTime || 5;
     eventTimerTickKey = 'enrollment-disclaimer-tick';
     eventTimerTimeoutKey = 'enrollment-disclaimer-timeout';
@@ -45,9 +45,11 @@ export class EnrollmentDisclaimer {
     activate(viewModel) {
         return new Promise(resolve => {
             this.vm = viewModel;
-            this.applyValidationRules();
+            this.vm.confirmDisclaimerChecked = false;
+            this.vm.eventTimerExpired = false;
             this.vm.remainingTime = this.eventTimerStartTime;
             this.timer.start(this.eventTimerStartTime, this.eventTimerTickKey, this.eventTimerTimeoutKey);
+            this.applyValidationRules();
             resolve();
         });
     }
@@ -86,7 +88,7 @@ export class EnrollmentDisclaimer {
             this.controller.validate()
                 .then(controllerValidateResult => {
                     if (controllerValidateResult.valid) {
-                        this.eventAggregator.publish(new GoToEnrollmentIntro());
+                        this.eventAggregator.publish(new EnrollmentDisclaimerConfirmed());
                     }
                     resolve();
                 })

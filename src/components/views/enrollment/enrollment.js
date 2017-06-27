@@ -8,29 +8,18 @@ import {AuthService} from 'aurelia-authentication';
 import {UserService} from 'services/user-service';
 import {User} from 'models/user';
 import {logger} from 'util/logger-helper';
-import {EnrollmentStep} from 'util/common-models';
 import {
-    GoToEnrollmentDisclaimer,
-    GoToEnrollmentIntro,
-    GoToChallengeQuestionAnswers,
-    ChallengeQuestionAnswersDone,
-    GoToPhoneInfos,
-    PhoneInfosDone,
-    GoToEmailInfos,
-    EmailInfosDone,
-    GoToEnrollmentSummary,
-    EnrollmentDone
+    EnrollmentDisclaimerConfirmed,
+    EnrollmentStart,
+    EnrollCredentialsComplete,
+    EnrollmentComplete
 } from 'resources/messages/enrollment-messages';
 import _ from 'lodash';
 
 @inject(Router, EventAggregator, DialogService, Notification, I18N, AuthService, UserService)
 export class Enrollment {
     vm = {
-        user: {},
-        showNavBar: false,
-        confirmDisclaimerChecked: false,
-        remainingTime: 0,
-        eventTimerExpired: false
+        user: new User()
     };
     enrollmentViewModel;
     subscribers = [];
@@ -45,7 +34,7 @@ export class Enrollment {
         this.userService = userService;
 
         let payload = authService.getTokenPayload();
-        this.vm.user.userId = payload ? payload.username : null;
+        this.vm.user.fromJson(payload);
     }
 
     activate(params, routeConfig, navigationInstruction) {
@@ -56,9 +45,8 @@ export class Enrollment {
         };
         return this.userService.getUser(request)
             .then(response => {
-                this.vm.user = new User();
                 this.vm.user.fromJson(response);
-                this.onGoToEnrollmentIntro(response);
+                this.enrollmentViewModel = './enrollment-disclaimer';
             })
             .catch(reason => {
                 logger.error(reason);
@@ -68,34 +56,16 @@ export class Enrollment {
 
     attached() {
         this.subscribers.push(
-            this.eventAggregator.subscribe(GoToEnrollmentDisclaimer, message => this.onGoToEnrollmentDisclaimer(message))
+            this.eventAggregator.subscribe(EnrollmentDisclaimerConfirmed, message => this.onEnrollmentDisclaimerConfirmed(message))
         );
         this.subscribers.push(
-            this.eventAggregator.subscribe(GoToEnrollmentIntro, message => this.onGoToEnrollmentIntro(message))
+            this.eventAggregator.subscribe(EnrollmentStart, message => this.onEnrollmentStart(message))
         );
         this.subscribers.push(
-            this.eventAggregator.subscribe(GoToChallengeQuestionAnswers, message => this.onGoToEnrollChallengeQuestionAnswers(message))
+            this.eventAggregator.subscribe(EnrollCredentialsComplete, message => this.onEnrollCredentialsComplete(message))
         );
         this.subscribers.push(
-            this.eventAggregator.subscribe(ChallengeQuestionAnswersDone, message => this.onEnrollChallengeQuestionAnswersDone(message))
-        );
-        this.subscribers.push(
-            this.eventAggregator.subscribe(GoToPhoneInfos, message => this.onGoToEnrollPhoneInfos(message))
-        );
-        this.subscribers.push(
-            this.eventAggregator.subscribe(PhoneInfosDone, message => this.onEnrollPhoneInfosDone(message))
-        );
-        this.subscribers.push(
-            this.eventAggregator.subscribe(GoToEmailInfos, message => this.onGoToEnrollEmailInfos(message))
-        );
-        this.subscribers.push(
-            this.eventAggregator.subscribe(EmailInfosDone, message => this.onEnrollEmailInfosDone(message))
-        );
-        this.subscribers.push(
-            this.eventAggregator.subscribe(GoToEnrollmentSummary, message => this.onGoToEnrollmentSummary(message))
-        );
-        this.subscribers.push(
-            this.eventAggregator.subscribe(EnrollmentDone, message => this.onEnrollmentDone(message))
+            this.eventAggregator.subscribe(EnrollmentComplete, message => this.onEnrollmentComplete(message))
         );
     }
 
@@ -107,76 +77,19 @@ export class Enrollment {
         });
     }
 
-    onGoToEnrollmentDisclaimer(message) {
-        this.vm.showNavBar = false;
-        this.vm.enrollmentStep = EnrollmentStep.DISCLAIMER;
-        this.enrollmentViewModel = './enrollment-disclaimer';
-    }
-
-    onGoToEnrollmentIntro(message) {
-        this.vm.showNavBar = false;
-        this.vm.enrollmentStep = EnrollmentStep.INTRO;
+    onEnrollmentDisclaimerConfirmed(message) {
         this.enrollmentViewModel = './enrollment-intro';
     }
 
-    onGoToEnrollChallengeQuestionAnswers(message) {
-        this.vm.showNavBar = true;
-        this.vm.enrollmentStep = EnrollmentStep.QUESTIONS;
-        this.enrollmentViewModel = './enroll-challenge-question-answers';
+    onEnrollmentStart(message) {
+        this.enrollmentViewModel = './enroll-credentials';
     }
 
-    onEnrollChallengeQuestionAnswersDone(message) {
-        this.vm.challengeQuestionAnswersComplete = this.vm.user.challengeQuestionAnswersComplete;
-        this.onGoToEnrollPhoneInfos();
-    }
-
-    onGoToEnrollPhoneInfos(message) {
-        this.vm.showNavBar = true;
-        this.vm.enrollmentStep = EnrollmentStep.PHONE;
-        this.enrollmentViewModel = './enroll-phone-infos';
-    }
-
-    onEnrollPhoneInfosDone(message) {
-        if (this.vm.user.smsInfosComplete) {
-            this.vm.phoneInfosComplete = true;
-            this.vm.phoneInfosSkipped = false;
-        }
-        else {
-            if (message && message.phoneInfosSkipped) {
-                this.vm.phoneInfosComplete = false;
-                this.vm.phoneInfosSkipped = true;
-            }
-        }
-        this.onGoToEnrollEmailInfos();
-    }
-
-    onGoToEnrollEmailInfos(message) {
-        this.vm.showNavBar = true;
-        this.vm.enrollmentStep = EnrollmentStep.EMAIL;
-        this.enrollmentViewModel = './enroll-email-infos';
-    }
-
-    onEnrollEmailInfosDone(message) {
-        if (this.vm.user.emailInfosComplete) {
-            this.vm.emailInfosComplete = true;
-            this.vm.emailInfosSkipped = false;
-        }
-        else {
-            if (message && message.emailInfosSkipped) {
-                this.vm.emailInfosComplete = false;
-                this.vm.emailInfosSkipped = true;
-            }
-        }
-        this.onGoToEnrollmentSummary();
-    }
-
-    onGoToEnrollmentSummary(message) {
-        this.vm.showNavBar = false;
-        this.vm.enrollmentStep = EnrollmentStep.SUMMARY;
+    onEnrollCredentialsComplete(message) {
         this.enrollmentViewModel = './enrollment-review';
     }
 
-    onEnrollmentDone(message) {
+    onEnrollmentComplete(message) {
         this.router.navigateToRoute('self-service');
     }
 }

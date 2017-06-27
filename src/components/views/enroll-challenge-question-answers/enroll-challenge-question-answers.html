@@ -34,21 +34,13 @@
                             <label for="show-actual-answer-input-${$index}" t="show-actual-answer_label"></label>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <button type="button" class="button expanded radius" click.trigger="save($event)">
+                            <span t="save_button"></span>
+                        </button>
+                    </div>
                 </fieldset>
             </form>
-        </div>
-    </div>
-    <div class="row c-action-bar">
-        <div class="small-12 medium-8 columns">
-            <span t="enrollment-step-1_header"></span>
-        </div>
-        <div class="small-12 medium-4 columns">
-            <button type="button" class="hollow button" click.trigger="cancel($event)">
-                <span t="cancel_button"></span>
-            </button>
-            <button type="button" class="button" click.trigger="next($event)">
-                <span t="next_button"></span>
-            </button>
         </div>
     </div>
 </template>

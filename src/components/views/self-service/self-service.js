@@ -11,7 +11,9 @@ import {logger} from 'util/logger-helper';
 
 @inject(Router, EventAggregator, DialogService, Notification, I18N, AuthService, UserService)
 export class SelfService {
-    vm = {};
+    vm = {
+        user: new User()
+    };
     subscribers = [];
 
     constructor(router, eventAggregator, dialogService, notification, i18n, authService, userService) {
@@ -22,17 +24,18 @@ export class SelfService {
         this.i18n = i18n;
         this.authService = authService;
         this.userService = userService;
+
+        let payload = this.authService.getTokenPayload();
+        this.vm.user.fromJson(payload);
     }
 
     activate(params, routeConfig, navigationInstruction) {
-        let payload = this.authService.getTokenPayload();
-        let userId = payload ? payload.username : null;
         let request = {
-            userId: userId
+            userId: this.vm.user.userId
         };
         return this.userService.getUser(request)
             .then(response => {
-                this.vm.user = new User(response);
+                this.vm.user.fromJson(response);
             })
             .catch(reason => {
                 logger.error(reason);
@@ -45,7 +48,7 @@ export class SelfService {
     }
 
     goToEditProfile(event) {
-        this.router.navigateToRoute('edit-profile');
+        this.router.navigateToRoute('edit-credentials');
     }
 
     goToUnlockAccount(event) {

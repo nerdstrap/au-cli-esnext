@@ -6,6 +6,14 @@
     }
 }
 
+export class GoToLogout {
+    constructor(attributes) {
+        if (attributes) {
+            Object.assign(this, attributes);
+        }
+    }
+}
+
 export class SigninSuccess {
     constructor(attributes) {
         if (attributes) {
@@ -14,7 +22,15 @@ export class SigninSuccess {
     }
 }
 
-export class GoToChallenge {
+export class ChallengeWithCredentials {
+    constructor(attributes) {
+        if (attributes) {
+            Object.assign(this, attributes);
+        }
+    }
+}
+
+export class AuthenticateUserFail {
     constructor(attributes) {
         if (attributes) {
             Object.assign(this, attributes);

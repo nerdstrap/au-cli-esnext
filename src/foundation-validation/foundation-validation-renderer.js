@@ -26,78 +26,84 @@ export class FoundationValidationRenderer {
         }
 
         for (let {result, elements} of instruction.render) {
-            for (let element of elements) {
-                FoundationValidationRenderer.add(element, result);
+            if (!result.valid) {
+                for (let element of elements) {
+                    FoundationValidationRenderer.add(element, result);
+                }
             }
         }
     }
 
     static add(element, result) {
-        const formRow = element.closest('.form-row');
-        if (!formRow) {
-            return;
-        }
-
-        const formLabel = formRow.getElementsByTagName('label')[0];
-        const formInput = formRow.getElementsByTagName('input')[0];
-        if (result.valid) {
-            if (abideLabels && formLabel && !formLabel.classList.contains('is-invalid-label')) {
-                formLabel.classList.add('is-valid-label');
+        if (element) {
+            const formRow = element.closest('.form-row');
+            if (!formRow) {
+                return;
             }
 
-            if (formInput && !formInput.classList.contains('is-invalid-input')) {
-                formInput.classList.add('is-valid-input');
-            }
-        } else {
-            if (abideLabels && formLabel) {
-                formLabel.classList.remove('is-valid-label');
-                formLabel.classList.add('is-invalid-label');
-            }
+            const formLabel = formRow.getElementsByTagName('label')[0];
+            const formInput = formRow.getElementsByTagName('input')[0];
+            if (result.valid) {
+                if (abideLabels && formLabel && !formLabel.classList.contains('is-invalid-label')) {
+                    formLabel.classList.add('is-valid-label');
+                }
 
-            if (formInput) {
-                formInput.classList.remove('is-valid-input');
-                formInput.classList.add('is-invalid-input');
-                formInput.setAttribute('aria-invalid', 'true');
-            }
+                if (formInput && !formInput.classList.contains('is-invalid-input')) {
+                    formInput.classList.add('is-valid-input');
+                }
+            } else {
+                if (abideLabels && formLabel) {
+                    formLabel.classList.remove('is-valid-label');
+                    formLabel.classList.add('is-invalid-label');
+                }
 
-            const message = document.createElement('span');
-            message.className = 'form-error is-visible';
-            message.textContent = result.message;
-            message.id = `validation-message-${result.id}`;
-            formRow.appendChild(message);
+                if (formInput) {
+                    formInput.classList.remove('is-valid-input');
+                    formInput.classList.add('is-invalid-input');
+                    formInput.setAttribute('aria-invalid', 'true');
+                }
+
+                const message = document.createElement('span');
+                message.className = 'form-error is-visible';
+                message.textContent = result.message;
+                message.id = `validation-message-${result.id}`;
+                formRow.appendChild(message);
+            }
         }
     }
 
     static remove(element, result) {
-        const formRow = element.closest('.form-row');
-        if (!formRow) {
-            return;
-        }
-
-        const formLabel = formRow.getElementsByTagName('label')[0];
-        const formInput = formRow.getElementsByTagName('input')[0];
-
-        if (result.valid) {
-            if (abideLabels && formLabel) {
-                formLabel.classList.remove('is-valid-label');
+        if (element) {
+            const formRow = element.closest('.form-row');
+            if (!formRow) {
+                return;
             }
 
-            if (formInput) {
-                formInput.classList.remove('is-valid-input');
-            }
-        } else {
-            if (abideLabels && formLabel) {
-                formLabel.classList.remove('is-invalid-label');
-            }
+            const formLabel = formRow.getElementsByTagName('label')[0];
+            const formInput = formRow.getElementsByTagName('input')[0];
 
-            if (formInput) {
-                formInput.classList.remove('is-invalid-input');
-                formInput.setAttribute('aria-invalid', 'false');
-            }
+            if (result.valid) {
+                if (abideLabels && formLabel) {
+                    formLabel.classList.remove('is-valid-label');
+                }
 
-            const message = formRow.querySelector(`#validation-message-${result.id}`);
-            if (message) {
-                formRow.removeChild(message);
+                if (formInput) {
+                    formInput.classList.remove('is-valid-input');
+                }
+            } else {
+                if (abideLabels && formLabel) {
+                    formLabel.classList.remove('is-invalid-label');
+                }
+
+                if (formInput) {
+                    formInput.classList.remove('is-invalid-input');
+                    formInput.setAttribute('aria-invalid', 'false');
+                }
+
+                const message = formRow.querySelector(`#validation-message-${result.id}`);
+                if (message) {
+                    formRow.removeChild(message);
+                }
             }
         }
     }

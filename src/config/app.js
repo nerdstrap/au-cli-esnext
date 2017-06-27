@@ -29,6 +29,10 @@ export default {
         locale: 'en-US'
     },
     'aurelia-notification': {
+        defaults: {
+            timeout: 5000,
+            clickToClose: true
+        },
         notifications: {
             success: 'humane-flatty-success',
             error: 'humane-flatty-error',
@@ -40,6 +44,7 @@ export default {
         numberOfRequiredSmsInfos: 1,
         numberOfRequiredEmailInfos: 1,
         confirmDisclaimerEventTimerStartTime: 1,
-        verifyEmailInfoTimerStartTime: 120
+        verifyPhoneInfoTimerStartTime: 10,
+        verifyEmailInfoTimerStartTime: 10
     }
 };

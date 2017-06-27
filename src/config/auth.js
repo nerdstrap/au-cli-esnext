@@ -23,6 +23,10 @@ export default {
         // The API endpoint used in profile requests (inc. `find/get` and `update`)
         profileUrl: '/me',
 
+        accessTokenProp: 'access_token',
+        refreshTokenProp: 'refresh_token',
+        idTokenProp: 'id_token',
+        refreshTokenSubmitProp: 'refresh_token',
         refreshTokenUrl: '/refresh-token',
         useRefreshToken: true
     }

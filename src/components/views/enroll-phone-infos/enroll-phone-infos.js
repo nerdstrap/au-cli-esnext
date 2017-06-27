@@ -7,30 +7,25 @@ import {Notification} from 'aurelia-notification';
 import {I18N} from 'aurelia-i18n';
 import {AuthService} from 'aurelia-authentication';
 import {UserService} from 'services/user-service';
+import {logger} from 'util/logger-helper';
 import {WindowHelper} from 'util/window-helper';
 import {ConfirmDialog} from 'components/views/confirm-dialog/confirm-dialog';
-import {VerifyEmailInfoDialog} from 'components/views/verify-email-info-dialog/verify-email-info-dialog';
-import {EnrollEmailInfosDone} from 'resources/messages/enrollment-messages';
-import {logger} from 'util/logger-helper';
+import {VerifyPhoneInfoDialog} from 'components/views/verify-phone-info-dialog/verify-phone-info-dialog';
+import {
+    EnrollPhoneInfosComplete
+} from 'resources/messages/enrollment-messages';
 import _ from 'lodash';
 
 @inject(Router, EventAggregator, ValidationControllerFactory, DialogService, Notification, I18N, AuthService, UserService, WindowHelper)
-export class EnrollEmailInfos {
-    vm = {
-        user: {
-            emailInfos: [],
-        },
-        showEnrollEmailInfoWarning: true,
-        emailAddress: '',
-        emailAddressHasFocus: true,
-        showAddEmailInfoForm: true
-    };
+export class EnrollPhoneInfos {
+    vm;
     onKeypressInputCallback;
 
     constructor(router, eventAggregator, controllerFactory, dialogService, notification, i18n, authService, userService, windowHelper) {
         this.router = router;
         this.eventAggregator = eventAggregator;
         this.controller = controllerFactory.createForCurrentScope();
+        this.controller.validateTrigger = validateTrigger.manual;
         this.dialogService = dialogService;
         this.notification = notification;
         this.i18n = i18n;
@@ -43,11 +38,15 @@ export class EnrollEmailInfos {
 
     activate(viewModel) {
         return new Promise(resolve => {
-            this.vm.user = viewModel.user;
-            if (this.vm.user.emailInfos.length > 0) {
-                this.vm.showAddEmailInfoForm = false;
+            this.vm = viewModel;
+            this.vm.showEnrollPhoneInfoWarning = true;
+            this.vm.phoneNumber = '';
+            this.vm.phoneNumberHasFocus = true;
+            this.vm.showAddPhoneInfoForm = true;
+            if (this.vm.user.smsInfos.length > 0) {
+                this.vm.showAddPhoneInfoForm = false;
             } else {
-                this.vm.emailAddressHasFocus = true;
+                this.vm.phoneNumberHasFocus = true;
             }
             this.applyValidationRules();
             this.windowHelper.addEventListener('keypress', this.onKeypressInputCallback, false);
@@ -57,7 +56,12 @@ export class EnrollEmailInfos {
 
     applyValidationRules() {
         ValidationRules
-            .ensure('emailAddress').required().email().withMessage(`\${$value} is not a valid email address.`)
+            .ensure('phoneNumber')
+            .required()
+            .minLength(10)
+            .maxLength(11)
+            .matches(/^\D?(\d{3})\D?\D?(\d{3})\D?\D?\D?(\d{4})$/)
+            .withMessage(`\${$value} is not a valid phone number.`)
             .on(this.vm);
     }
 
@@ -68,24 +72,24 @@ export class EnrollEmailInfos {
     onKeypressInput(event) {
         if (typeof event !== 'undefined') {
             if (typeof event.target.id !== 'undefined') {
-                if (event.target.id === 'email-address-input') {
+                if (event.target.id === 'phone-number-input') {
                     if (event.key === 'Enter') {
-                        this.addEmailInfo();
+                        this.addPhoneInfo();
                     }
                 }
             }
         }
     }
 
-    removeEmailInfo(event, contactInfo) {
-        let confirmDialogModel = this.i18n.tr('confirm-remove-email-info-dialog', {returnObjects: true});
+    removePhoneInfo(event, contactInfo) {
+        let confirmDialogModel = this.i18n.tr('confirm-remove-phone-info-dialog', {returnObjects: true});
         confirmDialogModel.messageParams = {
-            'emailAddress': contactInfo.emailAddress
+            'phoneNumber': contactInfo.phoneNumber
         };
-        return this.dialogService.open({viewModel: ConfirmDialog, model: confirmDialogModel})
-            .then(openDialogResult => {
+        return this.dialogService.open({viewModel: ConfirmDialog, model: confirmDialogModel, rejectOnCancel: false})
+            .whenClosed(openDialogResult => {
                 if (!openDialogResult.wasCancelled) {
-                    this.onConfirmRemoveEmailInfo(contactInfo);
+                    this.onConfirmRemovePhoneInfo(contactInfo);
                 }
             })
             .catch(reason => {
@@ -94,11 +98,11 @@ export class EnrollEmailInfos {
             });
     }
 
-    onConfirmRemoveEmailInfo(contactInfo) {
+    onConfirmRemovePhoneInfo(contactInfo) {
         let request = {
             userId: this.vm.userId,
-            contactType: 'Email',
-            contactInfo: contactInfo.emailAddress,
+            contactType: 'Phone',
+            contactInfo: contactInfo.phoneNumber,
             label: contactInfo.label,
             verified: contactInfo.verified,
             hasActiveToken: contactInfo.hasActiveToken,
@@ -108,13 +112,9 @@ export class EnrollEmailInfos {
             .then(response => {
                 this.vm.user.sessionId = response.sessionId;
                 this.vm.user.transactionId = response.transactionId;
-                if (response.success) {
-                    this.notification.info('remove-contact-info_success');
-                    this.vm.user.emailInfos.splice(_.findIndex(this.vm.user.emailInfos, contactInfo), 1);
-                } else {
-                    logger.error(response);
-                    this.notification.error('remove-contact-info_error');
-                }
+                this.notification.info('remove-contact-info_success');
+                this.vm.user.smsInfos.splice(_.findIndex(this.vm.user.smsInfos, contactInfo), 1);
+                this.eventAggregator.publish(new EnrollPhoneInfosComplete());
             })
             .catch(reason => {
                 logger.error(reason);
@@ -122,24 +122,24 @@ export class EnrollEmailInfos {
             });
     }
 
-    isEmailAddressUnique(emailAddress) {
-        let idx = _.findIndex(this.vm.user.emailInfos, function (s) {
-            return s.label === emailAddress;
+    isPhoneNumberUnique(phoneNumber) {
+        let idx = _.findIndex(this.vm.user.smsInfos, function (s) {
+            return s.label === phoneNumber;
         });
         return idx < 0;
     }
 
-    addEmailInfo(event) {
+    addPhoneInfo(event) {
         return new Promise((resolve, reject) => {
-            if (this.isEmailAddressUnique(this.vm.emailAddress)) {
+            if (this.isPhoneNumberUnique(this.vm.phoneNumber)) {
                 this.controller.validate()
-                    .then(controllerValidateResult => {
-                        if (controllerValidateResult.valid) {
+                    .then(result => {
+                        if (result.valid) {
                             let request = {
                                 userId: this.vm.user.userId,
                                 credentialType: 'SMS',
-                                contactInfo: this.vm.emailAddress,
-                                label: this.vm.emailAddress,
+                                contactInfo: this.vm.phoneNumber,
+                                label: this.vm.phoneNumber,
                                 isDefault: true
                             };
                             this.userService.challengeUser(request)
@@ -147,7 +147,7 @@ export class EnrollEmailInfos {
                                     this.vm.user.sessionId = response.sessionId;
                                     this.vm.user.transactionId = response.transactionId;
                                     if (response.challengeStatus !== 'Deny') {
-                                        this.goToVerifyEmailInfo(response);
+                                        this.goToVerifyPhoneInfo(response);
                                     } else {
                                         this.notification.error('challenge-user-deny_error');
                                     }
@@ -167,15 +167,15 @@ export class EnrollEmailInfos {
                         reject(exception);
                     });
             } else {
-                let duplicateEmailError = new Error('duplicate-email_error');
-                this.notification.error(duplicateEmailError);
-                reject(duplicateEmailError);
+                let duplicatePhoneError = new Error('duplicate-phone_error');
+                this.notification.error(duplicatePhoneError);
+                reject(duplicatePhoneError);
             }
         });
     }
 
-    goToVerifyEmailInfo(message) {
-        let verifyEmailInfoModel = {
+    goToVerifyPhoneInfo(message) {
+        let verifyPhoneInfoModel = {
             user: {
                 userId: this.vm.user.userId,
                 sessionId: this.vm.user.sessionId,
@@ -184,75 +184,45 @@ export class EnrollEmailInfos {
             verificationCode: '',
             verificationCodeHasFocus: true
         };
-        verifyEmailInfoModel.messageParams = {
-            'emailAddress': this.vm.emailAddress
+        verifyPhoneInfoModel.messageParams = {
+            'phoneNumber': this.vm.phoneNumber
         };
-        return this.dialogService.open({viewModel: VerifyEmailInfoDialog, model: verifyEmailInfoModel})
-            .then(openDialogResult => {
+        return this.dialogService.open({viewModel: VerifyPhoneInfoDialog, model: verifyPhoneInfoModel, rejectOnCancel: false})
+            .whenClosed(openDialogResult => {
                 if (openDialogResult.wasCancelled) {
                     if (openDialogResult.output && openDialogResult.output.resendCode) {
-                        this.notification.info('verify-email-info_resend');
-                        this.addEmailInfo();
+                        this.notification.info('verify-phone-info_resend');
+                        this.addPhoneInfo();
                     } else {
-                        this.notification.info('verify-email-info_canceled');
+                        this.notification.info('verify-phone-info_canceled');
                     }
                 } else {
-                    this.onVerifyEmailInfoSuccess(openDialogResult.output);
+                    this.onVerifyPhoneInfoSuccess(openDialogResult.output);
+                    this.eventAggregator.publish(new EnrollPhoneInfosComplete());
                 }
             })
             .catch(reason => {
                 logger.error(reason);
-                this.notification.info('verify-email-info_error');
+                this.notification.info('verify-phone-info_error');
             });
     }
 
-    onVerifyEmailInfoSuccess(message) {
-        let contactInfo = '1' + JSON.parse(JSON.stringify(message.contactInfo));
-        let emailInfo = {
-            emailAddress: contactInfo,
-            label: contactInfo.substring(1, 11),
-            isDefault: false,
-            verified: true,
-            hasActiveToken: false
-        };
-        this.vm.user.emailInfos.push(emailInfo);
+    onVerifyPhoneInfoSuccess(message) {
+        if (message) {
+            let phoneInfo = {
+                phoneNumber: message.contactInfo,
+                label: message.contactInfo,
+                isDefault: false,
+                verified: true,
+                hasActiveToken: false
+            };
+            this.vm.user.smsInfos.push(phoneInfo);
 
-        this.vm.user.sessionId = null;
-        this.vm.user.transactionId = null;
-        this.vm.emailAddress = '';
-        this.vm.emailAddressHasFocus = true;
-        this.vm.showAddEmailInfoForm = false;
-    }
-
-    showAddEmailInfoForm(event) {
-        return new Promise(resolve => {
-            this.vm.showAddEmailInfoForm = true;
-            resolve();
-        });
-    }
-
-    get isEmailInfosComplete() {
-        return this.vm.user.emailInfosComplete;
-    }
-
-    skip(event) {
-        let confirmDialogModel = this.i18n.tr('confirm-skip-enroll-email-infos-dialog', {returnObjects: true});
-        return this.dialogService.open({viewModel: ConfirmDialog, model: confirmDialogModel})
-            .then(openDialogResult => {
-                if (!openDialogResult.wasCancelled) {
-                    this.eventAggregator.publish(new EnrollEmailInfosDone({emailInfosSkipped: true}));
-                }
-            })
-            .catch(reason => {
-                logger.error(reason);
-                this.notification.error('confirm_error');
-            });
-    }
-
-    next(event) {
-        return new Promise(resolve => {
-            this.eventAggregator.publish(new EnrollEmailInfosDone());
-            resolve();
-        });
+            this.vm.user.sessionId = null;
+            this.vm.user.transactionId = null;
+            this.vm.phoneNumber = '';
+            this.vm.phoneNumberHasFocus = true;
+            this.vm.showAddPhoneInfoForm = false;
+        }
     }
 }
