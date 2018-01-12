@@ -16,7 +16,7 @@ export default class ValueConverterGenerator {
         let fileName = this.project.makeFileName(name);
         let className = this.project.makeClassName(name);
 
-        FoundationValidationRenderer.add(
+        this.project.valueConverters.add(
           ProjectItem.text(`${fileName}.js`, this.generateSource(className))
         );
 

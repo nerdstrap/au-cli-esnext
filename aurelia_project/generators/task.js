@@ -16,7 +16,7 @@ export default class TaskGenerator {
         let fileName = this.project.makeFileName(name);
         let functionName = this.project.makeFunctionName(name);
 
-        FoundationValidationRenderer.add(
+        this.project.tasks.add(
           ProjectItem.text(`${fileName}.js`, this.generateSource(functionName))
         );
 

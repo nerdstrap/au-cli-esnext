@@ -2,7 +2,6 @@ import {ChallengeQuestion} from 'models/challengeQuestion';
 import {ChallengeQuestionAnswer} from 'models/challengeQuestionAnswer';
 import {SmsInfo} from 'models/smsInfo';
 import {EmailInfo} from 'models/emailInfo';
-import {AuthStatusCode} from 'util/common-models';
 import appConfig from 'config/app';
 import _ from 'lodash';
 

@@ -2,7 +2,6 @@
 import {HttpClient, json} from 'aurelia-fetch-client';
 import {Notification} from 'aurelia-notification';
 import {Router} from 'aurelia-router';
-import * as nprogress from 'nprogress';
 import {Config} from 'aurelia-api';
 import {AuthService} from 'aurelia-authentication';
 import {logger} from 'util/logger-helper';
@@ -125,7 +124,6 @@ export class UserService {
     }
 
     _pre(request) {
-        nprogress.start();
         this.isRequesting = true;
         if (request) {
             request.deviceRequest = this.deviceHelper.deviceRequest;
@@ -137,6 +135,5 @@ export class UserService {
             this.deviceHelper.setDeviceTokenCookie(response.deviceRequest.deviceTokenCookie);
         }
         this.isRequesting = false;
-        nprogress.done();
     }
 }

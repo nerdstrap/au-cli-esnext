@@ -1,9 +1,9 @@
 <template>
-    <div class="row">
+        <require from="./reset.css"></require>
+        <require from="./app.css#ux"></require>
+    <section styles.main>
         <nav-bar router.bind="router" username.bind="username"></nav-bar>
-        <div class="page-margins">
-            <router-view></router-view>
-        </div>
+            <router-view styles.page></router-view>
         <site-footer router.bind="router" languages.bind="languages"></site-footer>
-    </div>
+    </section>
 </template>

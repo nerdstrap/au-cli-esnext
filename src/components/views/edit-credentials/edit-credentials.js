@@ -7,7 +7,6 @@ import {I18N} from 'aurelia-i18n';
 import {AuthService} from 'aurelia-authentication';
 import {UserService} from 'services/user-service';
 import {logger} from 'util/logger-helper';
-import {CredentialType} from 'util/common-models';
 import {
     EnrollChallengeQuestionAnswersComplete,
     EnrollPhoneInfosComplete,
@@ -34,7 +33,6 @@ export class EditCredentials {
     activate(viewModel) {
         return new Promise(resolve => {
             this.vm = viewModel;
-            this.vm.credentialType = CredentialType.QUESTIONS;
 
             resolve();
         });

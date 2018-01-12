@@ -16,7 +16,7 @@ export default class BindingBehaviorGenerator {
         let fileName = this.project.makeFileName(name);
         let className = this.project.makeClassName(name);
 
-        FoundationValidationRenderer.add(
+        this.project.bindingBehaviors.add(
           ProjectItem.text(`${fileName}.js`, this.generateSource(className))
         );
 

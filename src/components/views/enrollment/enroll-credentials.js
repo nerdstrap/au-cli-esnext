@@ -8,7 +8,6 @@ import {AuthService} from 'aurelia-authentication';
 import {UserService} from 'services/user-service';
 import {ConfirmDialog} from 'components/views/confirm-dialog/confirm-dialog';
 import {logger} from 'util/logger-helper';
-import {CredentialType} from 'util/common-models';
 import {
     EnrollChallengeQuestionAnswersComplete,
     EnrollPhoneInfosComplete,
@@ -36,7 +35,6 @@ export class EnrollCredentials {
     activate(viewModel) {
         return new Promise(resolve => {
             this.vm = viewModel;
-            this.vm.credentialType = CredentialType.QUESTIONS;
             this.enrollCredentialsViewModel = 'components/views/enroll-challenge-question-answers/enroll-challenge-question-answers';
             resolve();
         });
@@ -63,13 +61,13 @@ export class EnrollCredentials {
     }
 
     skip(event) {
-        if (this.vm.credentialType === CredentialType.QUESTIONS) {
+        if (this.vm.credentialType === 'CredentialType.QUESTIONS') {
             this.eventAggregator.publish(new EnrollCredentialsComplete({credentialType: CredentialType.QUESTIONS}));
         } else {
             let confirmDialogModel;
-            if (this.vm.credentialType === CredentialType.PHONE) {
+            if (this.vm.credentialType === 'CredentialType.PHONE') {
                 confirmDialogModel = this.i18n.tr('confirm-skip-enroll-phone-infos-dialog', {returnObjects: true});
-            } else if (this.vm.credentialType === CredentialType.EMAIL) {
+            } else if (this.vm.credentialType === 'CredentialType.EMAIL') {
                 confirmDialogModel = this.i18n.tr('confirm-skip-enroll-email-infos-dialog', {returnObjects: true});
             }
             return this.dialogService.open({viewModel: ConfirmDialog, model: confirmDialogModel, rejectOnCancel: false})

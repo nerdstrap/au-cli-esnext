@@ -16,7 +16,7 @@ export default class AttributeGenerator {
         let fileName = this.project.makeFileName(name);
         let className = this.project.makeClassName(name);
 
-        FoundationValidationRenderer.add(
+        this.project.attributes.add(
           ProjectItem.text(`${fileName}.js`, this.generateSource(className))
         );
 

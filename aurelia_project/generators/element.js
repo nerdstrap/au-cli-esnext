@@ -16,7 +16,7 @@ export default class ElementGenerator {
         let fileName = this.project.makeFileName(name);
         let className = this.project.makeClassName(name);
 
-        FoundationValidationRenderer.add(
+        this.project.elements.add(
           ProjectItem.text(`${fileName}.js`, this.generateJSSource(className)),
           ProjectItem.text(`${fileName}.html`, this.generateHTMLSource(className))
         );

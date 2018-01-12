@@ -46,9 +46,9 @@
         "output": "images"
     },
     "editor": {
-        "id": "webstorm",
-        "displayName": "WebStorm"
-    },
+        "id": "vscode",
+        "displayName": "Visual Studio Code"
+      },
     "unitTestRunner": {
         "id": "karma",
         "displayName": "Karma",
@@ -72,7 +72,6 @@
         "dialogs": "src/components/dialogs",
         "models": "src/models",
         "views": "src/components/views",
-        "foundation-validation": "src/foundation-validation",
         "util": "src/util"
     },
     "testFramework": {
@@ -124,13 +123,14 @@
                 ],
                 "dependencies": [
                     "aurelia-animator-css",
+                    "aurelia-api",
+                    {
+                        "name": "aurelia-authentication",
+                        "path": "../node_modules/aurelia-authentication/dist/amd",
+                        "main": "aurelia-authentication"
+                    },
                     "aurelia-binding",
                     "aurelia-bootstrapper",
-                    {
-                        "name": "homefront",
-                        "path": "../node_modules/homefront/dist",
-                        "main": "index"
-                    },
                     "aurelia-config",
                     "aurelia-dependency-injection",
                     "aurelia-dialog",
@@ -141,18 +141,6 @@
                     },
                     "aurelia-event-aggregator",
                     "aurelia-fetch-client",
-                    "aurelia-api",
-                    "extend",
-                    {
-                        "name": "aurelia-authentication",
-                        "path": "../node_modules/aurelia-authentication/dist/amd",
-                        "main": "aurelia-authentication"
-                    },
-                    {
-                        "name": "jwt-decode",
-                        "path": "../node_modules/jwt-decode/lib",
-                        "main": "index"
-                    },
                     "aurelia-framework",
                     "aurelia-history",
                     "aurelia-history-browser",
@@ -171,17 +159,17 @@
                         "path": "../node_modules/i18next-xhr-backend/dist/umd",
                         "main": "i18nextXHRBackend"
                     },
+                    "aurelia-loader",
+                    "aurelia-loader-default",
+                    "aurelia-logging",
+                    "aurelia-logging-console",
+                    "aurelia-metadata",
                     "aurelia-notification",
                     {
                         "name": "humane-js",
                         "path": "../node_modules/humane-js",
                         "main": "humane"
                     },
-                    "aurelia-loader",
-                    "aurelia-loader-default",
-                    "aurelia-logging",
-                    "aurelia-logging-console",
-                    "aurelia-metadata",
                     "aurelia-pal",
                     "aurelia-pal-browser",
                     "aurelia-path",
@@ -191,7 +179,6 @@
                     "aurelia-task-queue",
                     "aurelia-templating",
                     "aurelia-templating-binding",
-                    "text",
                     {
                         "name": "aurelia-templating-resources",
                         "path": "../node_modules/aurelia-templating-resources/dist/amd",
@@ -213,16 +200,16 @@
                         "path": "../node_modules/aurelia-validation/dist/amd",
                         "main": "aurelia-validation"
                     },
-                    "lodash",
-                    "jquery",
+                    "extend",
                     {
-                        "name": "foundation-sites",
-                        "path": "../node_modules/foundation-sites/dist/js",
-                        "main": "foundation"
+                        "name": "homefront",
+                        "path": "../node_modules/homefront/dist",
+                        "main": "index"
                     },
+                    "lodash",
                     {
-                        "name": "odata-filter-parser",
-                        "path": "../node_modules/odata-filter-parser",
+                        "name": "jwt-decode",
+                        "path": "../node_modules/jwt-decode/lib",
                         "main": "index"
                     },
                     {
@@ -235,22 +222,7 @@
                         "path": "../node_modules/numbro",
                         "main": "numbro"
                     },
-                    {
-                        "name": "nprogress",
-                        "path": "../node_modules/nprogress",
-                        "main": "nprogress"
-                    },
-                    {
-                        "name": "zxcvbn",
-                        "path": "../node_modules/zxcvbn/lib",
-                        "main": "main",
-                        "dependencies": [
-                            "matching",
-                            "scoring",
-                            "time_estimates",
-                            "feedback"
-                        ]
-                    }
+                    "text"
                 ]
             }
         ]

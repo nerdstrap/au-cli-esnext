@@ -1,13 +1,13 @@
-﻿import {inject, bindable, computedFrom} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
-import {EventAggregator} from 'aurelia-event-aggregator';
-import {ValidationControllerFactory, ValidationController, ValidationRules} from 'aurelia-validation';
-import {DialogService} from 'aurelia-dialog';
-import {Notification} from 'aurelia-notification';
-import {I18N} from 'aurelia-i18n';
-import {AuthService} from 'aurelia-authentication';
-import {UserService} from 'services/user-service';
-import {logger} from 'util/logger-helper';
+﻿import { inject, bindable, computedFrom } from 'aurelia-framework';
+import { Router } from 'aurelia-router';
+import { EventAggregator } from 'aurelia-event-aggregator';
+import { ValidationControllerFactory, ValidationController, ValidationRules } from 'aurelia-validation';
+import { DialogService } from 'aurelia-dialog';
+import { Notification } from 'aurelia-notification';
+import { I18N } from 'aurelia-i18n';
+import { AuthService } from 'aurelia-authentication';
+import { UserService } from 'services/user-service';
+import { logger } from 'util/logger-helper';
 import EventTimer from 'util/event-timer';
 import appConfig from 'config/app';
 import {

@@ -1,21 +1,21 @@
 /*
-Error: Invalid CSS after "    background: ": expected expression (e.g. 1px, bold), was "${$design.prima..."
-        on line 32 of scss/app.scss
+Error: Invalid CSS after "  color: ": expected expression (e.g. 1px, bold), was "${$design.prima..."
+        on line 10 of scss/common.scss
 
-27:     flex-direction: column;
-28:     flex: 1;
-29:   }
-30:   
-31:   styles.header {
-32:     background: ${$design.primary};
-33:     color: ${$design.primaryForeground};
-34:     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
-35:     padding: 16px;
-36:     font-size: 24px;
-37:     line-height: 32px;
+5: styles.header {
+6:   font-size: 34px;
+7:   font-weight: 400;
+8:   line-height: 32px;
+9:   margin-bottom: 30px;
+10:   color: ${$design.primary};
+11: }
+12: 
+13: styles.description {
+14:   font-size: 20px;
+15:   font-weight: 400;
 
 Backtrace:
-scss/app.scss:32
+scss/common.scss:10
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:1189:in `expected'
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/script/lexer.rb:229:in `expected!'
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/script/parser.rb:704:in `assert_expr'
@@ -27,7 +27,7 @@ C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:1165:
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:782:in `try_declaration'
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:711:in `declaration_or_ruleset'
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:676:in `block_child'
-C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:665:in `block_contents'
+C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:668:in `block_contents'
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:657:in `block'
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:649:in `ruleset'
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:675:in `block_child'
@@ -53,4 +53,4 @@ C:/Ruby23-x64/bin/sass:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid CSS after \"    background: \": expected expression (e.g. 1px, bold), was \"${$design.prima...\"\A         on line 32 of scss/app.scss\A \A 27:     flex-direction: column;\A 28:     flex: 1;\A 29:   }\A 30:   \A 31:   styles.header {\A 32:     background: ${$design.primary};\A 33:     color: ${$design.primaryForeground};\A 34:     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);\A 35:     padding: 16px;\A 36:     font-size: 24px;\A 37:     line-height: 32px;"; }
+  content: "Error: Invalid CSS after \"  color: \": expected expression (e.g. 1px, bold), was \"${$design.prima...\"\A         on line 10 of scss/common.scss\A \A 5: styles.header {\A 6:   font-size: 34px;\A 7:   font-weight: 400;\A 8:   line-height: 32px;\A 9:   margin-bottom: 30px;\A 10:   color: ${$design.primary};\A 11: }\A 12: \A 13: styles.description {\A 14:   font-size: 20px;\A 15:   font-weight: 400;"; }

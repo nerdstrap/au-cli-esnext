@@ -1,6 +1,6 @@
 export default {
     app: {
-        title: 'Corporation Name\'s Self Service Password Reset',
+        title: 'Corporation Name - Application Name',
         environment: 'development',
     },
     logger: {

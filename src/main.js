@@ -2,6 +2,7 @@ import routerConfig from 'config/router';
 import appConfig from 'config/app';
 import authConfig from 'config/auth';
 import localConfig from 'config/local';
+import environment from './environment';
 import Backend from 'i18next-xhr-backend';
 import {Config} from 'aurelia-config';
 import {Router} from 'aurelia-router';
@@ -47,10 +48,10 @@ function initialize(aurelia, lng) {
     aurelia.setupI18NDone = false;
     aurelia.use
         .standardConfiguration()
-        .feature('foundation-validation')
         .feature('resources')
         .feature('components')
         .plugin('aurelia-validation')
+        .plugin('aurelia-ux')
         .plugin('aurelia-config', configure => {
             return configure([
                 'aurelia-api',
@@ -75,7 +76,7 @@ function initialize(aurelia, lng) {
                     loadPath: 'src/locales/{{lng}}/{{ns}}.json'
                 },
                 lng: language || appConfig.defaultLocale.language,
-                attributes: ['t'],
+                attributes: ['t', 'i18n'],
                 fallbackLng: language || appConfig.defaultLocale.language,
                 debug: appConfig.i18n.debug,
                 interpolation: {
